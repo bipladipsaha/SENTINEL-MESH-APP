@@ -58,26 +58,49 @@ export default function FindServices({ type }) {
     }
   }, []);
 
-  // Fetch nearby services via Overpass API
+  // Fetch nearby services via Overpass API (with mirror fallback)
   useEffect(() => {
     if (!userLoc) return;
     setLoading(true);
 
     const amenity = isHospital ? 'hospital' : 'police';
     const radius = 5000; // 5km
-    const query = `[out:json];nwr[amenity=${amenity}](around:${radius},${userLoc.lat},${userLoc.lon});out center;`;
+    const query = `[out:json][timeout:25];(node["amenity"="${amenity}"](around:${radius},${userLoc.lat},${userLoc.lon});way["amenity"="${amenity}"](around:${radius},${userLoc.lat},${userLoc.lon}););out center;`;
 
-    fetch('https://overpass-api.de/api/interpreter', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: `data=${encodeURIComponent(query)}`
-    })
-      .then((res) => res.json())
+    // Try multiple Overpass API mirrors in order
+    const OVERPASS_ENDPOINTS = [
+      'https://maps.mail.ru/osm/tools/overpass/api/interpreter',
+      'https://overpass.private.coffee/api/interpreter',
+      'https://overpass-api.de/api/interpreter',
+    ];
+
+    async function fetchFromOverpass() {
+      for (const endpoint of OVERPASS_ENDPOINTS) {
+        try {
+          const res = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `data=${encodeURIComponent(query)}`,
+          });
+          if (!res.ok) continue;
+          const data = await res.json();
+          if (data.elements && data.elements.length > 0) return data;
+        } catch {
+          continue;
+        }
+      }
+      return null;
+    }
+
+    fetchFromOverpass()
       .then((data) => {
+        if (!data) {
+          setServices([]);
+          setLoading(false);
+          return;
+        }
         const results = data.elements
+          .filter((el) => (el.lat || el.center?.lat)) // skip entries without coords
           .map((el) => ({
             id: el.id,
             name: el.tags?.name || `${isHospital ? 'Hospital' : 'Police Station'}`,
@@ -98,12 +121,8 @@ export default function FindServices({ type }) {
         setLoading(false);
       })
       .catch(() => {
+        setServices([]);
         setLoading(false);
-        // Provide fallback demo data
-        setServices([
-          { id: 1, name: isHospital ? 'City Hospital' : 'Central Police Station', lat: userLoc.lat + 0.005, lon: userLoc.lon + 0.003, phone: '100', distance: 800, address: 'Main Road' },
-          { id: 2, name: isHospital ? 'Medical Center' : 'Area Police Post', lat: userLoc.lat - 0.008, lon: userLoc.lon + 0.01, phone: '108', distance: 2400, address: 'Station Road' },
-        ]);
       });
   }, [userLoc, isHospital]);
 
