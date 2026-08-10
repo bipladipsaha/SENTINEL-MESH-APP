@@ -10,7 +10,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { db } from '../firebase';
-import { ref, set } from 'firebase/database';
+import { ref, set, onValue } from 'firebase/database';
 
 export default function SOSActive() {
   const { currentUser, userProfile } = useAuth();
@@ -36,6 +36,23 @@ export default function SOSActive() {
       );
     }
   }, []);
+
+  // Listen for remote resolution (e.g., from hardware)
+  useEffect(() => {
+    if (!currentUser) return;
+    const deviceId = userProfile?.deviceId || `web-${currentUser.uid.slice(0, 8)}`;
+    const sosRef = ref(db, `sos_alerts/${deviceId}/active`);
+    
+    const unsub = onValue(sosRef, (snapshot) => {
+      const isActive = snapshot.val();
+      if (isActive === false) {
+        clearInterval(intervalRef.current);
+        navigate('/');
+      }
+    });
+
+    return () => unsub();
+  }, [currentUser, userProfile, navigate]);
 
   // Countdown timer
   useEffect(() => {
