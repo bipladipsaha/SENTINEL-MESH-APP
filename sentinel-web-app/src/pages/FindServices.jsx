@@ -67,7 +67,14 @@ export default function FindServices({ type }) {
     const radius = 5000; // 5km
     const query = `[out:json];nwr[amenity=${amenity}](around:${radius},${userLoc.lat},${userLoc.lon});out center;`;
 
-    fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`)
+    fetch('https://overpass-api.de/api/interpreter', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: `data=${encodeURIComponent(query)}`
+    })
       .then((res) => res.json())
       .then((data) => {
         const results = data.elements
