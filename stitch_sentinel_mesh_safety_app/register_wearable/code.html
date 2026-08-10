@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Sentinel Mesh - Pair Device</title>
+<!-- Google Fonts: Manrope for Humanistic Protection aesthetic -->
+<link href="https://fonts.googleapis.com/preconnect.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols for Literal Transcription -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .soft-glow-shadow {
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    }
+    .active-glow {
+      box-shadow: 0 0 20px rgba(0, 81, 223, 0.15);
+    }
+    .pulse-animation {
+      animation: pulse 3s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.05); opacity: 1; }
+      100% { transform: scale(1); opacity: 0.8; }
+    }
+    /* Hide scrollbar for clean UI */
+    ::-webkit-scrollbar { display: none; }
+    body { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "surface-variant": "#d9e3f9",
+                  "surface-container-lowest": "#ffffff",
+                  "secondary-container": "#89f2dd",
+                  "surface-container": "#e7eeff",
+                  "on-tertiary-fixed-variant": "#8b1820",
+                  "on-error": "#ffffff",
+                  "secondary-fixed": "#8cf5e0",
+                  "on-surface-variant": "#434655",
+                  "on-secondary-container": "#006f61",
+                  "on-primary-fixed-variant": "#003cac",
+                  "primary-fixed": "#dbe1ff",
+                  "on-primary-fixed": "#00174d",
+                  "error-container": "#ffdad6",
+                  "on-background": "#121c2c",
+                  "on-primary-container": "#000318",
+                  "outline-variant": "#c3c5d8",
+                  "primary-fixed-dim": "#b5c4ff",
+                  "on-secondary-fixed-variant": "#005046",
+                  "background": "#f9f9ff",
+                  "secondary": "#006b5d",
+                  "on-error-container": "#93000a",
+                  "error": "#ba1a1a",
+                  "tertiary-fixed": "#ffdad8",
+                  "primary": "#0051df",
+                  "primary-container": "#2f6bff",
+                  "surface-container-low": "#f0f3ff",
+                  "secondary-fixed-dim": "#6fd8c4",
+                  "surface-container-highest": "#d9e3f9",
+                  "on-secondary": "#ffffff",
+                  "on-surface": "#121c2c",
+                  "on-secondary-fixed": "#00201b",
+                  "surface-dim": "#d0daf0",
+                  "surface-bright": "#f9f9ff",
+                  "surface": "#f9f9ff",
+                  "on-tertiary-fixed": "#410006",
+                  "outline": "#737687",
+                  "inverse-surface": "#273141",
+                  "tertiary": "#ab3135",
+                  "on-tertiary": "#ffffff",
+                  "on-primary": "#ffffff",
+                  "tertiary-container": "#cd494b",
+                  "inverse-on-surface": "#ebf1ff",
+                  "surface-container-high": "#dee8ff",
+                  "tertiary-fixed-dim": "#ffb3b0",
+                  "surface-tint": "#0051e0",
+                  "on-tertiary-container": "#ffffff",
+                  "inverse-primary": "#b5c4ff"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.25rem",
+                  "lg": "0.5rem",
+                  "xl": "0.75rem",
+                  "full": "9999px"
+          },
+          "spacing": {
+                  "stack-sm": "8px",
+                  "stack-md": "16px",
+                  "container-margin-desktop": "40px",
+                  "gutter": "16px",
+                  "container-margin-mobile": "20px",
+                  "unit": "8px",
+                  "stack-lg": "32px"
+          },
+          "fontFamily": {
+                  "headline-lg": ["Manrope"],
+                  "label-md": ["Manrope"],
+                  "headline-md": ["Manrope"],
+                  "label-sm": ["Manrope"],
+                  "body-lg": ["Manrope"],
+                  "display-lg": ["Manrope"],
+                  "headline-lg-mobile": ["Manrope"],
+                  "body-md": ["Manrope"]
+          },
+          "fontSize": {
+                  "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                  "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                  "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                  "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                  "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                  "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                  "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                  "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+          }
+        },
+      },
+    }
+  </script>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col">
+<!-- Shell Visibility: TopAppBar (Sub-page: Back action implies temporary departure, but header is helpful for identity) -->
+<header class="sticky top-0 z-50 bg-surface dark:bg-surface-dim flex items-center justify-between px-gutter py-stack-md w-full">
+<div class="flex items-center gap-4">
+<button aria-label="Back" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-primary font-bold">Sentinel Mesh</h1>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden border-2 border-primary-fixed">
+<img class="w-full h-full object-cover" data-alt="A professional close-up portrait of a user for their medical profile. The lighting is soft and natural, typical of a health-tech application. The background is a clean, neutral gradient of light blue and white, reflecting the Sentinel Mesh brand identity and human-centric design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeWCV6OGR01MNdhRsxWzxJnRFYTk9T4Bqw7lb2JxgpkbkNyPhg-1X4_heezCiOvjDzi-pE-hy7ros3VGFDwfeG3sv4VX8Yeke49fgFTr742R89urhcVJ7kHwlTqytGMtebEQ9gFgXRUIaYsvJWCXoLjgK5pARbuwerIklJR6cuo0oXrIaynMc0Su5qoPVEkx0ObeWDFh7UJ--Z182IXZVdSQKFeRMT-as7GqUhHPJz0JPN_RtUvDM"/>
+</div>
+</header>
+<main class="flex-grow flex flex-col px-gutter max-w-lg mx-auto w-full pb-32">
+<!-- Progress Indicator -->
+<div class="mt-stack-lg flex items-center gap-2 mb-stack-md">
+<div class="h-2 flex-grow bg-primary rounded-full"></div>
+<div class="h-2 flex-grow bg-surface-container-highest rounded-full"></div>
+<div class="h-2 flex-grow bg-surface-container-highest rounded-full"></div>
+</div>
+<!-- Hero Illustration Section -->
+<section class="mt-stack-md text-center">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-on-surface mb-stack-sm">Connect Your Device</h2>
+<p class="font-body-md text-on-surface-variant mb-stack-lg">To begin your protection journey, pair your Sentinel wearable with the mesh network.</p>
+<div class="relative w-full aspect-square max-w-[280px] mx-auto mb-stack-lg">
+<!-- Soft Glow Background for Illustration -->
+<div class="absolute inset-0 bg-primary/5 rounded-full blur-3xl pulse-animation"></div>
+<img class="relative z-10 w-full h-full object-contain" data-alt="A soft, humanistic 3D illustration of a sleek, minimalist medical wearable device. The device has rounded edges and a comfortable fabric strap, styled in a palette of soft whites and calm primary blues. It is floating gracefully against a clean, breathable background with subtle ambient shadows, conveying safety and medical reliability." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDW27wXLyTZdi_9ylkfWEgFETwIYCLoiWQVJiWEJKFmAzaiYy5eAy58R6eyfNb4jmLGrs3HH_hxvEtEdvv8dbNs-95BRs13J3wKaGZ2WVBdYBYusPS0FrpAnVCV_TFRqCe6KSVm8mAIn-cmVEIid3-DG5Lv3wDm67BHjio6bWNEHQPGVuhVufwWONwz0VlpmjjD6ukVksSYxUoI3k2q5IlKoviuxtfmGW9oa07835sB7LVV3eDQk0M"/>
+</div>
+</section>
+<!-- Selection Options (Asymmetric/Bento-lite) -->
+<section class="grid grid-cols-1 gap-stack-md">
+<!-- Option: Scan QR -->
+<button class="group flex items-center p-stack-md bg-surface-container-lowest rounded-[24px] border-2 border-transparent hover:border-primary/20 active:scale-95 transition-all soft-glow-shadow text-left" id="btn-scan">
+<div class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[28px]">qr_code_scanner</span>
+</div>
+<div class="ml-stack-md flex-grow">
+<p class="font-label-md text-label-md text-on-surface">Scan QR Code</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Found on the back of the device box</p>
+</div>
+<span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+</button>
+<!-- Option: Manual Entry -->
+<button class="group flex items-center p-stack-md bg-surface-container-lowest rounded-[24px] border-2 border-transparent hover:border-primary/20 active:scale-95 transition-all soft-glow-shadow text-left" id="btn-manual">
+<div class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[28px]">keyboard</span>
+</div>
+<div class="ml-stack-md flex-grow">
+<p class="font-label-md text-label-md text-on-surface">Enter Device ID</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Type the 8-digit code manually</p>
+</div>
+<span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+</button>
+</section>
+<!-- Hidden Manual Input Field (Progressive Disclosure) -->
+<div class="hidden mt-stack-md space-y-stack-sm" id="manual-input-area">
+<label class="font-label-md text-label-md text-on-surface-variant px-1" for="device-id">8-Digit Device ID</label>
+<input class="w-full h-14 bg-surface-container-low border-none rounded-xl px-4 text-headline-md font-bold text-primary focus:ring-2 focus:ring-primary placeholder:text-outline-variant placeholder:font-normal" id="device-id" placeholder="e.g. SN-8829-X" type="text"/>
+</div>
+<!-- Visual Hint -->
+<div class="mt-stack-lg p-stack-md bg-surface-container-high/50 rounded-[20px] flex gap-stack-sm items-start">
+<span class="material-symbols-outlined text-secondary text-[20px]">info</span>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Ensure your device is charged and nearby. The LED should be pulsing blue during setup.</p>
+</div>
+</main>
+<!-- Fixed Bottom Action Bar -->
+<footer class="fixed bottom-0 left-0 w-full bg-surface/80 backdrop-blur-md px-gutter py-stack-lg z-50">
+<div class="max-w-lg mx-auto flex flex-col gap-stack-md">
+<button class="w-full h-[56px] bg-primary text-on-primary font-headline-md text-headline-md rounded-[16px] shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+<span>Pair Device</span>
+<span class="material-symbols-outlined">bluetooth_searching</span>
+</button>
+<button class="w-full text-center font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors">
+        I don't have a device yet
+      </button>
+</div>
+</footer>
+<script>
+    // Simple UI interaction for manual entry toggle
+    const btnManual = document.getElementById('btn-manual');
+    const manualArea = document.getElementById('manual-input-area');
+    const btnScan = document.getElementById('btn-scan');
+
+    btnManual.addEventListener('click', () => {
+      manualArea.classList.remove('hidden');
+      btnManual.classList.add('border-primary', 'active-glow');
+      btnScan.classList.remove('border-primary', 'active-glow');
+      document.getElementById('device-id').focus();
+    });
+
+    btnScan.addEventListener('click', () => {
+      manualArea.classList.add('hidden');
+      btnScan.classList.add('border-primary', 'active-glow');
+      btnManual.classList.remove('border-primary', 'active-glow');
+    });
+
+    // Device ID Auto-formatting logic
+    const input = document.getElementById('device-id');
+    input.addEventListener('input', (e) => {
+      let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+      if (value.length > 2 && value.length <= 6) {
+        value = value.slice(0, 2) + '-' + value.slice(2);
+      } else if (value.length > 6) {
+        value = value.slice(0, 2) + '-' + value.slice(2, 6) + '-' + value.slice(6, 7);
+      }
+      e.target.value = value.slice(0, 9);
+    });
+  </script>
+</body></html>

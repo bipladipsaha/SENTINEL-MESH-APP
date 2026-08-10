@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Emergency Details | Sentinel Mesh</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .pulse-red {
+            animation: pulse-red 2s infinite;
+        }
+
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(186, 26, 26, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(186, 26, 26, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(186, 26, 26, 0); }
+        }
+
+        .safe-bottom {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #f9f9ff;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#d9e3f9",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-container": "#89f2dd",
+                        "surface-container": "#e7eeff",
+                        "on-tertiary-fixed-variant": "#8b1820",
+                        "on-error": "#ffffff",
+                        "secondary-fixed": "#8cf5e0",
+                        "on-surface-variant": "#434655",
+                        "on-secondary-container": "#006f61",
+                        "on-primary-fixed-variant": "#003cac",
+                        "primary-fixed": "#dbe1ff",
+                        "on-primary-fixed": "#00174d",
+                        "error-container": "#ffdad6",
+                        "on-background": "#121c2c",
+                        "on-primary-container": "#000318",
+                        "outline-variant": "#c3c5d8",
+                        "primary-fixed-dim": "#b5c4ff",
+                        "on-secondary-fixed-variant": "#005046",
+                        "background": "#f9f9ff",
+                        "secondary": "#006b5d",
+                        "on-error-container": "#93000a",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed": "#ffdad8",
+                        "primary": "#0051df",
+                        "primary-container": "#2f6bff",
+                        "surface-container-low": "#f0f3ff",
+                        "secondary-fixed-dim": "#6fd8c4",
+                        "surface-container-highest": "#d9e3f9",
+                        "on-secondary": "#ffffff",
+                        "on-surface": "#121c2c",
+                        "on-secondary-fixed": "#00201b",
+                        "surface-dim": "#d0daf0",
+                        "surface-bright": "#f9f9ff",
+                        "surface": "#f9f9ff",
+                        "on-tertiary-fixed": "#410006",
+                        "outline": "#737687",
+                        "inverse-surface": "#273141",
+                        "tertiary": "#ab3135",
+                        "on-tertiary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#cd494b",
+                        "inverse-on-surface": "#ebf1ff",
+                        "surface-container-high": "#dee8ff",
+                        "tertiary-fixed-dim": "#ffb3b0",
+                        "surface-tint": "#0051e0",
+                        "on-tertiary-container": "#ffffff",
+                        "inverse-primary": "#b5c4ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "container-margin-desktop": "40px",
+                        "gutter": "16px",
+                        "container-margin-mobile": "20px",
+                        "unit": "8px",
+                        "stack-lg": "32px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Manrope"],
+                        "label-md": ["Manrope"],
+                        "headline-md": ["Manrope"],
+                        "label-sm": ["Manrope"],
+                        "body-lg": ["Manrope"],
+                        "display-lg": ["Manrope"],
+                        "headline-lg-mobile": ["Manrope"],
+                        "body-md": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface">
+<!-- Top App Bar -->
+<header class="bg-surface sticky top-0 z-50 flex items-center justify-between px-gutter py-stack-md w-full">
+<div class="flex items-center gap-3">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-variant transition-colors active:scale-95">
+<span class="material-symbols-outlined text-on-surface">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-primary font-bold">Sentinel Mesh</h1>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">notifications</span>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="A professional studio headshot of a middle-aged security administrator with a calm and focused expression. The lighting is soft and corporate, following the clean light-mode aesthetic of the application. The background is a blurred office environment with soft blue and white tones, matching the human-centric and professional brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlB0QW614AxF301ygOViVm2Hi3MaEMZMggeX2h12p2hoh57dtOEE1E5_VioTRIQC8zzeZ8XmJG-2PuVEXbvyCWvXieOgBsXyp8zDvTtxB-mKX6EUWbb4yFEBj3fg0XQqngKWqCZLvdEtfFbt4nE0hZ9K4di1t9Gbl9tDI-sWgv1eUo2gnSO_3hEwyjiI1roAlFFWR7EyYC2HTgAiSOYPmgFTzNX5e3CpkRjNdPqcUSDjXD3jZgF38"/>
+</div>
+</div>
+</header>
+<main class="pb-32">
+<!-- Live Map Section -->
+<section class="relative w-full h-[45vh] overflow-hidden">
+<div class="absolute inset-0 z-0 bg-surface-container-low" data-location="San Francisco, CA" style="">
+<img class="w-full h-full object-cover" data-alt="A high-detail aerial satellite map view of a modern urban neighborhood with clean streets and green parks. Overlaid on the map is a vibrant Primary Blue navigation path leading to a pulsing red emergency marker. The style is clean and high-contrast, designed for rapid visual comprehension in a medical or safety app context. Soft ambient lighting suggests a clear day." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbGJH9QiADOavmYUa2YwBAMtdlShE_y1I6Kgm9Jl0Qgy2DMMfHVQInuyws6EWUynzmzEVPjK3j9Wv2Ev__ANw5wseiYl8LxTiEd20_EMGPzkDeEnsIG_6da3kkahT5W9FG4kiiEhRa1wSyVfuwOCBOkw563fiM7P0hBuaQTGkK2QAZwepWVpVxM1wAZWw5aA53NfavkQ0XxDK9DpvkHeHhbwY8f5nKvBfwji8exSy019bHyGMXPKc"/>
+</div>
+<!-- Map Overlay UI -->
+<div class="absolute top-4 left-4 z-10 flex flex-col gap-2">
+<div class="glass-card px-4 py-2 rounded-full flex items-center gap-2 shadow-sm">
+<div class="w-2 h-2 rounded-full bg-error pulse-red"></div>
+<span class="font-label-md text-label-md text-on-surface">Live Tracking Active</span>
+</div>
+</div>
+<div class="absolute bottom-6 right-4 z-10 flex flex-col gap-2">
+<button class="w-12 h-12 bg-surface rounded-xl shadow-lg flex items-center justify-center active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-on-surface">my_location</span>
+</button>
+<button class="w-12 h-12 bg-surface rounded-xl shadow-lg flex items-center justify-center active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-on-surface">layers</span>
+</button>
+</div>
+</section>
+<!-- Emergency Details Content -->
+<section class="px-container-margin-mobile md:px-container-margin-desktop -mt-8 relative z-20">
+<div class="bg-surface-container-lowest rounded-[24px] shadow-[0_10px_30px_rgba(0,0,0,0.04)] p-6 space-y-8">
+<!-- Status Header -->
+<div class="flex items-start justify-between">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">warning</span>
+<span class="text-error font-headline-md text-headline-md-mobile md:text-headline-md uppercase tracking-wide">Critical Alert</span>
+</div>
+<p class="text-on-surface-variant font-body-md text-body-md">Medical Emergency Reported</p>
+</div>
+<div class="bg-error-container text-on-error-container px-4 py-2 rounded-xl font-label-md text-label-md flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">timer</span>
+                        02:45 Elapsed
+                    </div>
+</div>
+<!-- Bento Grid for Stats -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<!-- Victim ID -->
+<div class="bg-surface-container-low p-4 rounded-2xl flex flex-col gap-1">
+<span class="text-outline font-label-sm text-label-sm uppercase tracking-tighter">Victim ID</span>
+<span class="text-on-surface font-headline-md text-headline-md-mobile md:text-headline-md font-bold">SM-9210</span>
+</div>
+<!-- Battery -->
+<div class="bg-surface-container-low p-4 rounded-2xl flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="text-outline font-label-sm text-label-sm uppercase tracking-tighter">Battery</span>
+<span class="material-symbols-outlined text-secondary text-[18px]" style="font-variation-settings: 'FILL' 1;">battery_5_bar</span>
+</div>
+<span class="text-on-surface font-headline-md text-headline-md-mobile md:text-headline-md font-bold">84%</span>
+</div>
+<!-- Last Update -->
+<div class="bg-surface-container-low p-4 rounded-2xl flex flex-col gap-1">
+<span class="text-outline font-label-sm text-label-sm uppercase tracking-tighter">Last Update</span>
+<span class="text-on-surface font-headline-md text-headline-md-mobile md:text-headline-md font-bold">Active</span>
+</div>
+<!-- Distance -->
+<div class="bg-surface-container-low p-4 rounded-2xl flex flex-col gap-1">
+<span class="text-outline font-label-sm text-label-sm uppercase tracking-tighter">Distance</span>
+<span class="text-primary font-headline-md text-headline-md-mobile md:text-headline-md font-bold">0.8 mi</span>
+</div>
+</div>
+<!-- Location Detail Card -->
+<div class="bg-surface-container-low p-5 rounded-2xl border-l-4 border-primary">
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 bg-primary-fixed rounded-full flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary">location_on</span>
+</div>
+<div class="flex-1">
+<span class="text-outline font-label-sm text-label-sm uppercase">Current Location</span>
+<h3 class="text-on-surface font-body-lg text-body-lg font-bold">4521 Mission St, San Francisco</h3>
+<p class="text-on-surface-variant font-body-md text-body-md">Precision: Within 5 meters</p>
+</div>
+<button class="text-primary font-label-md text-label-md flex items-center gap-1 hover:opacity-80 transition-opacity">
+                            View History
+                            <span class="material-symbols-outlined text-[16px]">open_in_new</span>
+</button>
+</div>
+</div>
+<!-- Emergency Type & Description -->
+<div class="space-y-4">
+<h4 class="text-on-surface font-label-md text-label-md font-bold">Incident Information</h4>
+<div class="flex flex-wrap gap-2">
+<span class="bg-error text-on-error px-4 py-1.5 rounded-full font-label-sm text-label-sm">High Pulse Detection</span>
+<span class="bg-surface-variant text-on-surface-variant px-4 py-1.5 rounded-full font-label-sm text-label-sm">Sudden Fall</span>
+<span class="bg-surface-variant text-on-surface-variant px-4 py-1.5 rounded-full font-label-sm text-label-sm">No Movement</span>
+</div>
+<div class="p-4 bg-surface-container-lowest border border-outline-variant rounded-xl">
+<p class="text-on-surface-variant font-body-md text-body-md italic">"System detected a rapid deceleration followed by an elevated heart rate of 145 BPM. User did not respond to haptic confirmation within 15 seconds."</p>
+</div>
+</div>
+<!-- Action Buttons Cluster -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
+<button class="h-14 bg-primary text-on-primary rounded-xl font-headline-md text-headline-md flex items-center justify-center gap-3 shadow-lg active:scale-95 transition-all hover:bg-primary-container">
+<span class="material-symbols-outlined">navigation</span>
+                        Navigate
+                    </button>
+<button class="h-14 bg-secondary text-on-secondary rounded-xl font-headline-md text-headline-md flex items-center justify-center gap-3 shadow-lg active:scale-95 transition-all">
+<span class="material-symbols-outlined">check_circle</span>
+                        Respond
+                    </button>
+</div>
+<div class="flex justify-center">
+<button class="text-on-surface-variant font-label-md text-label-md py-2 px-6 rounded-full hover:bg-surface-container transition-colors">
+                        Mark as False Alarm
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Nav Bar (Hidden for Task Focus as per instructions for Details screen, but included here in case of app context) -->
+<!-- Suppression Logic: Suppressed on Details/Transactional screen -->
+<script>
+        // Micro-interaction for Respond button
+        document.querySelector('button.bg-secondary').addEventListener('click', function() {
+            this.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Responding...';
+            setTimeout(() => {
+                this.innerHTML = '<span class="material-symbols-outlined">check_circle</span> Response Confirmed';
+                this.classList.replace('bg-secondary', 'bg-surface-variant');
+                this.classList.replace('text-on-secondary', 'text-on-surface-variant');
+            }, 1200);
+        });
+
+        // Pulsing navigation indicator simulation
+        let intensity = 1;
+        setInterval(() => {
+            const marker = document.querySelector('.pulse-red');
+            if(marker) {
+                intensity = intensity === 1 ? 1.2 : 1;
+                marker.style.transform = `scale(${intensity})`;
+                marker.style.transition = 'transform 1s ease-in-out';
+            }
+        }, 1000);
+    </script>
+</body></html>

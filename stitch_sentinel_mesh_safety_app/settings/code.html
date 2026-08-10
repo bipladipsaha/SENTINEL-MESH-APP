@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Settings - Sentinel Mesh</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#d9e3f9",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-container": "#89f2dd",
+                    "surface-container": "#e7eeff",
+                    "on-tertiary-fixed-variant": "#8b1820",
+                    "on-error": "#ffffff",
+                    "secondary-fixed": "#8cf5e0",
+                    "on-surface-variant": "#434655",
+                    "on-secondary-container": "#006f61",
+                    "on-primary-fixed-variant": "#003cac",
+                    "primary-fixed": "#dbe1ff",
+                    "on-primary-fixed": "#00174d",
+                    "error-container": "#ffdad6",
+                    "on-background": "#121c2c",
+                    "on-primary-container": "#000318",
+                    "outline-variant": "#c3c5d8",
+                    "primary-fixed-dim": "#b5c4ff",
+                    "on-secondary-fixed-variant": "#005046",
+                    "background": "#f9f9ff",
+                    "secondary": "#006b5d",
+                    "on-error-container": "#93000a",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed": "#ffdad8",
+                    "primary": "#0051df",
+                    "primary-container": "#2f6bff",
+                    "surface-container-low": "#f0f3ff",
+                    "secondary-fixed-dim": "#6fd8c4",
+                    "surface-container-highest": "#d9e3f9",
+                    "on-secondary": "#ffffff",
+                    "on-surface": "#121c2c",
+                    "on-secondary-fixed": "#00201b",
+                    "surface-dim": "#d0daf0",
+                    "surface-bright": "#f9f9ff",
+                    "surface": "#f9f9ff",
+                    "on-tertiary-fixed": "#410006",
+                    "outline": "#737687",
+                    "inverse-surface": "#273141",
+                    "tertiary": "#ab3135",
+                    "on-tertiary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "tertiary-container": "#cd494b",
+                    "inverse-on-surface": "#ebf1ff",
+                    "surface-container-high": "#dee8ff",
+                    "tertiary-fixed-dim": "#ffb3b0",
+                    "surface-tint": "#0051e0",
+                    "on-tertiary-container": "#ffffff",
+                    "inverse-primary": "#b5c4ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-sm": "8px",
+                    "stack-md": "16px",
+                    "container-margin-desktop": "40px",
+                    "gutter": "16px",
+                    "container-margin-mobile": "20px",
+                    "unit": "8px",
+                    "stack-lg": "32px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Manrope"],
+                    "label-md": ["Manrope"],
+                    "headline-md": ["Manrope"],
+                    "label-sm": ["Manrope"],
+                    "body-lg": ["Manrope"],
+                    "display-lg": ["Manrope"],
+                    "headline-lg-mobile": ["Manrope"],
+                    "body-md": ["Manrope"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #F7F8FA;
+            font-family: 'Manrope', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .settings-card {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+        }
+        .toggle-switch {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .active-toggle {
+            transform: translateX(1.25rem);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background antialiased pb-24">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface-dim w-full top-0 sticky z-40">
+<div class="flex items-center justify-between px-gutter py-stack-md w-full">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-high flex items-center justify-center">
+<img class="w-full h-full object-cover" data-alt="A professional close-up portrait of a user for a profile avatar. The person has a warm, trustworthy expression. The lighting is soft and studio-quality, emphasizing a bright and clean light-mode aesthetic. The background is a subtle, solid pastel blue, maintaining the human-centric and medical-focused warmth of the Sentinel Mesh design system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyzLqMRDgj6iNFRVKLX3aHdALbFJkRd1TPokXg3S4PCSrIKRzSOB0tQ3ics6KbT7hU5zSsB6Jow8dnmto5rAtfAQj3gaJWMU5Wwkc8TqE29kDxBTLOakxKlT0yGc9f2vEvwKUbAUdcPYzAGOSr2C77_8-4wD0nUJjRvdE_bXABjTPiDqr8P-oGop79EBwkE62RBuxPrwNlN204z3t0qDpwvi9bOYrzyWO4j1se91JBYubCH0GRrOo"/>
+</div>
+<h1 class="font-headline-md text-headline-md text-primary dark:text-primary-fixed-dim font-bold">Sentinel Mesh</h1>
+</div>
+<button class="text-primary dark:text-primary-fixed-dim hover:opacity-80 transition-opacity active:scale-95 transition-transform p-2">
+<span class="material-symbols-outlined text-[28px]">notifications</span>
+</button>
+</div>
+</header>
+<main class="max-w-2xl mx-auto px-gutter mt-stack-lg">
+<!-- Title Section -->
+<div class="mb-stack-lg">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-2">Settings</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Manage your account and device preferences.</p>
+</div>
+<!-- Settings Groups -->
+<div class="space-y-stack-md">
+<!-- Account Section -->
+<section class="settings-card bg-surface-container-lowest rounded-3xl p-stack-md overflow-hidden">
+<div class="space-y-1">
+<!-- Notification Settings -->
+<button class="w-full flex items-center justify-between py-4 px-2 hover:bg-surface-container-low rounded-xl transition-colors group">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-2xl bg-primary-container/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">notifications_active</span>
+</div>
+<div class="text-left">
+<p class="font-label-md text-label-md text-on-surface">Notification Settings</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Alerts, sounds, and priority</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors">chevron_right</span>
+</button>
+<!-- Language -->
+<button class="w-full flex items-center justify-between py-4 px-2 hover:bg-surface-container-low rounded-xl transition-colors group border-t border-surface-variant/30">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-2xl bg-secondary-container/20 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">language</span>
+</div>
+<div class="text-left">
+<p class="font-label-md text-label-md text-on-surface">Language</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">English (United States)</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-secondary transition-colors">chevron_right</span>
+</button>
+</div>
+</section>
+<!-- Device Configuration -->
+<section class="settings-card bg-surface-container-lowest rounded-3xl p-stack-md overflow-hidden">
+<div class="flex items-center justify-between py-4 px-2">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-2xl bg-primary-container/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">security</span>
+</div>
+<div class="text-left">
+<p class="font-label-md text-label-md text-on-surface">Device Active</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Currently monitoring mesh</p>
+</div>
+</div>
+<!-- Custom Toggle Switch -->
+<button class="relative inline-flex h-7 w-12 items-center rounded-full bg-primary transition-colors focus:outline-none ring-offset-2 focus:ring-2 focus:ring-primary-container" onclick="toggleSwitch(this)">
+<span class="inline-block h-5 w-5 transform rounded-full bg-white transition-transform active-toggle"></span>
+</button>
+</div>
+</section>
+<!-- About Section -->
+<section class="settings-card bg-surface-container-lowest rounded-3xl p-stack-md overflow-hidden">
+<div class="space-y-1">
+<!-- About -->
+<button class="w-full flex items-center justify-between py-4 px-2 hover:bg-surface-container-low rounded-xl transition-colors group">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-2xl bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">info</span>
+</div>
+<div class="text-left">
+<p class="font-label-md text-label-md text-on-surface">About Sentinel Mesh</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Version 2.4.0 (Stable)</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-on-surface transition-colors">chevron_right</span>
+</button>
+<!-- Logout -->
+<button class="w-full flex items-center justify-between py-4 px-2 hover:bg-tertiary-container/10 rounded-xl transition-colors group border-t border-surface-variant/30">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-2xl bg-tertiary-container/20 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined">logout</span>
+</div>
+<div class="text-left">
+<p class="font-label-md text-label-md text-tertiary">Logout</p>
+<p class="font-label-sm text-label-sm text-on-tertiary-fixed-variant">Securely exit your session</p>
+</div>
+</div>
+</button>
+</div>
+</section>
+</div>
+<!-- Footer Help -->
+<div class="mt-stack-lg text-center px-gutter">
+<p class="font-label-sm text-label-sm text-outline mb-4">Need help with your Sentinel Device?</p>
+<button class="bg-surface-container-highest text-on-surface font-label-md text-label-md px-6 py-3 rounded-2xl hover:opacity-80 transition-opacity active:scale-95">
+                Contact Support
+            </button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe bg-surface-container-lowest dark:bg-inverse-surface shadow-[0_-10px_30px_rgba(0,0,0,0.04)]">
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-2 hover:bg-surface-variant dark:hover:bg-surface-container-high rounded-xl active:scale-90 transition-all duration-200">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-2 hover:bg-surface-variant dark:hover:bg-surface-container-high rounded-xl active:scale-90 transition-all duration-200">
+<span class="material-symbols-outlined">emergency</span>
+<span class="font-label-sm text-label-sm">Emergencies</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-2 hover:bg-surface-variant dark:hover:bg-surface-container-high rounded-xl active:scale-90 transition-all duration-200">
+<span class="material-symbols-outlined">phone_iphone</span>
+<span class="font-label-sm text-label-sm">Device</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary rounded-xl px-4 py-2 active:scale-90 transition-all duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</button>
+</nav>
+<script>
+        function toggleSwitch(btn) {
+            const circle = btn.querySelector('span');
+            if (circle.classList.contains('active-toggle')) {
+                circle.classList.remove('active-toggle');
+                circle.classList.add('translate-x-0');
+                btn.classList.remove('bg-primary');
+                btn.classList.add('bg-outline-variant');
+            } else {
+                circle.classList.add('active-toggle');
+                circle.classList.remove('translate-x-0');
+                btn.classList.add('bg-primary');
+                btn.classList.remove('bg-outline-variant');
+            }
+        }
+    </script>
+</body></html>

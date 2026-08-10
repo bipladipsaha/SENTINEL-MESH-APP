@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Register | Sentinel Mesh</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Manrope -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#d9e3f9",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-container": "#89f2dd",
+                    "surface-container": "#e7eeff",
+                    "on-tertiary-fixed-variant": "#8b1820",
+                    "on-error": "#ffffff",
+                    "secondary-fixed": "#8cf5e0",
+                    "on-surface-variant": "#434655",
+                    "on-secondary-container": "#006f61",
+                    "on-primary-fixed-variant": "#003cac",
+                    "primary-fixed": "#dbe1ff",
+                    "on-primary-fixed": "#00174d",
+                    "error-container": "#ffdad6",
+                    "on-background": "#121c2c",
+                    "on-primary-container": "#000318",
+                    "outline-variant": "#c3c5d8",
+                    "primary-fixed-dim": "#b5c4ff",
+                    "on-secondary-fixed-variant": "#005046",
+                    "background": "#f9f9ff",
+                    "secondary": "#006b5d",
+                    "on-error-container": "#93000a",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed": "#ffdad8",
+                    "primary": "#0051df",
+                    "primary-container": "#2f6bff",
+                    "surface-container-low": "#f0f3ff",
+                    "secondary-fixed-dim": "#6fd8c4",
+                    "surface-container-highest": "#d9e3f9",
+                    "on-secondary": "#ffffff",
+                    "on-surface": "#121c2c",
+                    "on-secondary-fixed": "#00201b",
+                    "surface-dim": "#d0daf0",
+                    "surface-bright": "#f9f9ff",
+                    "surface": "#f9f9ff",
+                    "on-tertiary-fixed": "#410006",
+                    "outline": "#737687",
+                    "inverse-surface": "#273141",
+                    "tertiary": "#ab3135",
+                    "on-tertiary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "tertiary-container": "#cd494b",
+                    "inverse-on-surface": "#ebf1ff",
+                    "surface-container-high": "#dee8ff",
+                    "tertiary-fixed-dim": "#ffb3b0",
+                    "surface-tint": "#0051e0",
+                    "on-tertiary-container": "#ffffff",
+                    "inverse-primary": "#b5c4ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "16px",
+                    "xl": "24px",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-sm": "8px",
+                    "stack-md": "16px",
+                    "container-margin-desktop": "40px",
+                    "gutter": "16px",
+                    "container-margin-mobile": "20px",
+                    "unit": "8px",
+                    "stack-lg": "32px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Manrope"],
+                    "label-md": ["Manrope"],
+                    "headline-md": ["Manrope"],
+                    "label-sm": ["Manrope"],
+                    "body-lg": ["Manrope"],
+                    "display-lg": ["Manrope"],
+                    "headline-lg-mobile": ["Manrope"],
+                    "body-md": ["Manrope"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #f7f8fa; /* Global visual token Level 0 */
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        .ambient-shadow {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+        }
+        .toggle-active {
+            box-shadow: 0 4px 12px rgba(0, 81, 223, 0.15);
+        }
+    </style>
+</head>
+<body class="text-on-background min-h-screen flex flex-col items-center justify-center p-4 md:p-8 overflow-x-hidden">
+<!-- Atmospheric Background Element -->
+<div class="fixed inset-0 -z-10 opacity-30">
+
+</div>
+<!-- Main Registration Container -->
+<main class="w-full max-w-[1200px] grid grid-cols-1 lg:grid-cols-2 gap-stack-lg items-center">
+<!-- Left Column: Branding & Narrative (Desktop Only) -->
+<div class="hidden lg:flex flex-col space-y-stack-lg pr-stack-lg">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">shield_with_heart</span>
+<h1 class="font-headline-lg text-headline-lg text-primary">Sentinel Mesh</h1>
+</div>
+<div class="space-y-stack-md">
+<h2 class="font-display-lg text-display-lg text-on-surface leading-tight">Human-Centric <br/><span class="text-primary">Safety Network.</span></h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-md">
+                    Join a community built on psychological safety and rapid response. Whether you're securing yourself or protecting others, you're never alone.
+                </p>
+</div>
+<!-- Contextual Illustration/Card -->
+<div class="glass-card rounded-xl p-stack-md flex items-center gap-4 ambient-shadow border-none bg-white/60">
+<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-secondary-container">verified_user</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">End-to-End Protection</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Military-grade rigor, medical-grade care.</p>
+</div>
+</div>
+</div>
+<!-- Right Column: Registration Card -->
+<div class="w-full flex justify-center">
+<section class="w-full max-w-md bg-surface-container-lowest rounded-xl p-stack-lg ambient-shadow border border-surface-variant/20">
+<!-- Logo for Mobile -->
+<div class="flex lg:hidden items-center justify-center gap-2 mb-stack-lg">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">shield_with_heart</span>
+<h1 class="font-headline-md text-headline-md text-primary font-bold">Sentinel Mesh</h1>
+</div>
+<header class="text-center mb-stack-lg">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Create Account</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">Start your journey to radical clarity and safety.</p>
+</header>
+<!-- Role Toggle Switch -->
+<div class="bg-surface-container-low p-1.5 rounded-lg flex mb-stack-lg relative">
+<button class="relative z-10 flex-1 py-3 px-2 rounded-lg font-label-md text-label-md transition-all duration-300 text-on-primary-container bg-surface-container-lowest toggle-active" id="toggle-device" onclick="switchRole('device')">
+                        Device User
+                    </button>
+<button class="relative z-10 flex-1 py-3 px-2 rounded-lg font-label-md text-label-md transition-all duration-300 text-on-surface-variant" id="toggle-community" onclick="switchRole('community')">
+                        Community Responder
+                    </button>
+</div>
+<!-- Registration Form -->
+<form action="#" class="space-y-stack-md" onsubmit="event.preventDefault();">
+<!-- Name -->
+<div class="space-y-1">
+<label class="font-label-md text-label-md text-on-surface-variant ml-1">Full Name</label>
+<div class="relative group">
+<input class="w-full h-14 px-4 rounded-lg bg-[#EDF2F7] border-none focus:ring-2 focus:ring-primary focus:bg-white transition-all font-body-md text-body-md" placeholder="Alex Johnson" type="text"/>
+</div>
+</div>
+<!-- Email -->
+<div class="space-y-1">
+<label class="font-label-md text-label-md text-on-surface-variant ml-1">Email Address</label>
+<input class="w-full h-14 px-4 rounded-lg bg-[#EDF2F7] border-none focus:ring-2 focus:ring-primary focus:bg-white transition-all font-body-md text-body-md" placeholder="alex@example.com" type="email"/>
+</div>
+<!-- Phone -->
+<div class="space-y-1">
+<label class="font-label-md text-label-md text-on-surface-variant ml-1">Phone Number</label>
+<input class="w-full h-14 px-4 rounded-lg bg-[#EDF2F7] border-none focus:ring-2 focus:ring-primary focus:bg-white transition-all font-body-md text-body-md" placeholder="+1 (555) 000-0000" type="tel"/>
+</div>
+<!-- Password -->
+<div class="space-y-1">
+<label class="font-label-md text-label-md text-on-surface-variant ml-1">Password</label>
+<input class="w-full h-14 px-4 rounded-lg bg-[#EDF2F7] border-none focus:ring-2 focus:ring-primary focus:bg-white transition-all font-body-md text-body-md" placeholder="••••••••" type="password"/>
+</div>
+<!-- Contextual Message Area -->
+<div class="p-4 rounded-lg bg-primary-fixed/30 border border-primary-fixed-dim/20 flex gap-3 animate-in fade-in duration-500" id="context-info">
+<span class="material-symbols-outlined text-primary shrink-0">info</span>
+<p class="font-label-sm text-label-sm text-on-primary-fixed-variant leading-relaxed">
+<span id="role-text">As a Device User, your next step after registration will be to pair your Sentinel Mesh wearable for active monitoring.</span>
+</p>
+</div>
+<!-- Primary Action -->
+<button class="w-full h-14 bg-primary text-on-primary rounded-lg font-headline-md text-headline-md hover:opacity-90 active:scale-[0.98] transition-all ambient-shadow mt-4">
+                        Create Account
+                    </button>
+<p class="text-center font-label-md text-label-md text-on-surface-variant mt-stack-md">
+                        Already have an account? <a class="text-primary font-bold hover:underline" href="#">Log in</a>
+</p>
+</form>
+</section>
+</div>
+</main>
+<!-- Visual Polish: Decorative elements -->
+<div class="fixed bottom-0 right-0 p-stack-lg hidden xl:block">
+<div class="w-64 h-64 bg-surface-container rounded-full blur-3xl opacity-40 -mb-20 -mr-20"></div>
+</div>
+<script>
+        function switchRole(role) {
+            const deviceBtn = document.getElementById('toggle-device');
+            const communityBtn = document.getElementById('toggle-community');
+            const contextInfo = document.getElementById('context-info');
+            const roleText = document.getElementById('role-text');
+
+            if (role === 'device') {
+                // Style Active
+                deviceBtn.classList.add('bg-surface-container-lowest', 'text-on-primary-container', 'toggle-active');
+                deviceBtn.classList.remove('text-on-surface-variant');
+                // Style Inactive
+                communityBtn.classList.remove('bg-surface-container-lowest', 'text-on-primary-container', 'toggle-active');
+                communityBtn.classList.add('text-on-surface-variant');
+                
+                // Update Context
+                contextInfo.classList.remove('hidden');
+                roleText.innerText = "As a Device User, your next step after registration will be to pair your Sentinel Mesh wearable for active monitoring.";
+            } else {
+                // Style Active
+                communityBtn.classList.add('bg-surface-container-lowest', 'text-on-primary-container', 'toggle-active');
+                communityBtn.classList.remove('text-on-surface-variant');
+                // Style Inactive
+                deviceBtn.classList.remove('bg-surface-container-lowest', 'text-on-primary-container', 'toggle-active');
+                deviceBtn.classList.add('text-on-surface-variant');
+                
+                // Update Context
+                contextInfo.classList.remove('hidden');
+                roleText.innerText = "As a Community Responder, you will be notified of emergencies nearby to provide immediate peer-to-peer assistance.";
+            }
+
+            // Simple micro-interaction animation
+            contextInfo.style.transform = 'translateY(5px)';
+            setTimeout(() => contextInfo.style.transform = 'translateY(0)', 100);
+        }
+    </script>
+</body></html>

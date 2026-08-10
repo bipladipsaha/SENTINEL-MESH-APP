@@ -1,0 +1,12 @@
+{
+  "name": "sentinel-mesh-vercel",
+  "version": "1.0.0",
+  "description": "Vercel Backend for Sentinel Mesh",
+  "scripts": {
+    "start": "node api/sos.js"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.0.0",
+    "geolib": "^3.3.3"
+  }
+}

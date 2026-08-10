@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Nearby Hospitals | Sentinel Mesh</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#d9e3f9",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-container": "#89f2dd",
+                    "surface-container": "#e7eeff",
+                    "on-tertiary-fixed-variant": "#8b1820",
+                    "on-error": "#ffffff",
+                    "secondary-fixed": "#8cf5e0",
+                    "on-surface-variant": "#434655",
+                    "on-secondary-container": "#006f61",
+                    "on-primary-fixed-variant": "#003cac",
+                    "primary-fixed": "#dbe1ff",
+                    "on-primary-fixed": "#00174d",
+                    "error-container": "#ffdad6",
+                    "on-background": "#121c2c",
+                    "on-primary-container": "#000318",
+                    "outline-variant": "#c3c5d8",
+                    "primary-fixed-dim": "#b5c4ff",
+                    "on-secondary-fixed-variant": "#005046",
+                    "background": "#f9f9ff",
+                    "secondary": "#006b5d",
+                    "on-error-container": "#93000a",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed": "#ffdad8",
+                    "primary": "#0051df",
+                    "primary-container": "#2f6bff",
+                    "surface-container-low": "#f0f3ff",
+                    "secondary-fixed-dim": "#6fd8c4",
+                    "surface-container-highest": "#d9e3f9",
+                    "on-secondary": "#ffffff",
+                    "on-surface": "#121c2c",
+                    "on-secondary-fixed": "#00201b",
+                    "surface-dim": "#d0daf0",
+                    "surface-bright": "#f9f9ff",
+                    "surface": "#f9f9ff",
+                    "on-tertiary-fixed": "#410006",
+                    "outline": "#737687",
+                    "inverse-surface": "#273141",
+                    "tertiary": "#ab3135",
+                    "on-tertiary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "tertiary-container": "#cd494b",
+                    "inverse-on-surface": "#ebf1ff",
+                    "surface-container-high": "#dee8ff",
+                    "tertiary-fixed-dim": "#ffb3b0",
+                    "surface-tint": "#0051e0",
+                    "on-tertiary-container": "#ffffff",
+                    "inverse-primary": "#b5c4ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-sm": "8px",
+                    "stack-md": "16px",
+                    "container-margin-desktop": "40px",
+                    "gutter": "16px",
+                    "container-margin-mobile": "20px",
+                    "unit": "8px",
+                    "stack-lg": "32px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Manrope"],
+                    "label-md": ["Manrope"],
+                    "headline-md": ["Manrope"],
+                    "label-sm": ["Manrope"],
+                    "body-lg": ["Manrope"],
+                    "display-lg": ["Manrope"],
+                    "headline-lg-mobile": ["Manrope"],
+                    "body-md": ["Manrope"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #f9f9ff;
+            color: #121c2c;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .hospital-card-shadow {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .scroll-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scroll-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md antialiased">
+<!-- Top Navigation Shell -->
+<header class="fixed top-0 left-0 w-full z-50 bg-surface dark:bg-surface-dim flex items-center justify-between px-gutter py-stack-md">
+<div class="flex items-center gap-3 active:scale-95 transition-transform cursor-pointer">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="A professional, warm studio portrait of a healthcare user, soft high-key lighting, clean minimalist medical tech aesthetic, soft blue and white background palette, focusing on trust and approachability." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3L_bZW3XCLw7mO6-2ViFD1S1wupTNOVGL70IZNWlfAMDCrSGzdRF5TwKM4Tvw_FQtGLJIZ3kaV1jClBY9CFJcopaYqpnaMVSzNc_Yj7ju2F0Pz1LreBo2tz4PBF8LtCzqQxvg9P8EpWTNe7jtyfEgIA0qs5_8yDFNQYGOUpm7yYOdMyIeV7C7N8G7dqigwrhOeS2SYN0YdkBfXwjlWoTJYg5Jbmm0jXsvDRbkEw0wd-rxgBavtx8"/>
+</div>
+<span class="font-headline-md text-headline-md text-primary dark:text-primary-fixed-dim font-bold">Sentinel Mesh</span>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:opacity-80 transition-opacity active:scale-95 text-primary dark:text-primary-fixed-dim">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</header>
+<main class="pt-20 pb-32">
+<!-- Interactive Map Section -->
+<section class="px-4 mb-stack-lg">
+<div class="relative h-64 md:h-96 w-full rounded-[24px] overflow-hidden hospital-card-shadow border-4 border-surface-container-lowest">
+<img class="w-full h-full object-cover grayscale-[20%] opacity-90" data-location="San Francisco" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaP6_zn9ijaFNyCYNKVe7heyinDVZJ9UV9gN-3I4Hv3nYqCJscBfrDcY1Fhn6z-S9SOD2rP27X8q2YJ2nJjwGuaSBPAyjhQ1hy3gpYUCDfDf51jDpTxhuiU3IOGu10JdGDJ6I60UHOUWUyR868khZ6tVuypo0I6LV9BYcgBqs3Cecqwg6xLppHgii-7TtP4gfc_T-tsm6JiQMXXMfEieAEKuWRTOaUmjkQxAzQ3ljGb3g3jK6spG4"/>
+<div class="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/20 to-transparent"></div>
+<!-- Map UI Overlays -->
+<div class="absolute top-4 left-4 right-4 flex justify-between items-start pointer-events-none">
+<div class="bg-surface-container-lowest/90 backdrop-blur-md px-4 py-2 rounded-full flex items-center gap-2 shadow-sm pointer-events-auto">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="my_location">my_location</span>
+<span class="text-label-sm font-label-sm text-on-surface">Your Location: Market St.</span>
+</div>
+</div>
+<!-- Custom Map Markers (Simulated) -->
+<div class="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 pointer-events-auto cursor-pointer group">
+<div class="bg-primary text-white p-2 rounded-full shadow-lg group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[20px]" data-icon="medical_services" style="font-variation-settings: 'FILL' 1;">medical_services</span>
+</div>
+<div class="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-surface-container-lowest px-2 py-1 rounded shadow-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+<span class="text-[10px] font-bold">St. Francis</span>
+</div>
+</div>
+<div class="absolute bottom-4 right-4 flex flex-col gap-2 pointer-events-auto">
+<button class="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-md active:scale-90 transition-all">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="add">add</span>
+</button>
+<button class="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-md active:scale-90 transition-all">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="remove">remove</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Search & Filter Area -->
+<section class="px-4 mb-stack-md flex items-center gap-3 overflow-x-auto scroll-hide">
+<div class="flex-1 min-w-[200px] relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline" data-icon="search">search</span>
+<input class="w-full pl-11 pr-4 py-3 bg-surface-container-low border-none rounded-2xl focus:ring-2 focus:ring-primary text-body-md" placeholder="Search hospitals..." type="text"/>
+</div>
+<button class="h-12 w-12 flex items-center justify-center bg-surface-container-high rounded-2xl text-on-surface-variant active:scale-95 transition-all">
+<span class="material-symbols-outlined" data-icon="filter_list">filter_list</span>
+</button>
+</section>
+<!-- Hospital List -->
+<section class="px-4 space-y-4">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-md text-headline-md text-on-surface">Nearby Facilities</h2>
+<span class="text-label-sm font-label-sm text-primary">3 Found</span>
+</div>
+<!-- Hospital Card 1 -->
+<div class="bg-surface-container-lowest rounded-[24px] p-5 hospital-card-shadow border border-surface-container animate-in fade-in slide-in-from-bottom-4 duration-500">
+<div class="flex justify-between items-start mb-4">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<h3 class="font-headline-md text-headline-md text-on-surface">St. Francis Memorial</h3>
+<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">Open 24/7</span>
+</div>
+<p class="text-on-surface-variant text-label-md flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="location_on">location_on</span>
+                            900 Hyde St, San Francisco, CA 94109
+                        </p>
+</div>
+<div class="text-right">
+<span class="text-primary font-bold text-headline-md">0.8</span>
+<span class="text-on-surface-variant text-label-sm block">miles away</span>
+</div>
+</div>
+<div class="flex items-center gap-3 mb-6 p-3 bg-error-container/30 rounded-xl">
+<span class="material-symbols-outlined text-error" data-icon="emergency" style="font-variation-settings: 'FILL' 1;">emergency</span>
+<div class="flex flex-col">
+<span class="text-[10px] font-bold text-error uppercase">Emergency Direct</span>
+<span class="text-on-error-container font-headline-md text-headline-md">(415) 353-6000</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<button class="h-14 bg-surface-container-high text-on-surface font-bold rounded-2xl flex items-center justify-center gap-2 active:scale-95 transition-all hover:bg-surface-variant">
+<span class="material-symbols-outlined" data-icon="directions">directions</span>
+                        Navigate
+                    </button>
+<button class="h-14 bg-primary text-on-primary font-bold rounded-2xl flex items-center justify-center gap-2 active:scale-95 transition-all shadow-md hover:opacity-90">
+<span class="material-symbols-outlined" data-icon="call">call</span>
+                        Call Now
+                    </button>
+</div>
+</div>
+<!-- Hospital Card 2 -->
+<div class="bg-surface-container-lowest rounded-[24px] p-5 hospital-card-shadow border border-surface-container opacity-90">
+<div class="flex justify-between items-start mb-4">
+<div class="space-y-1">
+<h3 class="font-headline-md text-headline-md text-on-surface">UCSF Medical Center</h3>
+<p class="text-on-surface-variant text-label-md flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="location_on">location_on</span>
+                            505 Parnassus Ave, San Francisco, CA 94143
+                        </p>
+</div>
+<div class="text-right">
+<span class="text-primary font-bold text-headline-md">2.4</span>
+<span class="text-on-surface-variant text-label-sm block">miles away</span>
+</div>
+</div>
+<div class="flex items-center gap-3 mb-6 p-3 bg-surface-container rounded-xl">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="phone_enabled">phone_enabled</span>
+<div class="flex flex-col">
+<span class="text-[10px] font-bold text-on-surface-variant uppercase">Emergency Line</span>
+<span class="text-on-surface font-headline-md text-headline-md">(415) 476-1000</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<button class="h-14 bg-surface-container-high text-on-surface font-bold rounded-2xl flex items-center justify-center gap-2 active:scale-95 transition-all">
+<span class="material-symbols-outlined" data-icon="directions">directions</span>
+                        Navigate
+                    </button>
+<button class="h-14 bg-primary text-on-primary font-bold rounded-2xl flex items-center justify-center gap-2 active:scale-95 transition-all shadow-md">
+<span class="material-symbols-outlined" data-icon="call">call</span>
+                        Call Now
+                    </button>
+</div>
+</div>
+<!-- Hospital Card 3 -->
+<div class="bg-surface-container-lowest rounded-[24px] p-5 hospital-card-shadow border border-surface-container opacity-80">
+<div class="flex justify-between items-start mb-4">
+<div class="space-y-1">
+<h3 class="font-headline-md text-headline-md text-on-surface">Zuckerberg General</h3>
+<p class="text-on-surface-variant text-label-md flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="location_on">location_on</span>
+                            1001 Potrero Ave, San Francisco, CA 94110
+                        </p>
+</div>
+<div class="text-right">
+<span class="text-primary font-bold text-headline-md">3.1</span>
+<span class="text-on-surface-variant text-label-sm block">miles away</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<button class="h-14 bg-surface-container-high text-on-surface font-bold rounded-2xl flex items-center justify-center gap-2 active:scale-95 transition-all">
+<span class="material-symbols-outlined" data-icon="directions">directions</span>
+                        Navigate
+                    </button>
+<button class="h-14 bg-primary text-on-primary font-bold rounded-2xl flex items-center justify-center gap-2 active:scale-95 transition-all shadow-md">
+<span class="material-symbols-outlined" data-icon="call">call</span>
+                        Call Now
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Shell -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe bg-surface-container-lowest dark:bg-inverse-surface shadow-[0_-10px_30px_rgba(0,0,0,0.04)]">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-2 hover:bg-surface-variant dark:hover:bg-surface-container-high rounded-xl active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary rounded-xl px-4 py-2 active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="emergency" style="font-variation-settings: 'FILL' 1;">emergency</span>
+<span class="font-label-sm text-label-sm">Emergencies</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-2 hover:bg-surface-variant dark:hover:bg-surface-container-high rounded-xl active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="phone_iphone">phone_iphone</span>
+<span class="font-label-sm text-label-sm">Device</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-2 hover:bg-surface-variant dark:hover:bg-surface-container-high rounded-xl active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</a>
+</nav>
+<!-- Micro-interaction script -->
+<script>
+        document.querySelectorAll('button, a').forEach(el => {
+            el.addEventListener('click', () => {
+                if ('vibrate' in navigator) {
+                    navigator.vibrate(10);
+                }
+            });
+        });
+
+        // Simple scroll appearance for map
+        window.addEventListener('scroll', () => {
+            const map = document.querySelector('section:first-of-type');
+            const scrollVal = window.scrollY;
+            if (scrollVal > 50) {
+                map.style.opacity = Math.max(0.7, 1 - (scrollVal - 50) / 400);
+            } else {
+                map.style.opacity = 1;
+            }
+        });
+    </script>
+</body></html>

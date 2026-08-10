@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login | Sentinel Mesh</title>
+<!-- Google Fonts: Manrope -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#d9e3f9",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-container": "#89f2dd",
+                    "surface-container": "#e7eeff",
+                    "on-tertiary-fixed-variant": "#8b1820",
+                    "on-error": "#ffffff",
+                    "secondary-fixed": "#8cf5e0",
+                    "on-surface-variant": "#434655",
+                    "on-secondary-container": "#006f61",
+                    "on-primary-fixed-variant": "#003cac",
+                    "primary-fixed": "#dbe1ff",
+                    "on-primary-fixed": "#00174d",
+                    "error-container": "#ffdad6",
+                    "on-background": "#121c2c",
+                    "on-primary-container": "#000318",
+                    "outline-variant": "#c3c5d8",
+                    "primary-fixed-dim": "#b5c4ff",
+                    "on-secondary-fixed-variant": "#005046",
+                    "background": "#f9f9ff",
+                    "secondary": "#006b5d",
+                    "on-error-container": "#93000a",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed": "#ffdad8",
+                    "primary": "#0051df",
+                    "primary-container": "#2f6bff",
+                    "surface-container-low": "#f0f3ff",
+                    "secondary-fixed-dim": "#6fd8c4",
+                    "surface-container-highest": "#d9e3f9",
+                    "on-secondary": "#ffffff",
+                    "on-surface": "#121c2c",
+                    "on-secondary-fixed": "#00201b",
+                    "surface-dim": "#d0daf0",
+                    "surface-bright": "#f9f9ff",
+                    "surface": "#f9f9ff",
+                    "on-tertiary-fixed": "#410006",
+                    "outline": "#737687",
+                    "inverse-surface": "#273141",
+                    "tertiary": "#ab3135",
+                    "on-tertiary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "tertiary-container": "#cd494b",
+                    "inverse-on-surface": "#ebf1ff",
+                    "surface-container-high": "#dee8ff",
+                    "tertiary-fixed-dim": "#ffb3b0",
+                    "surface-tint": "#0051e0",
+                    "on-tertiary-container": "#ffffff",
+                    "inverse-primary": "#b5c4ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "16px",
+                    "xl": "24px",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-sm": "8px",
+                    "stack-md": "16px",
+                    "container-margin-desktop": "40px",
+                    "gutter": "16px",
+                    "container-margin-mobile": "20px",
+                    "unit": "8px",
+                    "stack-lg": "32px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Manrope"],
+                    "label-md": ["Manrope"],
+                    "headline-md": ["Manrope"],
+                    "label-sm": ["Manrope"],
+                    "body-lg": ["Manrope"],
+                    "display-lg": ["Manrope"],
+                    "headline-lg-mobile": ["Manrope"],
+                    "body-md": ["Manrope"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+      body {
+        background-color: #F7F8FA;
+        font-family: 'Manrope', sans-serif;
+        color: #121c2c;
+      }
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .card-shadow {
+        box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
+      }
+      .btn-hover:active {
+        transform: scale(0.98);
+      }
+      .input-focus:focus-within {
+        border-color: #2f6bff;
+        background-color: #ffffff;
+      }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-gutter">
+<!-- Login Container -->
+<div class="w-full max-w-[480px] flex flex-col gap-stack-lg">
+<!-- Brand Header (Suppressed Nav Shell as per Transactional Rule) -->
+<div class="flex flex-col items-center text-center gap-stack-sm">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">shield_with_heart</span>
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tight">Sentinel Mesh</h1>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-[320px]">
+                Securing your world with human-centric protection and radical clarity.
+            </p>
+</div>
+<!-- Illustration Card -->
+<div class="w-full bg-white rounded-xl card-shadow overflow-hidden p-6 flex flex-col items-center gap-stack-md border border-surface-container">
+<div class="w-full aspect-[16/9] rounded-lg overflow-hidden bg-surface-container-low relative">
+<img class="w-full h-full object-cover opacity-90" data-alt="A high-quality 3D minimalist illustration of a soft, glowing blue protective mesh gently cradling a family home. The scene is set in a calm, ethereal environment with soft, diffused morning light. The color palette consists of soft off-whites, Primary Blue gradients, and subtle mint green accents. The style is clean, modern, and corporate, evoking a sense of psychological safety and medical-grade reliability." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKLPLDIL9HOOL1rqXyKvoyvZzdqgxNf-lmOtN7Cs4tp3wyWaMZW7kRiq9GFru2Yqf43rXus77Z2i37U99EHFIptmtEfo3cb8NICKGkcOiyNZ9b8v6sd3OWjT3C5vZnmTgMuHprjn628OVliU67K8htKDnOV9XVLHF6k1Q-Lnist-ym6nNCayIH1pbMt_rxKT4orODl8o-U7xC5PXwhhPrLTAhMqIm_-BtkvPPuiL0r8dpwDty0VQY"/>
+<!-- Atmospheric Overlay -->
+<div class="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent"></div>
+</div>
+<div class="text-center">
+<h2 class="font-headline-md text-headline-md text-on-surface">Welcome Back</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Please enter your details to continue.</p>
+</div>
+</div>
+<!-- Form Section -->
+<form class="flex flex-col gap-stack-md" onsubmit="return false;">
+<!-- Email Field -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface-variant px-1" for="email">Email Address</label>
+<div class="relative group">
+<div class="absolute inset-y-0 left-4 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-[20px]">mail</span>
+</div>
+<input class="w-full h-[56px] pl-12 pr-4 bg-[#EDF2F7] border-2 border-transparent rounded-lg font-body-md text-body-md outline-none transition-all input-focus" id="email" placeholder="name@company.com" type="email"/>
+</div>
+</div>
+<!-- Password Field -->
+<div class="flex flex-col gap-1.5">
+<div class="flex justify-between items-center px-1">
+<label class="font-label-md text-label-md text-on-surface-variant" for="password">Password</label>
+<a class="font-label-sm text-label-sm text-primary hover:underline transition-all" href="#">Forgot Password?</a>
+</div>
+<div class="relative group">
+<div class="absolute inset-y-0 left-4 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-[20px]">lock</span>
+</div>
+<input class="w-full h-[56px] pl-12 pr-12 bg-[#EDF2F7] border-2 border-transparent rounded-lg font-body-md text-body-md outline-none transition-all input-focus" id="password" placeholder="••••••••" type="password"/>
+<button class="absolute inset-y-0 right-4 flex items-center text-outline hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</div>
+</div>
+<!-- Primary Action -->
+<button class="w-full h-[56px] bg-primary hover:bg-primary-container text-white font-label-md text-label-md rounded-lg shadow-md transition-all btn-hover mt-stack-sm flex items-center justify-center gap-2 group">
+<span>Login</span>
+<span class="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</form>
+<!-- Footer / Secondary Action -->
+<div class="text-center pt-2">
+<p class="font-body-md text-body-md text-on-surface-variant">
+                New to Sentinel Mesh? 
+                <a class="text-primary font-label-md text-label-md ml-1 hover:underline" href="#">Create an account</a>
+</p>
+</div>
+</div>
+<!-- Micro-interaction Script -->
+<script>
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                if(this.innerText.includes('Login')) {
+                    const originalContent = this.innerHTML;
+                    this.innerHTML = `<span class="inline-block animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-2"></span> Logging in...`;
+                    this.disabled = true;
+                    
+                    setTimeout(() => {
+                        this.innerHTML = originalContent;
+                        this.disabled = false;
+                    }, 1500);
+                }
+            });
+        });
+
+        // Toggle Password Visibility
+        const passInput = document.getElementById('password');
+        const toggleBtn = passInput.nextElementSibling;
+        toggleBtn.addEventListener('click', () => {
+            const isPass = passInput.type === 'password';
+            passInput.type = isPass ? 'text' : 'password';
+            toggleBtn.querySelector('span').innerText = isPass ? 'visibility_off' : 'visibility';
+        });
+    </script>
+</body></html>

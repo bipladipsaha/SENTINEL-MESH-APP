@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Respond Mode | Sentinel Mesh</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .emergency-pulse {
+            animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 0.4; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+        .map-gradient {
+            background: linear-gradient(to top, rgba(249, 249, 255, 1) 0%, rgba(249, 249, 255, 0) 20%);
+        }
+    </style>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "surface-variant": "#d9e3f9",
+                "surface-container-lowest": "#ffffff",
+                "secondary-container": "#89f2dd",
+                "surface-container": "#e7eeff",
+                "on-tertiary-fixed-variant": "#8b1820",
+                "on-error": "#ffffff",
+                "secondary-fixed": "#8cf5e0",
+                "on-surface-variant": "#434655",
+                "on-secondary-container": "#006f61",
+                "on-primary-fixed-variant": "#003cac",
+                "primary-fixed": "#dbe1ff",
+                "on-primary-fixed": "#00174d",
+                "error-container": "#ffdad6",
+                "on-background": "#121c2c",
+                "on-primary-container": "#000318",
+                "outline-variant": "#c3c5d8",
+                "primary-fixed-dim": "#b5c4ff",
+                "on-secondary-fixed-variant": "#005046",
+                "background": "#f9f9ff",
+                "secondary": "#006b5d",
+                "on-error-container": "#93000a",
+                "error": "#ba1a1a",
+                "tertiary-fixed": "#ffdad8",
+                "primary": "#0051df",
+                "primary-container": "#2f6bff",
+                "surface-container-low": "#f0f3ff",
+                "secondary-fixed-dim": "#6fd8c4",
+                "surface-container-highest": "#d9e3f9",
+                "on-secondary": "#ffffff",
+                "on-surface": "#121c2c",
+                "on-secondary-fixed": "#00201b",
+                "surface-dim": "#d0daf0",
+                "surface-bright": "#f9f9ff",
+                "surface": "#f9f9ff",
+                "on-tertiary-fixed": "#410006",
+                "outline": "#737687",
+                "inverse-surface": "#273141",
+                "tertiary": "#ab3135",
+                "on-tertiary": "#ffffff",
+                "on-primary": "#ffffff",
+                "tertiary-container": "#cd494b",
+                "inverse-on-surface": "#ebf1ff",
+                "surface-container-high": "#dee8ff",
+                "tertiary-fixed-dim": "#ffb3b0",
+                "surface-tint": "#0051e0",
+                "on-tertiary-container": "#ffffff",
+                "inverse-primary": "#b5c4ff"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "stack-sm": "8px",
+                "stack-md": "16px",
+                "container-margin-desktop": "40px",
+                "gutter": "16px",
+                "container-margin-mobile": "20px",
+                "unit": "8px",
+                "stack-lg": "32px"
+            },
+            "fontFamily": {
+                "headline-lg": ["Manrope"],
+                "label-md": ["Manrope"],
+                "headline-md": ["Manrope"],
+                "label-sm": ["Manrope"],
+                "body-lg": ["Manrope"],
+                "display-lg": ["Manrope"],
+                "headline-lg-mobile": ["Manrope"],
+                "body-md": ["Manrope"]
+            },
+            "fontSize": {
+                "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col overflow-x-hidden">
+<!-- Top App Bar -->
+<header class="bg-surface sticky top-0 z-50 flex items-center justify-between px-gutter py-stack-md w-full">
+<div class="flex items-center gap-3">
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-high active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-on-surface">close</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-primary font-bold">Sentinel Mesh</h1>
+</div>
+<div class="flex items-center gap-2">
+<div class="px-3 py-1 bg-tertiary-container text-on-tertiary-container rounded-full flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-white emergency-pulse"></span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">Active Response</span>
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col px-gutter pb-32 gap-6 mt-4">
+<!-- Victim Context Card -->
+<section class="bg-surface-container-lowest rounded-3xl p-6 shadow-md border border-outline-variant/20">
+<div class="flex items-start justify-between mb-4">
+<div class="flex items-center gap-4">
+<div class="w-14 h-14 rounded-full overflow-hidden bg-surface-container border-2 border-primary">
+<img class="w-full h-full object-cover" data-alt="A professional, warm portrait of a young woman in her 20s with a calm expression, softly lit with high-key studio lighting against a clean, minimal background. The style is modern health-tech, emphasizing safety and human connection with a subtle blue color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvf8GgilY8PjGdJiKSoSgT4--A4s33nd6RkoxCQ1MEsIxOaChWpULyj-WBMKsH7LfJSWvz6UPiP_Ai5SToxxAUtO20r8Si_8haPuuhDx8ZYRJygxKgoS43fcrRk3illOcvrfZNVv9OPMHM46QAxSsEDSbPxDviFV5fhNU2aPmvrDItY2HgIdvuzr0OKVXfdZfcPJVN7zIvb_OWQJE4y_4NyNDHKSqlKOzvhY2UIoziK2iLaXmUot0"/>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Responding to</p>
+<h2 class="font-headline-md text-headline-md text-on-surface">Elena Rodriguez</h2>
+</div>
+</div>
+<button class="w-12 h-12 flex items-center justify-center rounded-full bg-primary-container text-on-primary-container active:scale-90 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">call</span>
+</button>
+</div>
+<!-- Quick Stats Bento -->
+<div class="grid grid-cols-2 gap-3">
+<div class="bg-surface-container-low p-4 rounded-2xl flex flex-col items-center justify-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant mb-1">Victim Distance</span>
+<div class="flex items-baseline gap-1">
+<span class="font-display-lg text-headline-lg text-primary font-extrabold">850</span>
+<span class="font-label-md text-label-md text-primary">m</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-4 rounded-2xl flex flex-col items-center justify-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant mb-1">ETA</span>
+<div class="flex items-baseline gap-1">
+<span class="font-display-lg text-headline-lg text-tertiary font-extrabold">4</span>
+<span class="font-label-md text-label-md text-tertiary">min</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Map Viewport -->
+<section class="relative flex-1 min-h-[300px] rounded-3xl overflow-hidden shadow-md border border-outline-variant/10">
+<div class="absolute inset-0 bg-surface-container-highest">
+<div class="w-full h-full" data-location="San Francisco downtown" style="">
+<img class="w-full h-full object-cover" data-alt="A clean, minimalist vector-style map of a city intersection with a clear blue path highlighted. One pulsing red marker represents the victim, and one blue marker with an arrow represents the responder. The aesthetic is high-contrast, professional, and easy to read, avoiding clutter with soft pastel tones for buildings and bold colors for navigation elements." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDY86PFqyKCOncjUq0q28ViH3WYC1CKSE8_0lcrTDGOl7V5pQe86DVbkRdfd3z25xnkJx2bNy_YyDDjqy0cfZicGh0dGd-QoCmiW3tpyLa9XN7EdhYFrXOE6DkLHOBOeEgUdCoyeSgAwXhJWXi4gSffaRpLR_9W95TaLDpodcDgVlko-hP8PClnuL5wUnAKbt3gjXBmakJb6mw3hTiLV458QzSXo7OdR-1fwuoSbS8CDz9QIusC34M"/>
+</div>
+</div>
+<!-- Map Overlays -->
+<div class="absolute top-4 right-4 flex flex-col gap-2">
+<button class="w-12 h-12 bg-white/90 backdrop-blur-md rounded-xl shadow-md flex items-center justify-center text-on-surface active:scale-95">
+<span class="material-symbols-outlined">my_location</span>
+</button>
+<button class="w-12 h-12 bg-white/90 backdrop-blur-md rounded-xl shadow-md flex items-center justify-center text-on-surface active:scale-95">
+<span class="material-symbols-outlined">layers</span>
+</button>
+</div>
+<div class="absolute bottom-0 left-0 w-full p-4 map-gradient">
+<div class="bg-white/90 backdrop-blur-md p-3 rounded-2xl shadow-lg border border-white flex items-center gap-3">
+<div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">near_me</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Next Turn</p>
+<p class="font-label-md text-label-md text-on-surface">Turn left on Harrison St</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Navigation Action -->
+<section class="fixed bottom-0 left-0 w-full p-gutter bg-surface/80 backdrop-blur-xl flex flex-col gap-3">
+<button class="w-full h-[72px] bg-primary text-on-primary rounded-2xl flex items-center justify-center gap-3 shadow-lg active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-[32px]">navigation</span>
+<span class="font-headline-md text-headline-md">Navigate</span>
+</button>
+<div class="flex gap-3">
+<button class="flex-1 h-14 bg-surface-container-high text-on-surface rounded-xl font-label-md text-label-md flex items-center justify-center gap-2 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-error">emergency_home</span>
+                    Services
+                </button>
+<button class="flex-1 h-14 bg-surface-container-high text-on-surface rounded-xl font-label-md text-label-md flex items-center justify-center gap-2 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-primary">group</span>
+                    Team
+                </button>
+</div>
+</section>
+</main>
+<!-- Visual Atmosphere: Subtle Noise or Glow -->
+<div class="fixed inset-0 pointer-events-none z-[-1] opacity-20">
+
+</div>
+<script>
+        // Micro-interaction for the Navigate button
+        const navBtn = document.querySelector('button.bg-primary');
+        navBtn.addEventListener('click', () => {
+            // Haptic feedback simulation
+            if (window.navigator.vibrate) {
+                window.navigator.vibrate(20);
+            }
+            // Visual feedback
+            navBtn.classList.add('bg-on-primary-fixed-variant');
+            setTimeout(() => {
+                navBtn.classList.remove('bg-on-primary-fixed-variant');
+            }, 150);
+        });
+
+        // Dynamic ETA updater (mock)
+        let eta = 4;
+        const etaElement = document.querySelector('.text-tertiary.font-extrabold');
+        setInterval(() => {
+            if (Math.random() > 0.8 && eta > 1) {
+                eta -= 1;
+                etaElement.innerText = eta;
+                etaElement.parentElement.classList.add('scale-110');
+                setTimeout(() => etaElement.parentElement.classList.remove('scale-110'), 300);
+            }
+        }, 15000);
+    </script>
+</body></html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sentinel Mesh | Emergency Contacts</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Manrope -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#d9e3f9",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-container": "#89f2dd",
+                        "surface-container": "#e7eeff",
+                        "on-tertiary-fixed-variant": "#8b1820",
+                        "on-error": "#ffffff",
+                        "secondary-fixed": "#8cf5e0",
+                        "on-surface-variant": "#434655",
+                        "on-secondary-container": "#006f61",
+                        "on-primary-fixed-variant": "#003cac",
+                        "primary-fixed": "#dbe1ff",
+                        "on-primary-fixed": "#00174d",
+                        "error-container": "#ffdad6",
+                        "on-background": "#121c2c",
+                        "on-primary-container": "#000318",
+                        "outline-variant": "#c3c5d8",
+                        "primary-fixed-dim": "#b5c4ff",
+                        "on-secondary-fixed-variant": "#005046",
+                        "background": "#f9f9ff",
+                        "secondary": "#006b5d",
+                        "on-error-container": "#93000a",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed": "#ffdad8",
+                        "primary": "#0051df",
+                        "primary-container": "#2f6bff",
+                        "surface-container-low": "#f0f3ff",
+                        "secondary-fixed-dim": "#6fd8c4",
+                        "surface-container-highest": "#d9e3f9",
+                        "on-secondary": "#ffffff",
+                        "on-surface": "#121c2c",
+                        "on-secondary-fixed": "#00201b",
+                        "surface-dim": "#d0daf0",
+                        "surface-bright": "#f9f9ff",
+                        "surface": "#f9f9ff",
+                        "on-tertiary-fixed": "#410006",
+                        "outline": "#737687",
+                        "inverse-surface": "#273141",
+                        "tertiary": "#ab3135",
+                        "on-tertiary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#cd494b",
+                        "inverse-on-surface": "#ebf1ff",
+                        "surface-container-high": "#dee8ff",
+                        "tertiary-fixed-dim": "#ffb3b0",
+                        "surface-tint": "#0051e0",
+                        "on-tertiary-container": "#ffffff",
+                        "inverse-primary": "#b5c4ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "container-margin-desktop": "40px",
+                        "gutter": "16px",
+                        "container-margin-mobile": "20px",
+                        "unit": "8px",
+                        "stack-lg": "32px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Manrope"],
+                        "label-md": ["Manrope"],
+                        "headline-md": ["Manrope"],
+                        "label-sm": ["Manrope"],
+                        "body-lg": ["Manrope"],
+                        "display-lg": ["Manrope"],
+                        "headline-lg-mobile": ["Manrope"],
+                        "body-md": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #f9f9ff;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+        }
+        .soft-card-shadow {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+        }
+        .fab-shadow {
+            box-shadow: 0 8px 24px rgba(0, 81, 223, 0.2);
+        }
+        .pulse-secondary {
+            animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); opacity: 0.5; }
+            50% { transform: scale(1.05); opacity: 0.3; }
+            100% { transform: scale(0.95); opacity: 0.5; }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="bg-surface sticky top-0 z-50 w-full flex items-center justify-between px-gutter py-stack-md">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden border-2 border-primary/10">
+<img class="w-full h-full object-cover" data-alt="A clean, professional headshot of a friendly young woman with a warm expression, photographed against a soft, neutral studio background. The lighting is diffused and professional, matching a high-end medical or technology platform aesthetic. The image uses a soft focus and natural skin tones, contributing to a sense of human-centric safety and reliability." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC58NGFmZ6X8sbaRAQrtqYwzzGRn4kDa2sdisUBBAIpYjagq3BGthzVVqah9EfSF6OD81KA_Bh_bl3eocaefAsopmseLcKQFIuaEu8sgD-yt9_G4JTcUts29_40KaB7Wti0fLBevtbWOmbugr3u5KE8bd_Jwu6bc5YIeGp64krDEMyV_o-kzilhlWjssTbEZKN6UnKGYrR2V3itToCJGPGEjgXFkW4chKU0J4h3K34Cy-x4KGBYSbE"/>
+</div>
+<h1 class="font-headline-md text-headline-md text-primary font-bold">Sentinel Mesh</h1>
+</div>
+<button class="w-12 h-12 flex items-center justify-center text-on-surface-variant hover:opacity-80 transition-opacity active:scale-95 transition-transform">
+<span class="material-symbols-outlined" style="font-size: 28px;">notifications</span>
+</button>
+</header>
+<main class="max-w-xl mx-auto px-gutter mt-stack-lg">
+<!-- Page Title & Description -->
+<section class="mb-stack-lg">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface md:font-headline-lg md:text-headline-lg">Emergencies</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Manage the people who will be notified in case of an incident.</p>
+</section>
+<!-- Bento-style Feature Card -->
+<div class="bg-primary-container text-on-primary-container p-stack-md rounded-2xl mb-stack-lg flex items-center gap-4 soft-card-shadow overflow-hidden relative">
+<div class="flex-1 z-10">
+<span class="font-label-sm text-label-sm bg-white/20 px-2 py-1 rounded-full inline-block mb-2">Smart Safety</span>
+<h3 class="font-headline-md text-headline-md leading-tight">Instant Alert Protocol</h3>
+<p class="font-body-md text-body-md mt-1 opacity-90">Contacts are reached via SMS, Call, and App notification simultaneously.</p>
+</div>
+<div class="z-10 bg-white/20 p-3 rounded-xl backdrop-blur-md">
+<span class="material-symbols-outlined text-[40px]">shield_with_heart</span>
+</div>
+<!-- Decorative element -->
+<div class="absolute -right-8 -bottom-8 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+</div>
+<!-- Contacts List Container -->
+<div class="space-y-stack-md">
+<!-- Contact Card 1 -->
+<div class="bg-surface-container-lowest p-stack-md rounded-2xl flex items-center gap-4 soft-card-shadow border border-surface-variant/30 hover:border-primary/20 transition-all">
+<div class="relative">
+<div class="w-14 h-14 rounded-2xl overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A portrait of an older, distinguished man with grey hair and a kind, reassuring smile, representing a trusted family member. He is wearing a simple linen shirt in a soft blue tone. The background is a gently blurred home environment with warm, natural sunlight filtering through, creating an atmosphere of safety, stability, and family care." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbSAaH_vrUBVvtCaRsvM1IUvJjv1t6NcnGdz_5EUxdCVbTlRYdutldAW9rLkwkjiiT8f7qNtXJaiYiuxr7xuYJp69tVTfJuEoy8_jSfwACALojVse_gM8E1dLdihEZEQkgvO1VpkbSY-7yAYSMdL7En02paVAPdJgkIyBl1btWi-rU8aRdnHuTxW4WUh5xpaUwkwk4MEwc0GkN-vwc8or2OBBkMwr-ml8uh6B81TLDH_63orljwZY"/>
+</div>
+<div class="absolute -bottom-1 -right-1 w-5 h-5 bg-secondary rounded-full border-2 border-white flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[10px]" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center gap-2">
+<h4 class="font-label-md text-label-md text-on-surface truncate">Robert Henderson</h4>
+<span class="font-label-sm text-label-sm text-secondary bg-secondary-container/30 px-2 py-0.5 rounded-full">Father</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">+1 (555) 012-3456</p>
+</div>
+<button class="w-10 h-10 flex items-center justify-center text-outline hover:text-primary transition-colors active:scale-90">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</div>
+<!-- Contact Card 2 -->
+<div class="bg-surface-container-lowest p-stack-md rounded-2xl flex items-center gap-4 soft-card-shadow border border-surface-variant/30 hover:border-primary/20 transition-all">
+<div class="relative">
+<div class="w-14 h-14 rounded-2xl overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A candid, warm portrait of a professional woman in her mid-thirties with dark curly hair and glasses, conveying intelligence and reliability. She is dressed in a smart-casual olive green blazer. The lighting is soft and directional, evoking a sense of calm competence and professional medical or legal expertise. High-tactile corporate style with clean focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsJkj6FCMmvE65xlUfZGi0fDfq4ZqBo4RgDxHogmr3yH7Bp0sCQqnqa0PE5Gj9GqUHnJWIgKAGH4mo1tcY-eI__NyaYAFRPoirpaW719lpzwOsz1u4p3cUmu4awG-qkVMjH_fo7u2PFe8-G35WImw401xj-oFjdFvLQ8xM0T5vyxpkvCARNDeZbd0rM9wP1_HTNvf7N_bOZFTca7Kii-QvzkhL1EQgicR7MLnWHbwo9cSsDVka4d8"/>
+</div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center gap-2">
+<h4 class="font-label-md text-label-md text-on-surface truncate">Sarah Miller</h4>
+<span class="font-label-sm text-label-sm text-primary bg-primary-fixed/30 px-2 py-0.5 rounded-full">Spouse</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">+1 (555) 890-1234</p>
+</div>
+<button class="w-10 h-10 flex items-center justify-center text-outline hover:text-primary transition-colors active:scale-90">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</div>
+<!-- Contact Card 3 (Status variation) -->
+<div class="bg-surface-container-lowest p-stack-md rounded-2xl flex items-center gap-4 soft-card-shadow border border-surface-variant/30 hover:border-primary/20 transition-all">
+<div class="relative">
+<div class="w-14 h-14 rounded-2xl overflow-hidden bg-surface-container grayscale opacity-60">
+<img class="w-full h-full object-cover" data-alt="A profile photograph of a friendly young man with short blond hair and a warm, approachable look. He is wearing a dark grey hoodie, suggesting a close friend or peer relationship. The setting is an outdoor park with soft, natural morning light and lush green bokeh background. The aesthetic is clean, modern, and human-centric, focusing on emotional security." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0qAt0mlK21nv1YVUNinDsZNbVc58t1Q5c3ePURblYVbi0pIbQ8YVLmGipZ0kB9d0dL3Er6Rj3QYk14KkvePSpiYIyTl3ShxK8nrTuRTmmyGPtWsbDcTkWXqZ3pw5V7sTFAD-1bVS5Eke292Ki6DPFLfDlboLmfN7alVl7xBG6utZtlDpGV6QrhXkxyq4ugWnwnM9d23QdJGph_b-txbHaG_cf-Gtkayirb4N37ztmPiOoOA0cU3k"/>
+</div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center gap-2">
+<h4 class="font-label-md text-label-md text-on-surface truncate">David Chen</h4>
+<span class="font-label-sm text-label-sm text-outline bg-surface-variant px-2 py-0.5 rounded-full">Friend</span>
+</div>
+<p class="font-body-md text-body-md text-outline">Pending Verification...</p>
+</div>
+<button class="w-10 h-10 flex items-center justify-center text-outline hover:text-primary transition-colors active:scale-90">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</div>
+</div>
+<!-- Secondary Info Card -->
+<div class="mt-stack-lg bg-surface-container-low p-stack-md rounded-2xl border border-dashed border-outline-variant flex gap-4 items-start">
+<span class="material-symbols-outlined text-outline mt-1">info</span>
+<div>
+<h5 class="font-label-md text-label-md text-on-surface">Emergency Priority</h5>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Contacts will be notified in the order they appear. Drag to reorder.</p>
+</div>
+</div>
+</main>
+<!-- FAB: Add Contact -->
+<button class="fixed bottom-24 right-6 w-16 h-16 bg-primary text-on-primary rounded-2xl fab-shadow flex items-center justify-center active:scale-90 transition-all duration-200 z-50">
+<span class="material-symbols-outlined text-[32px]">person_add</span>
+</button>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe bg-surface-container-lowest shadow-[0_-10px_30px_rgba(0,0,0,0.04)] rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 hover:bg-surface-variant rounded-xl transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-2 active:scale-90 transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">emergency</span>
+<span class="font-label-sm text-label-sm">Emergencies</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 hover:bg-surface-variant rounded-xl transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined">phone_iphone</span>
+<span class="font-label-sm text-label-sm">Device</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 hover:bg-surface-variant rounded-xl transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</a>
+</nav>
+<script>
+        // Micro-interactions for contact cards
+        document.querySelectorAll('.bg-surface-container-lowest').forEach(card => {
+            card.addEventListener('touchstart', () => {
+                card.style.transform = 'scale(0.98)';
+                card.style.transition = 'transform 0.1s ease';
+            });
+            card.addEventListener('touchend', () => {
+                card.style.transform = 'scale(1)';
+            });
+        });
+
+        // Simple feedback for the FAB
+        const fab = document.querySelector('.fixed.bottom-24');
+        fab.addEventListener('click', () => {
+            const ripple = document.createElement('div');
+            ripple.className = 'absolute inset-0 bg-white/20 rounded-2xl animate-ping';
+            fab.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 500);
+        });
+    </script>
+</body></html>

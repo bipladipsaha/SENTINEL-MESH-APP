@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Emergency History - Sentinel Mesh</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .timeline-line {
+            background: linear-gradient(to bottom, transparent, #c3c5d8 15%, #c3c5d8 85%, transparent);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-variant": "#d9e3f9",
+                      "surface-container-lowest": "#ffffff",
+                      "secondary-container": "#89f2dd",
+                      "surface-container": "#e7eeff",
+                      "on-tertiary-fixed-variant": "#8b1820",
+                      "on-error": "#ffffff",
+                      "secondary-fixed": "#8cf5e0",
+                      "on-surface-variant": "#434655",
+                      "on-secondary-container": "#006f61",
+                      "on-primary-fixed-variant": "#003cac",
+                      "primary-fixed": "#dbe1ff",
+                      "on-primary-fixed": "#00174d",
+                      "error-container": "#ffdad6",
+                      "on-background": "#121c2c",
+                      "on-primary-container": "#000318",
+                      "outline-variant": "#c3c5d8",
+                      "primary-fixed-dim": "#b5c4ff",
+                      "on-secondary-fixed-variant": "#005046",
+                      "background": "#f9f9ff",
+                      "secondary": "#006b5d",
+                      "on-error-container": "#93000a",
+                      "error": "#ba1a1a",
+                      "tertiary-fixed": "#ffdad8",
+                      "primary": "#0051df",
+                      "primary-container": "#2f6bff",
+                      "surface-container-low": "#f0f3ff",
+                      "secondary-fixed-dim": "#6fd8c4",
+                      "surface-container-highest": "#d9e3f9",
+                      "on-secondary": "#ffffff",
+                      "on-surface": "#121c2c",
+                      "on-secondary-fixed": "#00201b",
+                      "surface-dim": "#d0daf0",
+                      "surface-bright": "#f9f9ff",
+                      "surface": "#f9f9ff",
+                      "on-tertiary-fixed": "#410006",
+                      "outline": "#737687",
+                      "inverse-surface": "#273141",
+                      "tertiary": "#ab3135",
+                      "on-tertiary": "#ffffff",
+                      "on-primary": "#ffffff",
+                      "tertiary-container": "#cd494b",
+                      "inverse-on-surface": "#ebf1ff",
+                      "surface-container-high": "#dee8ff",
+                      "tertiary-fixed-dim": "#ffb3b0",
+                      "surface-tint": "#0051e0",
+                      "on-tertiary-container": "#ffffff",
+                      "inverse-primary": "#b5c4ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "12px",
+                      "2xl": "24px",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack-sm": "8px",
+                      "stack-md": "16px",
+                      "container-margin-desktop": "40px",
+                      "gutter": "16px",
+                      "container-margin-mobile": "20px",
+                      "unit": "8px",
+                      "stack-lg": "32px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Manrope"],
+                      "label-md": ["Manrope"],
+                      "headline-md": ["Manrope"],
+                      "label-sm": ["Manrope"],
+                      "body-lg": ["Manrope"],
+                      "display-lg": ["Manrope"],
+                      "headline-lg-mobile": ["Manrope"],
+                      "body-md": ["Manrope"]
+              },
+              "fontSize": {
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-32">
+<!-- Top App Bar -->
+<header class="bg-surface sticky top-0 z-40 w-full flex items-center justify-between px-gutter py-stack-md">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container">
+<img class="w-full h-full object-cover" data-alt="A professional studio headshot of a calm, middle-aged individual looking directly at the camera with a gentle smile. The background is a soft, out-of-focus medical environment with clean whites and blues. The lighting is bright and warm, emphasizing safety and trust in a modern health-tech aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIGI9txRvvcgJOu8Ppe-pkrQLKTShUqmyWD74UIhUcWCVxkja8jFBmkSQ77fHVdHx3x_HPXk18yqmUYxyalK_y9lVpgNLV_wqkJ72C69r1I9J3kywrR11xfhHkH3p58rhd_P8OLQNbbcCKxv6rX9P2SOOIUuNB2LUlwCYlFqqG4tA907rEo1xxDjS6ezWgnWNbvDXo_qMG4V6V6N0_rX7I0CudkK4u10MmzPQzefOLcXA28mlb_B8"/>
+</div>
+<h1 class="font-headline-md text-headline-md text-primary font-bold">Sentinel Mesh</h1>
+</div>
+<button class="w-12 h-12 flex items-center justify-center text-primary hover:opacity-80 transition-opacity active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-3xl">notifications</span>
+</button>
+</header>
+<main class="max-w-xl mx-auto px-container-margin-mobile pt-stack-lg">
+<!-- Header Section -->
+<section class="mb-stack-lg">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-2">Emergency History</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Review past incidents and response summaries.</p>
+</section>
+<!-- Timeline Container -->
+<div class="relative pl-8">
+<!-- Central Line -->
+<div class="absolute left-[11px] top-4 bottom-4 w-1 timeline-line rounded-full opacity-40"></div>
+<!-- Timeline Item 1 -->
+<article class="relative mb-stack-lg group">
+<!-- Node -->
+<div class="absolute -left-[27px] top-2 w-4 h-4 rounded-full bg-primary border-4 border-surface shadow-sm z-10"></div>
+<div class="bg-surface-container-lowest rounded-2xl p-stack-md shadow-[0_10px_30px_rgba(0,0,0,0.04)] hover:shadow-lg transition-all duration-300">
+<div class="flex justify-between items-start mb-3">
+<div>
+<span class="font-label-sm text-label-sm text-outline block mb-1">Oct 24, 2023 • 14:22</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Fall Detected</h3>
+</div>
+<span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-label-md">Resolved</span>
+</div>
+<div class="grid grid-cols-1 gap-4">
+<div class="flex items-center gap-3 text-on-surface-variant">
+<span class="material-symbols-outlined text-primary">location_on</span>
+<span class="font-body-md text-body-md">Central Park, North Entrance</span>
+</div>
+<!-- Map Preview -->
+<div class="relative w-full h-40 rounded-xl overflow-hidden shadow-inner border border-outline-variant">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="A stylized, minimalist digital map showing a specific location pin in a green park area. The map uses a clean medical color palette with soft greys and blues. A subtle pulse animation effect is centered around the location marker. The overall aesthetic is calm, clear, and focused on providing accurate geographic data without visual clutter." data-location="New York Central Park" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAGWwM5mqOxv2_ENRpID6mEXRlzv_YKdQYe4cK_0Qct5NrS9cyU367mWK4OQ1PPr84tpCF7mQCb3cQaN53lMIEuz76zw_ufQ1Bj3pXM8x2w02uccON8PKpWfothftYsCBVQPRgMscwDBwVDLBahim9EKQMkz9QnxCnRnq61baSYtauRv5HZfY8l9ipN5DFqmQdqPuI7oRLPON712utcQ2NT-T_V-NZ-WCwrpQbdMjv_KJbJM5ejEB0')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+</div>
+<div class="flex justify-end pt-2">
+<button class="flex items-center gap-2 text-primary font-label-md text-label-md active:scale-95 transition-all">
+                                View Full Report
+                                <span class="material-symbols-outlined text-sm">arrow_forward_ios</span>
+</button>
+</div>
+</div>
+</div>
+</article>
+<!-- Timeline Item 2 -->
+<article class="relative mb-stack-lg group">
+<!-- Node -->
+<div class="absolute -left-[27px] top-2 w-4 h-4 rounded-full bg-outline-variant border-4 border-surface shadow-sm z-10"></div>
+<div class="bg-surface-container-lowest rounded-2xl p-stack-md shadow-[0_10px_30px_rgba(0,0,0,0.04)] opacity-90">
+<div class="flex justify-between items-start mb-3">
+<div>
+<span class="font-label-sm text-label-sm text-outline block mb-1">Oct 12, 2023 • 09:15</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">SOS Alert</h3>
+</div>
+<span class="px-3 py-1 rounded-full bg-surface-variant text-on-surface-variant font-label-md text-label-md">Cancelled</span>
+</div>
+<div class="grid grid-cols-1 gap-4">
+<div class="flex items-center gap-3 text-on-surface-variant">
+<span class="material-symbols-outlined">location_on</span>
+<span class="font-body-md text-body-md">Home - Living Room</span>
+</div>
+<!-- Map Preview -->
+<div class="relative w-full h-40 rounded-xl overflow-hidden shadow-inner border border-outline-variant grayscale">
+<div class="absolute inset-0 bg-cover bg-center opacity-60" data-alt="A clean, top-down architectural floor plan view of a modern apartment, rendered in a soft schematic style. The map uses light grey and blue tones to denote different rooms. A subtle marker indicates the living room area. The design is systematic and clinical, emphasizing clear spatial awareness in an emergency context." data-location="San Francisco Residential" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDCz-ppRC_dEyMFsrHrZWxfT3S6Imx2zgOESGXJFdvdb_3iA7lcqQORP63vz4_qbw7YxQze3maNUnUqvqmtf9UClWCrQ2ME2Fz6oG6UZZ8HznwMcmWNN4Hmrc7ZNMGunOq6NqvD-bVfsLOl5O6EaLwH3LiUMtxFatDSn1-2KegtdKe3Mja9SpBtMnnXi7RPZCkWMLbq0UxD2mXIkoEGW1_D_bWLK4xNLSCOtZW6UG7qh_mmOv0OTxM')"></div>
+</div>
+<p class="font-body-md text-body-md italic text-outline">User cancelled within the 10-second safety window. No emergency services were dispatched.</p>
+</div>
+</div>
+</article>
+<!-- Timeline Item 3 -->
+<article class="relative mb-stack-lg group">
+<!-- Node -->
+<div class="absolute -left-[27px] top-2 w-4 h-4 rounded-full bg-primary border-4 border-surface shadow-sm z-10"></div>
+<div class="bg-surface-container-lowest rounded-2xl p-stack-md shadow-[0_10px_30px_rgba(0,0,0,0.04)] hover:shadow-lg transition-all duration-300">
+<div class="flex justify-between items-start mb-3">
+<div>
+<span class="font-label-sm text-label-sm text-outline block mb-1">Sep 28, 2023 • 23:45</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Panic Button Pressed</h3>
+</div>
+<span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-label-md">Resolved</span>
+</div>
+<div class="grid grid-cols-1 gap-4">
+<div class="flex items-center gap-3 text-on-surface-variant">
+<span class="material-symbols-outlined text-primary">location_on</span>
+<span class="font-body-md text-body-md">Market Street Metro Station</span>
+</div>
+<!-- Map Preview -->
+<div class="relative w-full h-40 rounded-xl overflow-hidden shadow-inner border border-outline-variant">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="A high-contrast digital street map showing an urban transit station. The map is presented in a modern night-mode aesthetic with dark blues and bright cyan accents for street lines. A glowing primary blue beacon marks the user location. The mood is secure and highly tech-forward, showcasing precise location tracking in a complex urban environment." data-location="London Metro" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA00rMNau51o3ksPO-xdug-3OC3v4dHwe536vq0CmrBScvTfi6VF3K9hB17t-y2FZW4PmICPyBA5ZyEgy-VwhT0bGj14PcPL8XXPsD8lshrsOloJSNMEJsIqfxPp4lYnX98UzLyvKbZg7qh3csgmrIBfFZnyYsfoqvj5YmYDNADKV39TVg-HjuV_-1RlB_9cxsQRza9cx5NhJN6KD44PwVyo_3EwrukKt1u81uAsLuwfJ-oNRNpjmE')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+</div>
+<div class="flex justify-end pt-2">
+<button class="flex items-center gap-2 text-primary font-label-md text-label-md active:scale-95 transition-all">
+                                View Full Report
+                                <span class="material-symbols-outlined text-sm">arrow_forward_ios</span>
+</button>
+</div>
+</div>
+</div>
+</article>
+</div>
+<!-- Empty State Footer -->
+<div class="mt-stack-lg text-center pb-stack-lg">
+<p class="font-label-sm text-label-sm text-outline">Showing records from the last 90 days</p>
+<button class="mt-4 px-6 py-3 rounded-xl border border-primary text-primary font-label-md text-label-md hover:bg-primary-container/10 transition-colors">
+                Download All Records (PDF)
+            </button>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe bg-surface-container-lowest shadow-[0_-10px_30px_rgba(0,0,0,0.04)] rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 hover:bg-surface-variant rounded-xl active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-2 active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">emergency</span>
+<span class="font-label-sm text-label-sm">Emergencies</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 hover:bg-surface-variant rounded-xl active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">phone_iphone</span>
+<span class="font-label-sm text-label-sm">Device</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 hover:bg-surface-variant rounded-xl active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</a>
+</nav>
+<script>
+        // Micro-interaction for report buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('touchstart', function() {
+                this.classList.add('opacity-70');
+            });
+            button.addEventListener('touchend', function() {
+                this.classList.remove('opacity-70');
+            });
+        });
+
+        // Simple visibility observer for timeline nodes
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('translate-y-0', 'opacity-100');
+                    entry.target.classList.remove('translate-y-4', 'opacity-0');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('article').forEach(article => {
+            article.classList.add('transform', 'transition-all', 'duration-700', 'translate-y-4', 'opacity-0');
+            observer.observe(article);
+        });
+    </script>
+</body></html>
