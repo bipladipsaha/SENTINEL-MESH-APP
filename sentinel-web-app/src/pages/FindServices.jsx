@@ -46,15 +46,25 @@ export default function FindServices({ type }) {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [locError, setLocError] = useState(false);
 
-  // Get user location
+  // Get user location with high accuracy
   useEffect(() => {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(
-        (pos) => setUserLoc({ lat: pos.coords.latitude, lon: pos.coords.longitude }),
-        () => setUserLoc({ lat: 22.5726, lon: 88.3639 }),
-        { enableHighAccuracy: true }
+        (pos) => {
+          setUserLoc({ lat: pos.coords.latitude, lon: pos.coords.longitude });
+          setLocError(false);
+        },
+        () => {
+          setLocError(true);
+          setUserLoc({ lat: 22.5726, lon: 88.3639 });
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       );
+    } else {
+      setLocError(true);
+      setUserLoc({ lat: 22.5726, lon: 88.3639 });
     }
   }, []);
 
@@ -64,7 +74,7 @@ export default function FindServices({ type }) {
     setLoading(true);
 
     const amenity = isHospital ? 'hospital' : 'police';
-    const radius = 5000; // 5km
+    const radius = 10000; // 10km
     const query = `[out:json][timeout:25];(node["amenity"="${amenity}"](around:${radius},${userLoc.lat},${userLoc.lon});way["amenity"="${amenity}"](around:${radius},${userLoc.lat},${userLoc.lon}););out center;`;
 
     // Try multiple Overpass API mirrors in order
@@ -159,6 +169,15 @@ export default function FindServices({ type }) {
       </header>
 
       <main className="max-w-xl mx-auto px-5 pb-32 animate-fade-in">
+        {/* Location Warning */}
+        {locError && (
+          <div className="bg-error-container/40 rounded-2xl p-3 flex items-center gap-3 mb-4">
+            <span className="material-symbols-outlined text-error">location_off</span>
+            <p className="text-sm text-error font-medium">
+              Could not detect your location. Please allow location access in your browser and refresh.
+            </p>
+          </div>
+        )}
         {/* Map */}
         <div className="w-full h-52 rounded-3xl overflow-hidden card-shadow mb-4 border border-surface-container">
           {userLoc && (
