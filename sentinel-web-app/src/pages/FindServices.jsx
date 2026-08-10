@@ -65,7 +65,7 @@ export default function FindServices({ type }) {
 
     const amenity = isHospital ? 'hospital' : 'police';
     const radius = 5000; // 5km
-    const query = `[out:json];node[amenity=${amenity}](around:${radius},${userLoc.lat},${userLoc.lon});out body;`;
+    const query = `[out:json];nwr[amenity=${amenity}](around:${radius},${userLoc.lat},${userLoc.lon});out center;`;
 
     fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`)
       .then((res) => res.json())
@@ -74,8 +74,8 @@ export default function FindServices({ type }) {
           .map((el) => ({
             id: el.id,
             name: el.tags?.name || `${isHospital ? 'Hospital' : 'Police Station'}`,
-            lat: el.lat,
-            lon: el.lon,
+            lat: el.lat || el.center?.lat,
+            lon: el.lon || el.center?.lon,
             phone: el.tags?.phone || el.tags?.['contact:phone'] || null,
             address: el.tags?.['addr:full'] || el.tags?.['addr:street'] || '',
             emergency: el.tags?.emergency || null,
