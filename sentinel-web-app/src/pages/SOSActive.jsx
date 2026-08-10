@@ -104,8 +104,16 @@ export default function SOSActive() {
     }
   }
 
-  function cancelSOS() {
+  async function cancelSOS() {
     clearInterval(intervalRef.current);
+    
+    const deviceId = userProfile?.deviceId || `web-${currentUser.uid.slice(0, 8)}`;
+    try {
+      await set(ref(db, `sos_alerts/${deviceId}/active`), false);
+    } catch (err) {
+      console.error('Cancel error:', err);
+    }
+    
     navigate('/');
   }
 
