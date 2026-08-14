@@ -58,13 +58,13 @@ export default function FindServices({ type }) {
         },
         () => {
           setLocError(true);
-          setUserLoc({ lat: 22.5726, lon: 88.3639 });
+          setLoading(false);
         },
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       );
     } else {
       setLocError(true);
-      setUserLoc({ lat: 22.5726, lon: 88.3639 });
+      setLoading(false);
     }
   }, []);
 
@@ -179,8 +179,8 @@ export default function FindServices({ type }) {
           </div>
         )}
         {/* Map */}
-        <div className="w-full h-52 rounded-3xl overflow-hidden card-shadow mb-4 border border-surface-container">
-          {userLoc && (
+        <div className="w-full h-52 rounded-3xl overflow-hidden card-shadow mb-4 border border-surface-container bg-surface-container-low flex items-center justify-center">
+          {userLoc ? (
             <MapContainer center={center} zoom={13} style={{ height: '100%', width: '100%' }} zoomControl={true}>
               <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; OpenStreetMap' />
               <RecenterMap center={center} />
@@ -199,6 +199,11 @@ export default function FindServices({ type }) {
                 </Marker>
               ))}
             </MapContainer>
+          ) : (
+            <div className="text-center p-4">
+              <span className="material-symbols-outlined text-outline text-4xl mb-2">map</span>
+              <p className="text-on-surface-variant text-sm">Location required for map</p>
+            </div>
           )}
         </div>
 
