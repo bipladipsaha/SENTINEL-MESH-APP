@@ -131,7 +131,7 @@ export default function Dashboard() {
         </section>
 
         {/* Protection Status Card */}
-        <div className="bg-white rounded-3xl p-6 card-shadow mb-6 border border-surface-container">
+        <div className="glass-card rounded-3xl p-6 mb-6">
           <div className="flex justify-between items-start mb-6">
             <div>
               <div className="flex items-center gap-2 mb-1">
@@ -149,7 +149,7 @@ export default function Dashboard() {
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-surface-container-low p-4 rounded-2xl flex items-center gap-4">
+            <div className="bg-surface/50 border border-white/5 p-4 rounded-2xl flex items-center gap-4">
               <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
                 <span className="material-symbols-outlined">phone_iphone</span>
               </div>
@@ -160,7 +160,7 @@ export default function Dashboard() {
                 </span>
               </div>
             </div>
-            <div className="bg-surface-container-low p-4 rounded-2xl flex items-center gap-4">
+            <div className="bg-surface/50 border border-white/5 p-4 rounded-2xl flex items-center gap-4">
               <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
                 <span className="material-symbols-outlined">battery_horiz_075</span>
               </div>
@@ -182,7 +182,7 @@ export default function Dashboard() {
             <div className="absolute inset-[-48px] rounded-full border border-primary/5" />
             <button
               id="sos-trigger"
-              className={`relative w-56 h-56 rounded-full bg-gradient-to-br from-primary to-[#4a90e2] shadow-[0_20px_50px_rgba(0,81,223,0.3)] flex flex-col items-center justify-center text-white transition-all duration-300 group overflow-hidden touch-manipulation ${
+              className={`relative w-56 h-56 rounded-full bg-gradient-to-br from-[#ff0033] to-[#990033] shadow-[0_20px_50px_rgba(255,0,51,0.4)] flex flex-col items-center justify-center text-white transition-all duration-300 group overflow-hidden touch-manipulation ${
                 pressing ? 'scale-95' : ''
               }`}
               onMouseDown={startPress}
@@ -233,7 +233,7 @@ export default function Dashboard() {
               <button
                 key={i}
                 onClick={() => navigate(action.path)}
-                className="bg-surface-container rounded-3xl p-5 flex flex-col items-start gap-4 hover:bg-surface-container-high transition-colors active:scale-95 text-left border border-white/50"
+                className="glass-card rounded-3xl p-5 flex flex-col items-start gap-4 hover:bg-surface-container transition-colors active:scale-95 text-left"
               >
                 <div className={`w-12 h-12 rounded-2xl ${action.color} ${action.textColor || 'text-white'} flex items-center justify-center shadow-md`}>
                   <span className="material-symbols-outlined">{action.icon}</span>
