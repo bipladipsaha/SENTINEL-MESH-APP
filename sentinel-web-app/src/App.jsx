@@ -246,21 +246,51 @@ function GlobalNotificationListener() {
         // Only show toast if the alert was created AFTER the page loaded
         if (alert.timestamp && alert.timestamp > mountTime.current - 5000) {
           
-          // 1. In-App Toast Notification
-          toast.error(
+          // 1. In-App Toast Notification (Premium UI)
+          toast.custom(
             (t) => (
-              <div className="flex flex-col gap-2">
-                <span className="font-bold">🚨 NEARBY EMERGENCY</span>
-                <span className="text-sm">SOS triggered by device {alert.deviceId}</span>
-                <button 
-                  onClick={() => {
-                    toast.dismiss(t.id);
-                    navigate('/alerts');
-                  }}
-                  className="mt-2 bg-error text-white px-3 py-1 rounded text-xs font-bold"
-                >
-                  View Map
-                </button>
+              <div
+                className={`${
+                  t.visible ? 'animate-enter' : 'animate-leave'
+                } max-w-md w-full bg-white shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-2xl pointer-events-auto flex ring-1 ring-black ring-opacity-5 overflow-hidden border-l-4 border-l-[#ff0033]`}
+              >
+                <div className="flex-1 w-0 p-4">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0 pt-0.5">
+                      <div className="h-10 w-10 rounded-full bg-[#ff0033]/10 flex items-center justify-center">
+                        <span className="material-symbols-outlined text-[#ff0033] animate-pulse">
+                          emergency
+                        </span>
+                      </div>
+                    </div>
+                    <div className="ml-3 flex-1">
+                      <p className="text-sm font-extrabold text-gray-900 uppercase tracking-wide">
+                        Nearby Emergency
+                      </p>
+                      <p className="mt-1 text-sm text-gray-500 font-medium">
+                        SOS triggered by device <span className="text-gray-900 font-bold">{alert.deviceId}</span>
+                      </p>
+                      <button
+                        onClick={() => {
+                          toast.dismiss(t.id);
+                          navigate('/alerts');
+                        }}
+                        className="mt-3 w-full bg-gradient-to-r from-[#ff0033] to-[#cc0000] text-white py-2 rounded-xl text-xs font-bold shadow-md hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2"
+                      >
+                        <span className="material-symbols-outlined text-[16px]">map</span>
+                        View Live Map
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex border-l border-gray-100">
+                  <button
+                    onClick={() => toast.dismiss(t.id)}
+                    className="w-full border border-transparent rounded-none rounded-r-2xl p-4 flex items-center justify-center text-sm font-medium text-gray-400 hover:text-gray-600 hover:bg-gray-50 focus:outline-none transition-colors"
+                  >
+                    <span className="material-symbols-outlined">close</span>
+                  </button>
+                </div>
               </div>
             ),
             { duration: 10000, position: 'top-center' }
