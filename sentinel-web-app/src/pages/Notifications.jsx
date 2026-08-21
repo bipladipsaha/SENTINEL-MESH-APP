@@ -135,10 +135,10 @@ export default function Notifications() {
                     {notif.type === 'SOS_ALERT' && notif.lat && (
                       <div className="flex gap-2 mt-3">
                         <button
-                          onClick={() => navigate('/alerts')}
+                          onClick={() => navigate('/admin')}
                           className="px-4 py-2 bg-primary text-white text-sm font-semibold rounded-lg btn-press transition-all"
                         >
-                          View Map
+                          View Admin Center
                         </button>
                         <button className="px-4 py-2 bg-surface-container text-on-surface text-sm font-semibold rounded-lg btn-press transition-all">
                           Dismiss
