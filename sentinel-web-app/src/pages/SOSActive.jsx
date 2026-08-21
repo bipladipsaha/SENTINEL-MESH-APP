@@ -22,6 +22,21 @@ export default function SOSActive() {
 
   // Get current location
   useEffect(() => {
+    const savedLoc = localStorage.getItem('manual_user_loc');
+    if (savedLoc) {
+      try {
+        const parsed = JSON.parse(savedLoc);
+        setLocation({
+          lat: parsed.lat,
+          lon: parsed.lon,
+          accuracy: 10,
+        });
+        return;
+      } catch (e) {
+        console.error("Failed to parse saved location");
+      }
+    }
+
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
@@ -32,7 +47,7 @@ export default function SOSActive() {
           });
         },
         () => {},
-        { enableHighAccuracy: true }
+        { enableHighAccuracy: true, timeout: 5000 }
       );
     }
   }, []);
