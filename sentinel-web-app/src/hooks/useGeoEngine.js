@@ -221,14 +221,14 @@ export function useGeoEngine(userLocation, options = {}) {
       const data = snap.val();
       if (data) {
         const activeSos = Object.entries(data)
-          .filter(([_, v]) => v.active === true && v.lat && v.lon)
+          .filter(([_, v]) => (v.active === true || v.active === 'true') && v.lat !== undefined && v.lon !== undefined)
           .map(([id, v]) => ({
             id: `virtual-sos-${id}`,
             name: `Emergency: ${v.userName || 'User'}`,
             type: 'critical',
-            coordinates: [[v.lat, v.lon]],
+            coordinates: [[Number(v.lat), Number(v.lon)]],
             status: 'active',
-            timestamp: v.timestamp
+            timestamp: v.timestamp || Date.now()
           }));
         setSosZones(activeSos);
       } else {
