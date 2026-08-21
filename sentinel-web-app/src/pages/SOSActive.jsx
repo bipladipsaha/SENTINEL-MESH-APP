@@ -137,10 +137,7 @@ export default function SOSActive() {
     try {
       await set(ref(db, `sos_alerts/${deviceId}`), sosData);
       
-      // LOG TO BLOCKCHAIN — backend fetches Firebase data and hashes server-side
-      logIncidentToBlockchain(deviceId).then(res => {
-        if(res && res.txHash) console.log("Blockchain TX:", res.txHash);
-      });
+      // Blockchain logging is now handled automatically by the backend listener!
 
       if (finalLat && finalLon) {
         // Create a temporary critical geo-fence for this emergency

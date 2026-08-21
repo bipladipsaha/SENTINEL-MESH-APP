@@ -267,6 +267,77 @@ app.get('/api/audit-count', checkContract, async (_req, res) => {
 });
 
 // ──────────────────────────────────────────────────────────────
+//  FIREBASE LISTENER (Automatic Blockchain Logging)
+// ──────────────────────────────────────────────────────────────
+
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, onChildAdded, onChildChanged, get } from "firebase/database";
+
+// Use the credentials the user provided
+const firebaseConfig = {
+  apiKey: "AIzaSyDpABsIXpyiE3kc8lcF4URQtZvad5qcuXE",
+  authDomain: "myproject7698.firebaseapp.com",
+  databaseURL: "https://myproject7698-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "myproject7698",
+  storageBucket: "myproject7698.firebasestorage.app",
+  messagingSenderId: "275944212344",
+  appId: "1:275944212344:web:3fee073a9b050e03aaea8d"
+};
+
+const firebaseApp = initializeApp(firebaseConfig);
+const db = getDatabase(firebaseApp);
+
+// We keep track of processed incidents in memory to avoid duplicate blockchain writes on reboot
+const processedIncidents = new Set();
+
+const sosRef = ref(db, 'sos_alerts');
+
+console.log("Starting Firebase listener on /sos_alerts...");
+
+// This fires for every existing child on startup, AND for every new child added
+onChildAdded(sosRef, async (snapshot) => {
+  const incident = snapshot.val();
+  const incidentId = snapshot.key;
+
+  if (processedIncidents.has(incidentId)) return;
+
+  // Make sure it's actually an emergency and has required data
+  if (incident && incident.lat && incident.lon && incident.timestamp) {
+    try {
+      // Check if it's already logged on the blockchain to avoid duplicates
+      if (contract) {
+        const existingHash = await contract.getIncidentHash(incidentId).catch(() => null);
+        if (existingHash) {
+          processedIncidents.add(incidentId);
+          return; // Already processed
+        }
+      }
+
+      console.log(`\n🚨 New Firebase SOS detected: ${incidentId}`);
+      console.log(`Hashing and committing to blockchain...`);
+
+      const formattedIncident = {
+        id: incidentId,
+        deviceId: incident.deviceId || incidentId,
+        lat: incident.lat,
+        lon: incident.lon,
+        timestamp: incident.timestamp,
+        type: incident.type || 'SOS'
+      };
+
+      const hash = deterministicIncidentHash(formattedIncident);
+      const tx = await contract.logIncidentHash(incidentId, hash);
+      await tx.wait();
+
+      console.log(`✅ Automatically committed to blockchain! TX: ${tx.hash}`);
+      processedIncidents.add(incidentId);
+    } catch (error) {
+      console.error(`Failed to auto-log incident ${incidentId}:`, error.message);
+    }
+  }
+});
+
+// ──────────────────────────────────────────────────────────────
 //  START
 // ──────────────────────────────────────────────────────────────
 

@@ -224,13 +224,65 @@ function AppRoutes() {
   );
 }
 
+import { useNavigate } from 'react-router-dom';
+import { Toaster, toast } from 'react-hot-toast';
+import { useEffect, useRef } from 'react';
+import { db } from './firebase';
+import { ref, onChildAdded } from 'firebase/database';
+
+function GlobalNotificationListener() {
+  const navigate = useNavigate();
+  const mountTime = useRef(Date.now());
+  
+  useEffect(() => {
+    const sosRef = ref(db, 'sos_alerts');
+    
+    // Listen for new alerts
+    const unsubAdded = onChildAdded(sosRef, (snapshot) => {
+      const alert = snapshot.val();
+      
+      if (alert && alert.active) {
+        // Only show toast if the alert was created AFTER the page loaded
+        // (to prevent a flood of toasts for old emergencies when you refresh)
+        if (alert.timestamp && alert.timestamp > mountTime.current - 5000) {
+          toast.error(
+            (t) => (
+              <div className="flex flex-col gap-2">
+                <span className="font-bold">🚨 NEARBY EMERGENCY</span>
+                <span className="text-sm">SOS triggered by device {alert.deviceId}</span>
+                <button 
+                  onClick={() => {
+                    toast.dismiss(t.id);
+                    navigate('/alerts');
+                  }}
+                  className="mt-2 bg-error text-white px-3 py-1 rounded text-xs font-bold"
+                >
+                  View Map
+                </button>
+              </div>
+            ),
+            { duration: 10000, position: 'top-center' }
+          );
+        }
+      }
+    });
+
+    return () => {
+      unsubAdded();
+    };
+  }, [navigate]);
+  
+  return null;
+}
+
 export default function App() {
   return (
     <AuthProvider>
       <DeviceProvider>
+        <Toaster />
+        <GlobalNotificationListener />
         <AppRoutes />
       </DeviceProvider>
     </AuthProvider>
   );
 }
-
