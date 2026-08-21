@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { db } from '../firebase';
 import { ref, set, onValue } from 'firebase/database';
+import { logIncidentToBlockchain } from '../services/blockchain';
 
 export default function SOSActive() {
   const { currentUser, userProfile } = useAuth();
@@ -135,6 +136,12 @@ export default function SOSActive() {
 
     try {
       await set(ref(db, `sos_alerts/${deviceId}`), sosData);
+      
+      // LOG TO BLOCKCHAIN — backend fetches Firebase data and hashes server-side
+      logIncidentToBlockchain(deviceId).then(res => {
+        if(res && res.txHash) console.log("Blockchain TX:", res.txHash);
+      });
+
       if (finalLat && finalLon) {
         // Create a temporary critical geo-fence for this emergency
         await set(ref(db, `geo_fences/gf-sos-${deviceId}`), {

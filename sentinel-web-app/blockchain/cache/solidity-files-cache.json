@@ -1,0 +1,41 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "C:\\Users\\bipla\\Downloads\\SentinelMesh\\sentinel-web-app\\blockchain\\contracts\\SentinelTrust.sol": {
+      "lastModificationDate": 1787320337733,
+      "contentHash": "d18c56f8399e7e7d22c605557de6f18d",
+      "sourceName": "contracts/SentinelTrust.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.24"
+      ],
+      "artifacts": [
+        "SentinelTrust"
+      ]
+    }
+  }
+}

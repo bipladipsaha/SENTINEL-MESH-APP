@@ -24,6 +24,7 @@ import {
   DEMO_ROUTES,
 } from '../data/demoData';
 import { fetchRoute } from '../services/routingService';
+import { verifyIncidentIntegrity, logResponseAction } from '../services/blockchain';
 
 // Fix Leaflet icons
 delete L.Icon.Default.prototype._getIconUrl;
@@ -162,10 +163,24 @@ export default function CommandCenter() {
   async function resolveEmergency(alertId) {
     try {
       await update(ref(db, `sos_alerts/${alertId}`), { active: false });
+      // Log "resolved" action to blockchain audit trail
+      logResponseAction(alertId, 'resolved').then(res => {
+        if (res?.txHash) console.log('Audit TX (resolved):', res.txHash);
+      });
     } catch (e) {
       console.error('Failed to resolve:', e);
     }
   }
+
+  // Blockchain Verification State
+  const [verificationResults, setVerificationResults] = useState({});
+
+  const handleVerifyIntegrity = async (alert) => {
+    setVerificationResults(prev => ({ ...prev, [alert.id]: { loading: true } }));
+    // Backend fetches from Firebase, re-hashes, and compares to blockchain
+    const result = await verifyIncidentIntegrity(alert.id);
+    setVerificationResults(prev => ({ ...prev, [alert.id]: { loading: false, ...result } }));
+  };
 
   const center = adminLoc ? [adminLoc.lat, adminLoc.lon] : null;
 
@@ -462,11 +477,14 @@ export default function CommandCenter() {
                     </div>
                     <div className="flex gap-2">
                       <button
-                        onClick={() => { setActiveTab('map'); }}
-                        className="flex-1 h-9 bg-primary/10 text-primary rounded-lg text-xs font-bold flex items-center justify-center gap-1"
+                        onClick={() => handleVerifyIntegrity(alert)}
+                        className="flex-1 h-9 bg-surface-container-low text-on-surface rounded-lg text-xs font-bold flex items-center justify-center gap-1"
+                        disabled={verificationResults[alert.id]?.loading}
                       >
-                        <span className="material-symbols-outlined text-[14px]">map</span>
-                        View Map
+                        <span className="material-symbols-outlined text-[14px]">
+                          {verificationResults[alert.id]?.loading ? 'sync' : 'verified_user'}
+                        </span>
+                        Verify Integrity
                       </button>
                       <button
                         onClick={() => resolveEmergency(alert.id)}
@@ -476,6 +494,18 @@ export default function CommandCenter() {
                         Resolve
                       </button>
                     </div>
+                    {verificationResults[alert.id] && !verificationResults[alert.id].loading && (
+                      <div className={`mt-2 p-2 rounded text-xs font-bold flex items-center gap-1 ${
+                        verificationResults[alert.id].verified 
+                          ? 'bg-[#22c55e]/20 text-[#16a34a]' 
+                          : 'bg-error/20 text-error'
+                      }`}>
+                        <span className="material-symbols-outlined text-[14px]">
+                          {verificationResults[alert.id].verified ? 'check_circle' : 'warning'}
+                        </span>
+                        {verificationResults[alert.id].verified ? '✓ VERIFIED: Data matches blockchain' : '⚠️ TAMPERED: Data mismatch'}
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

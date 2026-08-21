@@ -144,8 +144,8 @@
 //  FIREBASE REALTIME DATABASE
 // ============================================================
 
-#define FIREBASE_HOST         "esp32iotproject-e9fe1-default-rtdb.asia-southeast1.firebasedatabase.app"
-#define FIREBASE_AUTH         "AIzaSyDgOl1hKVgmkuaPEKx41blw5-cwKAS5wE4"
+#define FIREBASE_HOST         "myproject7698-default-rtdb.asia-southeast1.firebasedatabase.app"
+#define FIREBASE_AUTH         "AIzaSyDpABsIXpyiE3kc8lcF4URQtZvad5qcuXE"
 #define NOTIFY_RADIUS_M       1000    // Nearby user radius — 1 km (used by Cloud Function)
 #define FIREBASE_BODY_SIZE    256     // JSON payload buffer for Firebase writes
 #define VERCEL_BODY_SIZE_FB   256     // Alias for compatibility

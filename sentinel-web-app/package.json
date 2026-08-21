@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@turf/turf": "^7.4.0",
+    "crypto-js": "^4.2.0",
     "firebase": "^12.17.1",
     "leaflet": "^1.9.4",
     "react-leaflet": "^5.0.0",
