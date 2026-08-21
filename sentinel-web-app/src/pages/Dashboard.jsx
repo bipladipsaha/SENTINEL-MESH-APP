@@ -12,6 +12,9 @@ import { useAuth } from '../contexts/AuthContext';
 import { db } from '../firebase';
 import { ref, onValue, set } from 'firebase/database';
 import { useDevice } from '../contexts/DeviceContext';
+import { useGeoEngine } from '../hooks/useGeoEngine';
+import { getRiskLevel } from '../data/demoData';
+import DemoController from '../components/DemoController';
 import BottomNav from '../components/BottomNav';
 
 export default function Dashboard() {
@@ -20,6 +23,14 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [sosActive, setSosActive] = useState(false);
   const [greeting, setGreeting] = useState('Good Morning');
+  const [userLoc, setUserLoc] = useState(null);
+
+  // Geo engine for risk score and warnings
+  const geoEngine = useGeoEngine(userLoc, {
+    enabled: true,
+    userId: currentUser?.uid,
+  });
+  const riskLevel = getRiskLevel(geoEngine.riskScore.score);
 
   // Determine greeting based on time
   useEffect(() => {
@@ -51,20 +62,29 @@ export default function Dashboard() {
       if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition(
           (pos) => {
+            const loc = { lat: pos.coords.latitude, lon: pos.coords.longitude };
+            setUserLoc(loc);
             set(ref(db, `user_locations/${currentUser.uid}`), {
-              lat: pos.coords.latitude,
-              lon: pos.coords.longitude,
+              lat: loc.lat,
+              lon: loc.lon,
               timestamp: Date.now(),
             });
           },
-          (err) => console.warn('Geolocation error:', err),
+          (err) => {
+            console.warn('Geolocation error:', err);
+            // Fall back to saved location
+            const saved = localStorage.getItem('manual_user_loc');
+            if (saved) {
+              try { setUserLoc(JSON.parse(saved)); } catch (e) {}
+            }
+          },
           { enableHighAccuracy: true }
         );
       }
     }
 
     updateLocation();
-    const interval = setInterval(updateLocation, 60000); // Every minute
+    const interval = setInterval(updateLocation, 60000);
     return () => clearInterval(interval);
   }, [currentUser]);
 
@@ -82,7 +102,7 @@ export default function Dashboard() {
     { icon: 'warning', label: 'Nearby\nEmergencies', color: 'bg-tertiary', path: '/alerts' },
     { icon: 'local_police', label: 'Find\nPolice', color: 'bg-secondary', path: '/find-police' },
     { icon: 'local_hospital', label: 'Find\nHospital', color: 'bg-primary-container', path: '/find-hospital' },
-    { icon: 'settings_remote', label: 'Device\nSettings', color: 'bg-surface-variant', textColor: 'text-on-surface-variant', path: '/pair-device' },
+    { icon: 'route', label: 'Route\nPlanner', color: 'bg-secondary', path: '/route-planner' },
     { icon: 'history', label: 'Alert\nHistory', color: 'bg-outline', path: '/notifications' },
   ];
 
@@ -115,6 +135,52 @@ export default function Dashboard() {
             Your safety network is active and monitoring.
           </p>
         </section>
+
+        {/* Zone Warning Banner */}
+        {geoEngine.warning && (
+          <div className={`rounded-2xl p-4 mb-4 flex items-start gap-3 animate-fade-in ${
+            geoEngine.warning.type === 'restricted'
+              ? 'bg-[#ef4444]/10 border border-[#ef4444]/30'
+              : geoEngine.warning.type === 'caution'
+              ? 'bg-[#eab308]/10 border border-[#eab308]/30'
+              : 'bg-[#f97316]/10 border border-[#f97316]/30'
+          }`}>
+            <span className="text-2xl">{geoEngine.warning.icon}</span>
+            <div>
+              <p className={`text-sm font-bold uppercase tracking-wider ${
+                geoEngine.warning.type === 'restricted' ? 'text-[#ef4444]'
+                : geoEngine.warning.type === 'caution' ? 'text-[#ca8a04]'
+                : 'text-[#ea580c]'
+              }`}>{geoEngine.warning.title}</p>
+              <p className="text-sm text-on-surface-variant mt-0.5">{geoEngine.warning.message}</p>
+            </div>
+          </div>
+        )}
+
+        {/* Risk Score Card */}
+        <div className="glass-card rounded-2xl p-4 mb-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div
+              className="w-14 h-14 rounded-2xl flex items-center justify-center text-white font-bold text-lg shadow-md"
+              style={{ background: riskLevel.color }}
+            >
+              {geoEngine.riskScore.score}
+            </div>
+            <div>
+              <p className="text-xs font-bold text-outline uppercase tracking-wider">Safety Score</p>
+              <p className="font-bold text-on-surface" style={{ color: riskLevel.color }}>{riskLevel.label}</p>
+            </div>
+          </div>
+          {geoEngine.riskScore.reasons.length > 0 && (
+            <div className="text-right">
+              {geoEngine.riskScore.reasons.slice(0, 2).map((r, i) => (
+                <p key={i} className="text-[10px] text-on-surface-variant">
+                  +{r.points} {r.factor}
+                </p>
+              ))}
+            </div>
+          )}
+        </div>
 
         {/* Protection Status Card */}
         <div className="glass-card rounded-3xl p-6 mb-6">
@@ -217,6 +283,13 @@ export default function Dashboard() {
       </main>
 
       <BottomNav active="home" />
+
+      {/* Demo Simulator */}
+      <DemoController
+        onLocationUpdate={(loc) => setUserLoc(loc)}
+        onStatusChange={() => {}}
+        userLocation={userLoc}
+      />
     </div>
   );
 }

@@ -27,7 +27,7 @@ export function AuthProvider({ children }) {
   const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  async function register(email, password, name, phone, role = 'device_user') {
+  async function register(email, password, name, phone, role = 'tourist') {
     const cred = await createUserWithEmailAndPassword(auth, email, password);
     await updateProfile(cred.user, { displayName: name });
 
@@ -36,7 +36,7 @@ export function AuthProvider({ children }) {
       name,
       email,
       phone,
-      role,
+      role, // 'tourist' or 'admin'
       createdAt: Date.now(),
       deviceId: null,
     });
@@ -70,10 +70,14 @@ export function AuthProvider({ children }) {
     return unsubscribe;
   }, []);
 
+  // Determine if the current user has admin privileges
+  const isAdmin = userProfile?.role === 'admin';
+
   const value = {
     currentUser,
     userProfile,
     loading,
+    isAdmin,
     register,
     login,
     logout,

@@ -9,7 +9,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function Register() {
-  const [role, setRole] = useState('device_user');
+  const [role, setRole] = useState('tourist');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -31,7 +31,7 @@ export default function Register() {
     setLoading(true);
     try {
       await register(email, password, name, phone, role);
-      navigate(role === 'device_user' ? '/pair-device' : '/');
+      navigate(role === 'tourist' ? '/' : '/admin');
     } catch (err) {
       setError(
         err.code === 'auth/email-already-in-use'
@@ -65,14 +65,25 @@ export default function Register() {
         <div className="bg-surface-container-high rounded-2xl p-1.5 flex">
           <button
             type="button"
-            onClick={() => setRole('device_user')}
+            onClick={() => setRole('tourist')}
             className={`flex-1 py-3 rounded-xl text-sm font-semibold transition-all ${
-              role === 'device_user'
+              role === 'tourist'
                 ? 'bg-white text-on-surface shadow-md'
                 : 'text-on-surface-variant hover:text-on-surface'
             }`}
           >
-            Device User
+            🧳 Tourist
+          </button>
+          <button
+            type="button"
+            onClick={() => setRole('admin')}
+            className={`flex-1 py-3 rounded-xl text-sm font-semibold transition-all ${
+              role === 'admin'
+                ? 'bg-white text-on-surface shadow-md'
+                : 'text-on-surface-variant hover:text-on-surface'
+            }`}
+          >
+            🛡️ Admin
           </button>
           <button
             type="button"
@@ -83,7 +94,7 @@ export default function Register() {
                 : 'text-on-surface-variant hover:text-on-surface'
             }`}
           >
-            Community Responder
+            🚑 Responder
           </button>
         </div>
 
