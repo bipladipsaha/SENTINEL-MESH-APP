@@ -120,6 +120,7 @@ export default function SOSActive() {
       userName: userProfile?.name || currentUser.displayName || 'Unknown',
     };
 
+    try {
       await set(ref(db, `sos_alerts/${deviceId}`), sosData);
       // Create a temporary critical geo-fence for this emergency
       await set(ref(db, `geo_fences/gf-sos-${deviceId}`), {
