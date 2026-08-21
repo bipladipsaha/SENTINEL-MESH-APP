@@ -329,20 +329,22 @@ export default function FindServices({ type }) {
                 )}
 
                 <div className="flex gap-3">
-                  <button
-                    onClick={() => window.open(`https://www.google.com/maps/dir/?api=1&destination=${service.lat},${service.lon}`, '_blank')}
+                  <a
+                    href={`https://www.google.com/maps/dir/?api=1&destination=${service.lat},${service.lon}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="flex-1 h-11 bg-surface-container-low text-on-surface font-semibold rounded-xl transition-all btn-press flex items-center justify-center gap-2 text-sm"
                   >
                     <span className="material-symbols-outlined text-[18px]">explore</span>
                     Navigate
-                  </button>
-                  <button
-                    onClick={() => window.open(`tel:${service.phone || (isHospital ? '108' : '100')}`)}
+                  </a>
+                  <a
+                    href={`tel:${service.phone || (isHospital ? '108' : '100')}`}
                     className="flex-1 h-11 bg-primary text-white font-semibold rounded-xl shadow-md btn-press transition-all flex items-center justify-center gap-2 text-sm"
                   >
                     <span className="material-symbols-outlined text-[18px]">call</span>
                     Call Now
-                  </button>
+                  </a>
                 </div>
               </div>
             ))}
