@@ -23,7 +23,6 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [sosActive, setSosActive] = useState(false);
   const [greeting, setGreeting] = useState('Good Morning');
-  const [greeting, setGreeting] = useState('Good Morning');
 
   // Determine greeting based on time
   useEffect(() => {
