@@ -182,6 +182,7 @@ export function useGeoEngine(userLocation, options = {}) {
   } = options;
 
   const [geoFences, setGeoFences] = useState(DEMO_GEOFENCES);
+  const [sosZones, setSosZones] = useState([]);
   const [hotspots, setHotspots] = useState(DEMO_HOTSPOTS);
   const [tourists, setTourists] = useState(DEMO_TOURISTS);
   const [groups, setGroups] = useState(DEMO_GROUPS);
@@ -208,6 +209,30 @@ export function useGeoEngine(userLocation, options = {}) {
       if (data) {
         const fences = Object.entries(data).map(([id, v]) => ({ id, ...v }));
         setGeoFences([...DEMO_GEOFENCES, ...fences]);
+      }
+    });
+    return () => unsub();
+  }, []);
+
+  // Load SOS alerts to create virtual critical zones
+  useEffect(() => {
+    const sosRef = ref(db, 'sos_alerts');
+    const unsub = onValue(sosRef, (snap) => {
+      const data = snap.val();
+      if (data) {
+        const activeSos = Object.entries(data)
+          .filter(([_, v]) => v.active === true && v.lat && v.lon)
+          .map(([id, v]) => ({
+            id: `virtual-sos-${id}`,
+            name: `Emergency: ${v.userName || 'User'}`,
+            type: 'critical',
+            coordinates: [[v.lat, v.lon]],
+            status: 'active',
+            timestamp: v.timestamp
+          }));
+        setSosZones(activeSos);
+      } else {
+        setSosZones([]);
       }
     });
     return () => unsub();
@@ -241,8 +266,10 @@ export function useGeoEngine(userLocation, options = {}) {
 
     const { lat, lon } = userLocation;
 
+    const allFences = [...geoFences, ...sosZones];
+
     // 1. Check geo-fences
-    const insideZones = geoFences.filter((gf) => {
+    const insideZones = allFences.filter((gf) => {
       if (gf.status !== 'active') return false;
       return isInsidePolygon(lat, lon, gf.coordinates, gf.type);
     });
@@ -261,7 +288,7 @@ export function useGeoEngine(userLocation, options = {}) {
     // Exits
     for (const prevId of prevIds) {
       if (!currentZoneIds.has(prevId)) {
-        const exitedZone = geoFences.find((g) => g.id === prevId);
+        const exitedZone = allFences.find((g) => g.id === prevId);
         if (exitedZone) handleZoneExit(exitedZone);
       }
     }
@@ -376,7 +403,7 @@ export function useGeoEngine(userLocation, options = {}) {
     } else {
       setWarning(null);
     }
-  }, [userLocation, geoFences, hotspots, routeCoords, corridorWidth, enabled, tourists, groups, groupId]);
+  }, [userLocation, geoFences, sosZones, hotspots, routeCoords, corridorWidth, enabled, tourists, groups, groupId]);
 
   // Zone entry handler — dispatch to Firebase alerts
   function handleZoneEntry(zone) {
@@ -412,7 +439,7 @@ export function useGeoEngine(userLocation, options = {}) {
 
   return {
     // State
-    geoFences,
+    geoFences: [...geoFences, ...sosZones],
     hotspots,
     tourists,
     groups,
