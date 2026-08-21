@@ -240,11 +240,13 @@ function GlobalNotificationListener() {
     // Listen for new alerts
     const unsubAdded = onChildAdded(sosRef, (snapshot) => {
       const alert = snapshot.val();
+      const alertId = snapshot.key;
       
       if (alert && alert.active) {
         // Only show toast if the alert was created AFTER the page loaded
-        // (to prevent a flood of toasts for old emergencies when you refresh)
         if (alert.timestamp && alert.timestamp > mountTime.current - 5000) {
+          
+          // 1. In-App Toast Notification
           toast.error(
             (t) => (
               <div className="flex flex-col gap-2">
@@ -263,9 +265,23 @@ function GlobalNotificationListener() {
             ),
             { duration: 10000, position: 'top-center' }
           );
+
+          // 2. Native OS Push Notification (if granted)
+          if ('Notification' in window && Notification.permission === 'granted') {
+            new Notification('🚨 SentinelMesh Emergency', {
+              body: `SOS triggered by device ${alert.deviceId}. Please check the map.`,
+              icon: '/vite.svg', // generic icon
+              vibrate: [200, 100, 200, 100, 500]
+            });
+          }
         }
       }
     });
+
+    // Request native notification permission on mount
+    if ('Notification' in window && Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+      Notification.requestPermission();
+    }
 
     return () => {
       unsubAdded();
