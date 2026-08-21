@@ -80,6 +80,32 @@ export default function SOSActive() {
     return () => unsub();
   }, [currentUser, userProfile, navigate]);
 
+  const videoRef = useRef(null);
+  const streamRef = useRef(null);
+
+  // Turn on camera when SOS is sent
+  useEffect(() => {
+    if (sent) {
+      navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+        .then((stream) => {
+          streamRef.current = stream;
+          if (videoRef.current) {
+            videoRef.current.srcObject = stream;
+          }
+        })
+        .catch((err) => {
+          console.warn('Camera access denied or unavailable:', err);
+        });
+    }
+
+    // Cleanup camera when leaving the page or resolving
+    return () => {
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop());
+      }
+    };
+  }, [sent]);
+
   // Countdown timer
   useEffect(() => {
     if (sent) return;
@@ -278,9 +304,24 @@ export default function SOSActive() {
               </span>
             </div>
             <h1 className="text-2xl font-bold text-error text-center mb-2">SOS Alert Sent!</h1>
-            <p className="text-on-surface-variant text-center mb-8 max-w-xs">
+            <p className="text-on-surface-variant text-center mb-6 max-w-xs">
               Emergency contacts and nearby responders have been notified. Help is on the way.
             </p>
+
+            {/* Fake Recording Evidence UI */}
+            <div className="bg-black rounded-2xl w-full aspect-video overflow-hidden relative mb-6 border-2 border-error card-shadow">
+              <video
+                ref={videoRef}
+                autoPlay
+                muted
+                playsInline
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-md text-white px-3 py-1 rounded-full flex items-center gap-2 text-xs font-bold tracking-wider">
+                <span className="w-2 h-2 rounded-full bg-error animate-pulse" />
+                REC (EVIDENCE)
+              </div>
+            </div>
 
             <div className="bg-error-container/30 rounded-2xl p-4 w-full mb-6">
               <div className="flex items-center gap-2 mb-2">
@@ -288,7 +329,7 @@ export default function SOSActive() {
                 <span className="text-sm font-bold text-error">BROADCASTING</span>
               </div>
               <p className="text-sm text-on-surface-variant">
-                Your location is being shared with the mesh network. Stay where you are if it is safe to do so.
+                Your location, audio, and video are being shared with the mesh network. Stay where you are if it is safe to do so.
               </p>
             </div>
 
