@@ -17,7 +17,7 @@ export default function BottomNav({ active = 'home' }) {
   const navigate = useNavigate();
 
   return (
-    <nav className="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe shadow-[0_-10px_30px_rgba(0,0,0,0.04)] bg-white/90 backdrop-blur-md">
+    <nav className="fixed bottom-0 left-0 w-full z-[1000] flex justify-around items-center px-4 py-3 pb-safe shadow-[0_-10px_30px_rgba(0,0,0,0.04)] bg-white/90 backdrop-blur-md">
       {tabs.map((tab) => {
         const isActive = active === tab.id;
         return (

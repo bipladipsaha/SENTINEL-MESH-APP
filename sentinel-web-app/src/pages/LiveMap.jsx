@@ -244,7 +244,7 @@ export default function LiveMap() {
         </MapContainer>
 
         {/* Floating Actions on Map */}
-        <div className="absolute right-4 bottom-24 z-[900] flex flex-col gap-3">
+        <div className="absolute right-4 bottom-40 z-[900] flex flex-col gap-3">
           <button
             onClick={() => setFollowUser(true)}
             onBlur={() => setFollowUser(false)}
@@ -325,7 +325,24 @@ export default function LiveMap() {
           localStorage.setItem('demo_sim_active', 'true');
           setUserLoc(loc);
         }}
-        onStatusChange={() => {}}
+        onStatusChange={(status) => {
+          if (status.sos) {
+            // Push fake SOS to Firebase for demo
+            import('firebase/database').then(({ ref, set }) => {
+              import('../firebase').then(({ db }) => {
+                const fakeId = `demo-${Date.now()}`;
+                set(ref(db, `geo_fences/gf-sos-${fakeId}`), {
+                  name: `Demo Emergency`,
+                  type: 'critical',
+                  coordinates: [[userLoc.lat, userLoc.lon]],
+                  status: 'active',
+                  timestamp: Date.now(),
+                });
+                setTimeout(() => set(ref(db, `geo_fences/gf-sos-${fakeId}`), null), 15000);
+              });
+            });
+          }
+        }}
         userLocation={userLoc}
       />
 
