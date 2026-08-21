@@ -46,9 +46,14 @@ export default function SOSActive() {
             accuracy: pos.coords.accuracy,
           });
         },
-        () => {},
+        () => {
+          // Fallback to Kolkata/New Town if GPS fails
+          setLocation({ lat: 22.5770, lon: 88.4680, accuracy: 100 });
+        },
         { enableHighAccuracy: true, timeout: 5000 }
       );
+    } else {
+      setLocation({ lat: 22.5770, lon: 88.4680, accuracy: 100 });
     }
   }, []);
 
@@ -108,10 +113,13 @@ export default function SOSActive() {
     }
 
     const deviceId = userProfile?.deviceId || `web-${currentUser.uid.slice(0, 8)}`;
+    const finalLat = location?.lat || 22.5770;
+    const finalLon = location?.lon || 88.4680;
+
     const sosData = {
       deviceId,
-      lat: location?.lat || 0,
-      lon: location?.lon || 0,
+      lat: finalLat,
+      lon: finalLon,
       type: 'MANUAL_SOS',
       battery: 100,
       active: true,
@@ -132,8 +140,8 @@ export default function SOSActive() {
       });
       // Also update user location
       await set(ref(db, `user_locations/${currentUser.uid}`), {
-        lat: location?.lat || 0,
-        lon: location?.lon || 0,
+        lat: finalLat,
+        lon: finalLon,
         timestamp: Date.now(),
       });
     } catch (err) {
