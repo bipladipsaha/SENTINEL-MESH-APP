@@ -69,11 +69,27 @@ export default function CommandCenter() {
   const { currentUser, userProfile } = useAuth();
   const navigate = useNavigate();
 
-  // Simulated admin location
-  const [adminLoc, setAdminLoc] = useState({ lat: 22.5800, lon: 88.4650 });
+  // Live admin location
+  const [adminLoc, setAdminLoc] = useState(null);
+
+  useEffect(() => {
+    let watchId;
+    if ('geolocation' in navigator) {
+      watchId = navigator.geolocation.watchPosition(
+        (pos) => {
+          setAdminLoc({ lat: pos.coords.latitude, lon: pos.coords.longitude });
+        },
+        (err) => console.warn('CommandCenter GPS error:', err),
+        { enableHighAccuracy: true }
+      );
+    }
+    return () => {
+      if (watchId) navigator.geolocation.clearWatch(watchId);
+    };
+  }, []);
 
   // Geo engine
-  const engine = useGeoEngine(adminLoc, { enabled: true, userId: currentUser?.uid });
+  const engine = useGeoEngine(adminLoc || { lat: 22.5800, lon: 88.4650 }, { enabled: true, userId: currentUser?.uid });
 
   // Active SOS alerts from Firebase
   const [sosAlerts, setSosAlerts] = useState([]);
@@ -151,7 +167,7 @@ export default function CommandCenter() {
     }
   }
 
-  const center = [22.5800, 88.4650];
+  const center = adminLoc ? [adminLoc.lat, adminLoc.lon] : null;
 
   return (
     <div className="h-dvh flex flex-col bg-surface overflow-hidden">
@@ -209,10 +225,23 @@ export default function CommandCenter() {
           <>
             {/* Map */}
             <div className="absolute inset-0">
-              <MapContainer center={center} zoom={13} style={{ height: '100%', width: '100%' }} zoomControl={true}>
-                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; OpenStreetMap' />
+              {!adminLoc ? (
+                <div className="w-full h-full flex items-center justify-center bg-surface-container-lowest">
+                  <p className="text-on-surface-variant font-bold animate-pulse">Locating Command Center...</p>
+                </div>
+              ) : (
+                <MapContainer center={center} zoom={13} style={{ height: '100%', width: '100%' }} zoomControl={true}>
+                  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; OpenStreetMap' />
 
-                {/* Geo-fence Polygons */}
+                  {/* Admin Location (Laptop) */}
+                  <Marker position={center} icon={createTouristIcon(0, false)}>
+                    <Popup>
+                      <strong>💻 Command Center (Laptop)</strong><br />
+                      This location is based on your browser's GPS/IP data.
+                    </Popup>
+                  </Marker>
+                  
+                  {/* Geo-fence Polygons */}
                 {engine.geoFences.map((gf) => {
                   if (gf.type === 'safe' && !filters.safeZones) return null;
                   if (gf.type === 'caution' && !filters.cautionZones) return null;
@@ -284,10 +313,12 @@ export default function CommandCenter() {
                 ))}
 
                 {/* SOS Emergency Circles */}
-                {filters.emergencies && sosAlerts.map((a) => (
+                {filters.emergencies && sosAlerts.map((a) => {
+                  if (!a.lat || !a.lon) return null;
+                  return (
                   <Circle
                     key={a.id}
-                    center={[a.lat || 0, a.lon || 0]}
+                    center={[a.lat, a.lon]}
                     radius={200}
                     pathOptions={{
                       color: '#ef4444',
@@ -303,8 +334,10 @@ export default function CommandCenter() {
                       Type: {a.type}
                     </Popup>
                   </Circle>
-                ))}
+                  );
+                })}
               </MapContainer>
+              )}
             </div>
 
             {/* Legend & Filters */}

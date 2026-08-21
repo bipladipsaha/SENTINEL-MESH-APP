@@ -71,7 +71,10 @@ export default function LiveMap() {
   const navigate = useNavigate();
 
   // Tourist Location
-  const [userLoc, setUserLoc] = useState({ lat: 22.5770, lon: 88.4680 });
+  const [userLoc, setUserLoc] = useState(() => {
+    const saved = localStorage.getItem('last_known_loc');
+    return saved ? JSON.parse(saved) : null;
+  });
   const [followUser, setFollowUser] = useState(false);
 
   // Route Planning State
@@ -97,12 +100,9 @@ export default function LiveMap() {
     if ('geolocation' in navigator) {
       watchId = navigator.geolocation.watchPosition(
         (pos) => {
-          // If we aren't using the DemoController, we update with real GPS
-          if (!localStorage.getItem('demo_sim_active')) {
-             const loc = { lat: pos.coords.latitude, lon: pos.coords.longitude };
-             setUserLoc(loc);
-             localStorage.setItem('last_known_loc', JSON.stringify(loc));
-          }
+          const loc = { lat: pos.coords.latitude, lon: pos.coords.longitude };
+          setUserLoc(loc);
+          localStorage.setItem('last_known_loc', JSON.stringify(loc));
         },
         console.warn,
         { enableHighAccuracy: true }
@@ -167,13 +167,19 @@ export default function LiveMap() {
 
       {/* Map Container */}
       <div className="flex-1 relative">
-        <MapContainer
-          center={[userLoc.lat, userLoc.lon]}
-          zoom={14}
-          style={{ height: '100%', width: '100%' }}
-          zoomControl={false}
-        >
-          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; OpenStreetMap' />
+        {!userLoc ? (
+          <div className="w-full h-full flex flex-col items-center justify-center bg-surface-container-lowest">
+            <span className="material-symbols-outlined text-4xl text-primary animate-pulse mb-2">my_location</span>
+            <p className="text-sm font-bold text-on-surface-variant animate-pulse">Waiting for live location...</p>
+          </div>
+        ) : (
+          <MapContainer
+            center={[userLoc.lat, userLoc.lon]}
+            zoom={14}
+            style={{ height: '100%', width: '100%' }}
+            zoomControl={false}
+          >
+            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; OpenStreetMap' />
           <MapClickHandler onMapClick={handleMapClick} enabled={!!placingMode} />
           {followUser && <FlyToUser center={[userLoc.lat, userLoc.lon]} />}
 
@@ -244,6 +250,7 @@ export default function LiveMap() {
           {startPoint && <Marker position={startPoint} icon={startIcon} />}
           {endPoint && <Marker position={endPoint} icon={endIcon} />}
         </MapContainer>
+        )}
 
         {/* Floating Actions on Map */}
         <div className="absolute right-4 bottom-40 z-[900] flex flex-col gap-3">

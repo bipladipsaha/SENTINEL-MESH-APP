@@ -18,42 +18,34 @@ export default function SOSActive() {
   const [countdown, setCountdown] = useState(15);
   const [sent, setSent] = useState(false);
   const [location, setLocation] = useState(null);
+  const locationRef = useRef(null);
   const intervalRef = useRef(null);
 
-  // Get current location
+  // Continuously watch live GPS — always use freshest coordinates
   useEffect(() => {
-    let initialLoc = null;
-    const savedLoc = localStorage.getItem('last_known_loc');
-    if (savedLoc) {
-      try {
-        const parsed = JSON.parse(savedLoc);
-        initialLoc = { lat: parsed.lat, lon: parsed.lon, accuracy: 100 };
-        setLocation(initialLoc);
-      } catch (e) {
-        console.error("Failed to parse saved location");
-      }
-    }
-
+    let watchId;
     if ('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition(
+      watchId = navigator.geolocation.watchPosition(
         (pos) => {
-          setLocation({
+          const loc = {
             lat: pos.coords.latitude,
             lon: pos.coords.longitude,
             accuracy: pos.coords.accuracy,
-          });
+          };
+          setLocation(loc);
+          locationRef.current = loc;
+          // Also persist so other pages can use it
+          localStorage.setItem('last_known_loc', JSON.stringify({ lat: loc.lat, lon: loc.lon }));
         },
-        () => {
-          // Fallback to last known or Kolkata if GPS fails
-          if (!initialLoc) {
-            setLocation({ lat: 22.5726, lon: 88.3639, accuracy: 100 });
-          }
+        (err) => {
+          console.warn('GPS error on SOS page:', err);
         },
-        { enableHighAccuracy: true, timeout: 5000 }
+        { enableHighAccuracy: true, maximumAge: 0 }
       );
-    } else if (!initialLoc) {
-      setLocation({ lat: 22.5726, lon: 88.3639, accuracy: 100 });
     }
+    return () => {
+      if (watchId) navigator.geolocation.clearWatch(watchId);
+    };
   }, []);
 
   // Ref to track if we've sent the alert
@@ -112,8 +104,22 @@ export default function SOSActive() {
     }
 
     const deviceId = userProfile?.deviceId || `web-${currentUser.uid.slice(0, 8)}`;
-    const finalLat = location?.lat || 22.5770;
-    const finalLon = location?.lon || 88.4680;
+    
+    let finalLat = locationRef.current?.lat || null;
+    let finalLon = locationRef.current?.lon || null;
+    
+    if (!finalLat || !finalLon) {
+      const savedLoc = localStorage.getItem('last_known_loc');
+      if (savedLoc) {
+        try {
+          const parsed = JSON.parse(savedLoc);
+          finalLat = parsed.lat;
+          finalLon = parsed.lon;
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }
 
     const sosData = {
       deviceId,
@@ -129,20 +135,24 @@ export default function SOSActive() {
 
     try {
       await set(ref(db, `sos_alerts/${deviceId}`), sosData);
-      // Create a temporary critical geo-fence for this emergency
-      await set(ref(db, `geo_fences/gf-sos-${deviceId}`), {
-        name: `Emergency: ${sosData.userName}`,
-        type: 'critical',
-        coordinates: [[sosData.lat, sosData.lon]],
-        status: 'active',
-        timestamp: Date.now(),
-      });
-      // Also update user location
-      await set(ref(db, `user_locations/${currentUser.uid}`), {
-        lat: finalLat,
-        lon: finalLon,
-        timestamp: Date.now(),
-      });
+      if (finalLat && finalLon) {
+        // Create a temporary critical geo-fence for this emergency
+        await set(ref(db, `geo_fences/gf-sos-${deviceId}`), {
+          name: `Emergency: ${sosData.userName}`,
+          type: 'critical',
+          coordinates: [[sosData.lat, sosData.lon]],
+          status: 'active',
+          timestamp: Date.now(),
+        });
+      }
+      if (finalLat && finalLon) {
+        // Also update user location
+        await set(ref(db, `user_locations/${currentUser.uid}`), {
+          lat: finalLat,
+          lon: finalLon,
+          timestamp: Date.now(),
+        });
+      }
     } catch (err) {
       console.error('SOS send error:', err);
     }

@@ -39,12 +39,23 @@ export default function Alerts() {
   const [userLoc, setUserLoc] = useState(null);
   const [selectedAlert, setSelectedAlert] = useState(null);
 
+  // Clear all alerts (for testing/debugging)
+  const clearAllAlerts = async () => {
+    try {
+      await set(ref(db, 'sos_alerts'), null);
+      await set(ref(db, 'geo_fences'), null); // also clear virtual geo-fences
+      setAlerts([]);
+    } catch (e) {
+      console.error('Failed to clear alerts:', e);
+    }
+  };
+
   // Get user location
   useEffect(() => {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(
         (pos) => setUserLoc({ lat: pos.coords.latitude, lon: pos.coords.longitude }),
-        () => setUserLoc({ lat: 22.5726, lon: 88.3639 }), // Fallback: Kolkata
+        (err) => console.warn('Geolocation error:', err),
         { enableHighAccuracy: true }
       );
     }
@@ -86,17 +97,25 @@ export default function Alerts() {
   function openNavigation(lat, lon) {
     window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`, '_blank');
   }
-
-  const center = userLoc ? [userLoc.lat, userLoc.lon] : [22.5726, 88.3639];
+  const center = userLoc ? [userLoc.lat, userLoc.lon] : null;
 
   return (
     <div className="min-h-dvh bg-surface">
       {/* Header */}
       <header className="sticky top-0 z-40 w-full flex items-center justify-between px-5 py-4 bg-surface/80 backdrop-blur-md">
         <span className="text-xl font-bold text-primary">Nearby Emergencies</span>
-        <div className="bg-error/10 px-3 py-1 rounded-full flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-error animate-pulse" />
-          <span className="text-xs font-bold text-error">{alerts.length} Active</span>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={clearAllAlerts}
+            className="text-xs bg-error/10 text-error px-3 py-1.5 rounded-lg font-bold flex items-center gap-1 active:scale-95 transition-transform"
+          >
+            <span className="material-symbols-outlined text-[16px]">delete</span>
+            Clear All
+          </button>
+          <div className="bg-error/10 px-3 py-1 rounded-full flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-error animate-pulse" />
+            <span className="text-xs font-bold text-error">{alerts.length} Active</span>
+          </div>
         </div>
       </header>
 
@@ -115,13 +134,30 @@ export default function Alerts() {
               <Circle center={center} radius={1000} pathOptions={{ color: '#0051df', fillColor: '#0051df', fillOpacity: 0.05, dashArray: '5,10' }} />
               {/* SOS alerts */}
               {alerts.map((alert) => (
-                <Marker key={alert.id} position={[alert.lat, alert.lon]} icon={sosIcon}>
-                  <Popup>
-                    <strong>🚨 SOS Alert</strong><br />
-                    Type: {alert.type}<br />
-                    Device: {alert.deviceId}
-                  </Popup>
-                </Marker>
+                <div key={alert.id}>
+                  {alert.lat && alert.lon && (
+                    <Circle
+                      center={[alert.lat, alert.lon]}
+                      radius={200}
+                      pathOptions={{
+                        color: '#ef4444',
+                        fillColor: '#ef4444',
+                        fillOpacity: 0.2,
+                        weight: 2,
+                        dashArray: '5,5'
+                      }}
+                    />
+                  )}
+                  {alert.lat && alert.lon && (
+                    <Marker position={[alert.lat, alert.lon]} icon={sosIcon}>
+                      <Popup>
+                        <strong>🚨 SOS Alert</strong><br />
+                        Type: {alert.type}<br />
+                        Device: {alert.deviceId}
+                      </Popup>
+                    </Marker>
+                  )}
+                </div>
               ))}
             </MapContainer>
           )}
