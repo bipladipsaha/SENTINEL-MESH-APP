@@ -120,8 +120,15 @@ export default function SOSActive() {
       userName: userProfile?.name || currentUser.displayName || 'Unknown',
     };
 
-    try {
       await set(ref(db, `sos_alerts/${deviceId}`), sosData);
+      // Create a temporary critical geo-fence for this emergency
+      await set(ref(db, `geo_fences/gf-sos-${deviceId}`), {
+        name: `Emergency: ${sosData.userName}`,
+        type: 'critical',
+        coordinates: [[sosData.lat, sosData.lon]],
+        status: 'active',
+        timestamp: Date.now(),
+      });
       // Also update user location
       await set(ref(db, `user_locations/${currentUser.uid}`), {
         lat: location?.lat || 0,
@@ -139,6 +146,7 @@ export default function SOSActive() {
     const deviceId = userProfile?.deviceId || `web-${currentUser.uid.slice(0, 8)}`;
     try {
       await set(ref(db, `sos_alerts/${deviceId}/active`), false);
+      await set(ref(db, `geo_fences/gf-sos-${deviceId}`), null);
     } catch (err) {
       console.error('Cancel error:', err);
     }
@@ -150,6 +158,7 @@ export default function SOSActive() {
     const deviceId = userProfile?.deviceId || `web-${currentUser.uid.slice(0, 8)}`;
     try {
       await set(ref(db, `sos_alerts/${deviceId}/active`), false);
+      await set(ref(db, `geo_fences/gf-sos-${deviceId}`), null);
     } catch (err) {
       console.error('Resolve error:', err);
     }

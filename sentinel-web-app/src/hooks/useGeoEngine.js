@@ -30,7 +30,14 @@ if (typeof window !== 'undefined') {
 /**
  * Check if a [lat, lon] point is inside a polygon defined by coordinates.
  */
-function isInsidePolygon(lat, lon, polygonCoords) {
+function isInsidePolygon(lat, lon, polygonCoords, type = 'safe') {
+  if (type === 'critical' && polygonCoords.length === 1) {
+    const dist = haversine(lat, lon, polygonCoords[0][0], polygonCoords[0][1]);
+    return dist <= 500;
+  }
+  
+  if (!polygonCoords || polygonCoords.length < 3) return false;
+
   const pt = turf.point([lon, lat]);
   // Close the polygon ring
   const ring = [...polygonCoords.map(([la, lo]) => [lo, la])];
@@ -40,8 +47,13 @@ function isInsidePolygon(lat, lon, polygonCoords) {
   ) {
     ring.push(ring[0]);
   }
-  const poly = turf.polygon([ring]);
-  return turf.booleanPointInPolygon(pt, poly);
+  
+  try {
+    const poly = turf.polygon([ring]);
+    return turf.booleanPointInPolygon(pt, poly);
+  } catch (e) {
+    return false;
+  }
 }
 
 /**
@@ -232,7 +244,7 @@ export function useGeoEngine(userLocation, options = {}) {
     // 1. Check geo-fences
     const insideZones = geoFences.filter((gf) => {
       if (gf.status !== 'active') return false;
-      return isInsidePolygon(lat, lon, gf.coordinates);
+      return isInsidePolygon(lat, lon, gf.coordinates, gf.type);
     });
     setCurrentZones(insideZones);
 

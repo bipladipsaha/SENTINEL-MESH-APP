@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 const tabs = [
   { id: 'home', icon: 'home', label: 'Home', path: '/' },
+  { id: 'map', icon: 'map', label: 'Map', path: '/map' },
   { id: 'alerts', icon: 'emergency', label: 'Alerts', path: '/alerts' },
   { id: 'mesh', icon: 'phone_iphone', label: 'Mesh', path: '/pair-device' },
   { id: 'profile', icon: 'person', label: 'Profile', path: '/profile' },

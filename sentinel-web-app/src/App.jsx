@@ -20,9 +20,9 @@ import FindServices from './pages/FindServices';
 import Notifications from './pages/Notifications';
 import Profile from './pages/Profile';
 import EmergencyContacts from './pages/EmergencyContacts';
-import RoutePlanner from './pages/RoutePlanner';
 import CommandCenter from './pages/CommandCenter';
 import ManageGeoFences from './pages/ManageGeoFences';
+import LiveMap from './pages/LiveMap';
 
 // Protected Route wrapper
 function ProtectedRoute({ children }) {
@@ -192,10 +192,10 @@ function AppRoutes() {
         }
       />
       <Route
-        path="/route-planner"
+        path="/map"
         element={
           <ProtectedRoute>
-            <RoutePlanner />
+            <LiveMap />
           </ProtectedRoute>
         }
       />
