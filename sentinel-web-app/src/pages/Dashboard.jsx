@@ -84,7 +84,7 @@ export default function Dashboard() {
 
   const quickActions = [
     { icon: 'groups', label: 'Emergency\nContacts', color: 'bg-primary', path: '/emergency-contacts' },
-    ...(currentUser && userProfile?.role === 'ADMIN' ? [{ icon: 'admin_panel_settings', label: 'Command\nCenter', color: 'bg-error', path: '/admin' }] : []),
+    { icon: 'warning', label: 'Nearby\nEmergencies', color: 'bg-tertiary', path: '/alerts' },
     { icon: 'local_police', label: 'Find\nPolice', color: 'bg-secondary', path: '/find-police' },
     { icon: 'local_hospital', label: 'Find\nHospital', color: 'bg-primary-container', path: '/find-hospital' },
     { icon: 'settings_remote', label: 'Device\nSettings', color: 'bg-surface-variant', textColor: 'text-on-surface-variant', path: '/pair-device' },

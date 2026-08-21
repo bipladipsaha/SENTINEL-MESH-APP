@@ -144,6 +144,14 @@ function AppRoutes() {
         }
       />
       <Route
+        path="/alerts"
+        element={
+          <ProtectedRoute>
+            <Alerts />
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/find-hospital"
         element={
           <ProtectedRoute>
@@ -232,6 +240,7 @@ function GlobalNotificationListener() {
     // Listen for new alerts
     const unsubAdded = onChildAdded(sosRef, (snapshot) => {
       const alert = snapshot.val();
+      const alertId = snapshot.key;
       
       if (alert && alert.active) {
         // Only show toast if the alert was created AFTER the page loaded
@@ -264,12 +273,12 @@ function GlobalNotificationListener() {
                       <button
                         onClick={() => {
                           toast.dismiss(t.id);
-                          navigate('/admin');
+                          navigate('/alerts');
                         }}
                         className="mt-3 w-full bg-gradient-to-r from-[#ff0033] to-[#cc0000] text-white py-2 rounded-xl text-xs font-bold shadow-md hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2"
                       >
                         <span className="material-symbols-outlined text-[16px]">map</span>
-                        View Admin Dashboard
+                        View Live Map
                       </button>
                     </div>
                   </div>
