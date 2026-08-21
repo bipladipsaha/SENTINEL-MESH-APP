@@ -19,8 +19,6 @@ export default function Dashboard() {
   const { deviceConnected, deviceBattery } = useDevice();
   const navigate = useNavigate();
   const [sosActive, setSosActive] = useState(false);
-  const [pressing, setPressing] = useState(false);
-  const pressTimer = useRef(null);
   const [greeting, setGreeting] = useState('Good Morning');
 
   // Determine greeting based on time
@@ -69,18 +67,6 @@ export default function Dashboard() {
     const interval = setInterval(updateLocation, 60000); // Every minute
     return () => clearInterval(interval);
   }, [currentUser]);
-
-  function startPress() {
-    setPressing(true);
-    pressTimer.current = setTimeout(() => {
-      triggerSOS();
-    }, 2000);
-  }
-
-  function endPress() {
-    setPressing(false);
-    clearTimeout(pressTimer.current);
-  }
 
   async function triggerSOS() {
     if (navigator.vibrate) {
@@ -182,34 +168,17 @@ export default function Dashboard() {
             <div className="absolute inset-[-48px] rounded-full border border-primary/5" />
             <button
               id="sos-trigger"
-              className={`relative w-56 h-56 rounded-full bg-gradient-to-br from-[#ff0033] to-[#990033] shadow-[0_20px_50px_rgba(255,0,51,0.4)] flex flex-col items-center justify-center text-white transition-all duration-300 group overflow-hidden touch-manipulation ${
-                pressing ? 'scale-95' : ''
-              }`}
-              onMouseDown={startPress}
-              onMouseUp={endPress}
-              onMouseLeave={endPress}
-              onTouchStart={(e) => { e.preventDefault(); startPress(); }}
-              onTouchEnd={endPress}
+              className="relative w-56 h-56 rounded-full bg-gradient-to-br from-[#ff0033] to-[#990033] shadow-[0_20px_50px_rgba(255,0,51,0.4)] flex flex-col items-center justify-center text-white transition-all duration-300 group overflow-hidden touch-manipulation active:scale-95"
+              onClick={triggerSOS}
             >
-              <div className={`absolute inset-0 bg-white/10 transition-opacity ${pressing ? 'opacity-100' : 'opacity-0'}`} />
+              <div className="absolute inset-0 bg-white/10 opacity-0 active:opacity-100 transition-opacity" />
               <span className="material-symbols-outlined text-[80px] mb-2 material-symbols-filled">
                 emergency
               </span>
               <span className="text-3xl uppercase tracking-widest font-extrabold">
                 SOS
               </span>
-              <span className="text-sm font-semibold opacity-90 mt-1">Press & Hold</span>
-              {/* Progress ring */}
-              <svg className={`absolute inset-0 w-full h-full -rotate-90 pointer-events-none transition-opacity ${pressing ? 'opacity-100' : 'opacity-0'}`} viewBox="0 0 100 100">
-                <circle
-                  cx="50" cy="50" r="48"
-                  fill="none" stroke="white" strokeWidth="4"
-                  strokeDasharray="301.59"
-                  strokeDashoffset="301.59"
-                  className={pressing ? 'transition-all duration-[2000ms] ease-linear' : ''}
-                  style={pressing ? { strokeDashoffset: 0 } : {}}
-                />
-              </svg>
+              <span className="text-sm font-semibold opacity-90 mt-1">Tap to SOS</span>
             </button>
           </div>
           <p className="mt-14 text-on-surface-variant text-center max-w-[280px] mx-auto leading-relaxed">

@@ -8,7 +8,7 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import BottomNav from '../components/BottomNav';
 
@@ -39,6 +39,36 @@ function RecenterMap({ center }) {
   return null;
 }
 
+function DraggableLocationMarker({ position, setPosition }) {
+  const map = useMapEvents({
+    click(e) {
+      const newLoc = { lat: e.latlng.lat, lon: e.latlng.lng };
+      setPosition(newLoc);
+      localStorage.setItem('manual_user_loc', JSON.stringify(newLoc));
+      map.flyTo(e.latlng, map.getZoom());
+    },
+  });
+
+  return position ? (
+    <Marker
+      position={[position.lat, position.lon]}
+      draggable={true}
+      eventHandlers={{
+        dragend: (e) => {
+          const marker = e.target;
+          const pos = marker.getLatLng();
+          const newLoc = { lat: pos.lat, lon: pos.lng };
+          setPosition(newLoc);
+          localStorage.setItem('manual_user_loc', JSON.stringify(newLoc));
+          map.flyTo(pos, map.getZoom());
+        },
+      }}
+    >
+      <Popup>Your Location. Drag or click map to change.</Popup>
+    </Marker>
+  ) : null;
+}
+
 export default function FindServices({ type }) {
   const navigate = useNavigate();
   const isHospital = type === 'hospital';
@@ -50,6 +80,18 @@ export default function FindServices({ type }) {
 
   // Get user location with high accuracy
   useEffect(() => {
+    // Check if user manually set their location recently
+    const savedLoc = localStorage.getItem('manual_user_loc');
+    if (savedLoc) {
+      try {
+        setUserLoc(JSON.parse(savedLoc));
+        setLocError(false);
+        return;
+      } catch (e) {
+        console.error("Failed to parse saved location");
+      }
+    }
+
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
@@ -185,9 +227,10 @@ export default function FindServices({ type }) {
               <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; OpenStreetMap' />
               <RecenterMap center={center} />
               {/* User location marker */}
-              <Marker position={center}>
-                <Popup>Your Location</Popup>
-              </Marker>
+              <DraggableLocationMarker 
+                position={userLoc ? userLoc : { lat: center[0], lon: center[1] }} 
+                setPosition={setUserLoc} 
+              />
               {/* Service markers */}
               {filtered.map((s) => (
                 <Marker key={s.id} position={[s.lat, s.lon]} icon={serviceIcon}>
@@ -206,6 +249,9 @@ export default function FindServices({ type }) {
             </div>
           )}
         </div>
+        <p className="text-xs text-on-surface-variant text-center mb-4 italic">
+          Map showing wrong location? Click anywhere on the map or drag your pin to set your exact location.
+        </p>
 
         {/* Search */}
         <div className="flex gap-3 mb-4">

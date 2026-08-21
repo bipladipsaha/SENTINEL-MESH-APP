@@ -37,15 +37,29 @@ export default function SOSActive() {
     }
   }, []);
 
+  // Ref to track if we've sent the alert
+  const sentRef = useRef(false);
+  useEffect(() => {
+    sentRef.current = sent;
+  }, [sent]);
+
   // Listen for remote resolution (e.g., from hardware)
   useEffect(() => {
     if (!currentUser) return;
     const deviceId = userProfile?.deviceId || `web-${currentUser.uid.slice(0, 8)}`;
     const sosRef = ref(db, `sos_alerts/${deviceId}/active`);
     
+    let hasBeenActive = false;
+    
     const unsub = onValue(sosRef, (snapshot) => {
       const isActive = snapshot.val();
-      if (isActive === false) {
+      
+      if (isActive === true) {
+        hasBeenActive = true;
+      }
+
+      // Only redirect on false if it was previously active or if we've already sent it
+      if (isActive === false && (hasBeenActive || sentRef.current)) {
         clearInterval(intervalRef.current);
         navigate('/');
       }
