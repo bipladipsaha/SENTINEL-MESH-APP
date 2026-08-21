@@ -54,9 +54,11 @@ export default function Dashboard() {
       if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition(
           (pos) => {
+            const loc = { lat: pos.coords.latitude, lon: pos.coords.longitude };
+            localStorage.setItem('last_known_loc', JSON.stringify(loc));
             set(ref(db, `user_locations/${currentUser.uid}`), {
-              lat: pos.coords.latitude,
-              lon: pos.coords.longitude,
+              lat: loc.lat,
+              lon: loc.lon,
               timestamp: Date.now(),
             });
           },

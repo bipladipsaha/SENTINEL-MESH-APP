@@ -22,16 +22,13 @@ export default function SOSActive() {
 
   // Get current location
   useEffect(() => {
-    const savedLoc = localStorage.getItem('manual_user_loc');
+    let initialLoc = null;
+    const savedLoc = localStorage.getItem('last_known_loc');
     if (savedLoc) {
       try {
         const parsed = JSON.parse(savedLoc);
-        setLocation({
-          lat: parsed.lat,
-          lon: parsed.lon,
-          accuracy: 10,
-        });
-        return;
+        initialLoc = { lat: parsed.lat, lon: parsed.lon, accuracy: 100 };
+        setLocation(initialLoc);
       } catch (e) {
         console.error("Failed to parse saved location");
       }
@@ -47,13 +44,15 @@ export default function SOSActive() {
           });
         },
         () => {
-          // Fallback to Kolkata/New Town if GPS fails
-          setLocation({ lat: 22.5770, lon: 88.4680, accuracy: 100 });
+          // Fallback to last known or Kolkata if GPS fails
+          if (!initialLoc) {
+            setLocation({ lat: 22.5726, lon: 88.3639, accuracy: 100 });
+          }
         },
         { enableHighAccuracy: true, timeout: 5000 }
       );
-    } else {
-      setLocation({ lat: 22.5770, lon: 88.4680, accuracy: 100 });
+    } else if (!initialLoc) {
+      setLocation({ lat: 22.5726, lon: 88.3639, accuracy: 100 });
     }
   }, []);
 

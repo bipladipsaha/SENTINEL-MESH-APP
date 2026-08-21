@@ -99,7 +99,9 @@ export default function LiveMap() {
         (pos) => {
           // If we aren't using the DemoController, we update with real GPS
           if (!localStorage.getItem('demo_sim_active')) {
-             setUserLoc({ lat: pos.coords.latitude, lon: pos.coords.longitude });
+             const loc = { lat: pos.coords.latitude, lon: pos.coords.longitude };
+             setUserLoc(loc);
+             localStorage.setItem('last_known_loc', JSON.stringify(loc));
           }
         },
         console.warn,
@@ -323,6 +325,7 @@ export default function LiveMap() {
       <DemoController
         onLocationUpdate={(loc) => {
           localStorage.setItem('demo_sim_active', 'true');
+          localStorage.setItem('last_known_loc', JSON.stringify(loc));
           setUserLoc(loc);
         }}
         onStatusChange={(status) => {
