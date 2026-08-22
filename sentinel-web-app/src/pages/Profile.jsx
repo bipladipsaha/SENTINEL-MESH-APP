@@ -68,8 +68,8 @@ export default function Profile() {
             </button>
           </div>
           <h1 className="text-2xl font-bold text-on-surface">{name}</h1>
-          <p className="text-on-surface-variant">
-            {userProfile?.role === 'admin' ? '🛡️ Administrator' : userProfile?.role === 'responder' ? 'Community Responder' : '🧳 Tourist'} • Active
+          <p className="text-on-surface-variant font-medium">
+            {userProfile?.role === 'admin' ? '🛡️ Authority' : '🧳 Tourist'} • Active
           </p>
         </section>
 
@@ -80,34 +80,7 @@ export default function Profile() {
             className="w-full h-14 bg-secondary text-white font-semibold rounded-xl shadow-md btn-press transition-all mb-4 flex items-center justify-center gap-2"
           >
             <span className="material-symbols-outlined text-[20px]">admin_panel_settings</span>
-            Open Command Center
-          </button>
-        )}
-
-        {/* Role Toggle (for demo) */}
-        {userProfile?.role !== 'admin' && (
-          <button
-            onClick={async () => {
-              if (currentUser) {
-                await set(ref(db, `users/${currentUser.uid}/role`), 'admin');
-              }
-            }}
-            className="w-full h-12 bg-surface-container-low text-on-surface font-semibold rounded-xl transition-all btn-press mb-4 flex items-center justify-center gap-2 border border-surface-container text-sm"
-          >
-            <span className="material-symbols-outlined text-[18px]">upgrade</span>
-            Upgrade to Admin (Demo)
-          </button>
-        )}
-        {userProfile?.role === 'admin' && (
-          <button
-            onClick={async () => {
-              if (currentUser) {
-                await set(ref(db, `users/${currentUser.uid}/role`), 'tourist');
-              }
-            }}
-            className="w-full h-10 bg-surface-container-low text-on-surface-variant rounded-xl transition-all btn-press mb-4 flex items-center justify-center gap-2 border border-surface-container text-xs"
-          >
-            Switch to Tourist Role
+            Open Authority Control Center
           </button>
         )}
 

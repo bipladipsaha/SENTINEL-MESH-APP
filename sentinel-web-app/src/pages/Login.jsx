@@ -6,6 +6,8 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { db } from '../firebase';
+import { ref, get } from 'firebase/database';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -13,7 +15,8 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const { login } = useAuth();
+  const [selectedRole, setSelectedRole] = useState('tourist');
+  const { login, logout } = useAuth();
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
@@ -22,8 +25,24 @@ export default function Login() {
     setLoading(true);
 
     try {
-      await login(email, password);
-      navigate('/');
+      const cred = await login(email, password);
+      
+      // Fetch user profile to verify role
+      const profileSnap = await get(ref(db, `users/${cred.user.uid}`));
+      const profile = profileSnap.val();
+
+      if (selectedRole === 'authority' && profile?.role !== 'admin') {
+        await logout();
+        setError('Access denied. You do not have Authority permissions.');
+        setLoading(false);
+        return;
+      }
+
+      if (selectedRole === 'authority') {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
     } catch (err) {
       setError(
         err.code === 'auth/invalid-credential'
@@ -77,6 +96,35 @@ export default function Login() {
 
         {/* Form */}
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+          
+          {/* Role Selector */}
+          <div className="grid grid-cols-2 gap-3 mb-2">
+            <button
+              type="button"
+              onClick={() => setSelectedRole('tourist')}
+              className={`p-3 rounded-xl border-2 font-bold flex flex-col items-center gap-2 transition-all ${
+                selectedRole === 'tourist' 
+                  ? 'border-primary bg-primary/5 text-primary' 
+                  : 'border-surface-container text-on-surface-variant hover:border-outline'
+              }`}
+            >
+              <span className="text-2xl">🧳</span>
+              Tourist
+            </button>
+            <button
+              type="button"
+              onClick={() => setSelectedRole('authority')}
+              className={`p-3 rounded-xl border-2 font-bold flex flex-col items-center gap-2 transition-all ${
+                selectedRole === 'authority' 
+                  ? 'border-primary bg-primary/5 text-primary' 
+                  : 'border-surface-container text-on-surface-variant hover:border-outline'
+              }`}
+            >
+              <span className="text-2xl">🛡️</span>
+              Authority
+            </button>
+          </div>
+
           {/* Email */}
           <div className="flex flex-col gap-1.5">
             <label className="text-sm font-semibold text-on-surface-variant px-1" htmlFor="login-email">
