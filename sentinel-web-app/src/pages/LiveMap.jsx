@@ -192,7 +192,10 @@ export default function LiveMap() {
 
           {/* Geo-Fences */}
           {geoEngine.geoFences.map((gf) => {
-            if (gf.status !== 'active') return null;
+            // Treat missing status as 'active' (for backward compatibility with older fences)
+            if (gf.status === 'disabled') return null;
+            if (!gf.coordinates || (gf.type !== 'critical' && gf.coordinates.length < 3)) return null;
+            
             const colors = ZONE_COLORS[gf.type] || ZONE_COLORS.safe;
             
             if (gf.type === 'critical') {

@@ -195,7 +195,7 @@ export function useGeoEngine(userLocation, options = {}) {
   const deviationTimerRef = useRef(null);
   const deviationStartRef = useRef(null);
 
-  // Load geo-fences from Firebase (fall back to demo data)
+  // Load geo-fences from Firebase
   useEffect(() => {
     const gfRef = ref(db, 'geo_fences');
     const unsub = onValue(gfRef, (snap) => {
@@ -203,6 +203,8 @@ export function useGeoEngine(userLocation, options = {}) {
       if (data) {
         const fences = Object.entries(data).map(([id, v]) => ({ id, ...v }));
         setGeoFences(fences);
+      } else {
+        setGeoFences([]);
       }
     });
     return () => unsub();
