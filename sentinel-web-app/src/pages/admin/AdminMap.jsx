@@ -5,8 +5,7 @@ import { ref, onValue } from 'firebase/database';
 import { MapContainer, TileLayer, Marker, Popup, Polygon, Circle, Polyline, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { useGeoEngine } from '../../hooks/useGeoEngine';
-import DemoController from '../../components/DemoController';
-import { ZONE_COLORS, getRiskLevel, HOTSPOT_ICONS, ROUTE_STATUS, DEMO_ROUTES } from '../../data/demoData';
+import { ZONE_COLORS, getRiskLevel, HOTSPOT_ICONS, ROUTE_STATUS } from '../../data/demoData';
 import { fetchRoute } from '../../services/routingService';
 
 // Fix Leaflet icons
@@ -75,10 +74,7 @@ export default function AdminMap() {
   }, []);
 
   useEffect(() => {
-    const demoRoute = DEMO_ROUTES[0];
-    if (demoRoute) {
-      fetchRoute(demoRoute.waypoints).then((r) => setRouteCoords(r.coordinates)).catch(() => setRouteCoords(demoRoute.waypoints));
-    }
+    // Load route from Firebase here if needed
   }, []);
 
   function toggleFilter(key) { setFilters((p) => ({ ...p, [key]: !p[key] })); }
@@ -234,11 +230,6 @@ export default function AdminMap() {
           </div>
         </div>
       )}
-
-      {/* Demo Controller (Hidden in production) */}
-      <div className="hidden">
-        <DemoController onLocationUpdate={(loc) => setAdminLoc(loc)} onStatusChange={() => {}} userLocation={adminLoc} />
-      </div>
     </div>
   );
 }

@@ -13,8 +13,6 @@ import { db } from '../firebase';
 import { ref, onValue, set } from 'firebase/database';
 import { useDevice } from '../contexts/DeviceContext';
 import { useGeoEngine } from '../hooks/useGeoEngine';
-import { getRiskLevel } from '../data/demoData';
-import DemoController from '../components/DemoController';
 import BottomNav from '../components/BottomNav';
 
 export default function Dashboard() {

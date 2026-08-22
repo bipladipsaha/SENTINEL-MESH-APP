@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate, Navigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { db } from '../../firebase';
 import { ref, onValue } from 'firebase/database';
 
 export default function AdminLayout() {
-  const { currentUser, userProfile } = useAuth();
+  const { currentUser, userProfile, isAdmin, loading } = useAuth();
   const navigate = useNavigate();
   const [sosAlerts, setSosAlerts] = useState([]);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -22,6 +22,41 @@ export default function AdminLayout() {
     });
     return () => unsub();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-dvh flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="inline-block animate-spin rounded-full h-10 w-10 border-4 border-primary border-t-transparent" />
+          <p className="text-on-surface-variant">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!currentUser) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (!isAdmin) {
+    return (
+      <div className="min-h-dvh flex items-center justify-center bg-surface">
+        <div className="text-center px-8">
+          <span className="material-symbols-outlined text-error text-6xl mb-4">admin_panel_settings</span>
+          <h1 className="text-2xl font-bold text-on-surface mb-2">Admin Access Required</h1>
+          <p className="text-on-surface-variant mb-6">
+            You need ADMIN privileges to access the Control Center.
+          </p>
+          <button
+            onClick={() => window.history.back()}
+            className="h-12 px-6 bg-primary text-white font-semibold rounded-xl shadow-md"
+          >
+            Go Back
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   const navItems = [
     { path: '/admin', icon: 'dashboard', label: 'Overview', exact: true },

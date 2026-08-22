@@ -14,13 +14,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import * as turf from '@turf/turf';
 import { db } from '../firebase';
 import { ref, onValue, set, push, get } from 'firebase/database';
-import {
-  DEMO_GEOFENCES,
-  DEMO_HOTSPOTS,
-  DEMO_TOURISTS,
-  DEMO_GROUPS,
-  getRiskLevel,
-} from '../data/demoData';
+import { getRiskLevel } from '../data/demoData';
 
 // Make turf available globally for the routing service
 if (typeof window !== 'undefined') {
@@ -181,11 +175,11 @@ export function useGeoEngine(userLocation, options = {}) {
     groupId = null,
   } = options;
 
-  const [geoFences, setGeoFences] = useState(DEMO_GEOFENCES);
+  const [geoFences, setGeoFences] = useState([]);
   const [sosZones, setSosZones] = useState([]);
-  const [hotspots, setHotspots] = useState(DEMO_HOTSPOTS);
-  const [tourists, setTourists] = useState(DEMO_TOURISTS);
-  const [groups, setGroups] = useState(DEMO_GROUPS);
+  const [hotspots, setHotspots] = useState([]);
+  const [tourists, setTourists] = useState([]);
+  const [groups, setGroups] = useState([]);
 
   // Current state
   const [currentZones, setCurrentZones] = useState([]);
@@ -208,7 +202,7 @@ export function useGeoEngine(userLocation, options = {}) {
       const data = snap.val();
       if (data) {
         const fences = Object.entries(data).map(([id, v]) => ({ id, ...v }));
-        setGeoFences([...DEMO_GEOFENCES, ...fences]);
+        setGeoFences(fences);
       }
     });
     return () => unsub();
@@ -245,16 +239,9 @@ export function useGeoEngine(userLocation, options = {}) {
       const data = snap.val();
       if (data) {
         const fbTourists = Object.entries(data).map(([id, v]) => ({ id, ...v }));
-        setTourists((prev) => {
-          // Merge: Firebase tourists override demo by id
-          const merged = [...DEMO_TOURISTS];
-          for (const ft of fbTourists) {
-            const idx = merged.findIndex((t) => t.id === ft.id);
-            if (idx >= 0) merged[idx] = { ...merged[idx], ...ft };
-            else merged.push(ft);
-          }
-          return merged;
-        });
+        setTourists(fbTourists);
+      } else {
+        setTourists([]);
       }
     });
     return () => unsub();
