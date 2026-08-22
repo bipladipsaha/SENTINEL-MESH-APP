@@ -28,7 +28,7 @@ class _ClaimDeviceScreenState extends State<ClaimDeviceScreen> {
 
     String deviceName = _deviceNameController.text.trim();
     if (deviceName.isEmpty) {
-      deviceName = 'My Sentinel Mesh';
+      deviceName = 'My TravelRakshak';
     }
 
     setState(() {
@@ -90,7 +90,7 @@ class _ClaimDeviceScreenState extends State<ClaimDeviceScreen> {
                 const Icon(Icons.watch, size: 80, color: AppTheme.primary),
                 const SizedBox(height: 24),
                 Text(
-                  'Link Your Sentinel Mesh',
+                  'Link Your TravelRakshak',
                   style: Theme.of(context).textTheme.displayLarge?.copyWith(fontSize: 28),
                   textAlign: TextAlign.center,
                 ),

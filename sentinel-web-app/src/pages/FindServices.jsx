@@ -203,7 +203,7 @@ export default function FindServices({ type }) {
           <button onClick={() => navigate(-1)} className="text-on-surface-variant">
             <span className="material-symbols-outlined">arrow_back</span>
           </button>
-          <span className="text-xl font-bold text-primary">Sentinel Mesh</span>
+          <span className="text-xl font-bold text-primary">TravelRakshak</span>
         </div>
         <button className="w-10 h-10 flex items-center justify-center text-primary">
           <span className="material-symbols-outlined text-[28px]">notifications</span>

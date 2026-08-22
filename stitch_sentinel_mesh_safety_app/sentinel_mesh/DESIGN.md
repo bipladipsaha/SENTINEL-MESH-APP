@@ -1,5 +1,5 @@
 ---
-name: Sentinel Mesh
+name: TravelRakshak
 colors:
   surface: '#f9f9ff'
   surface-dim: '#d0daf0'

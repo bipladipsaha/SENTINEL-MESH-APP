@@ -94,7 +94,7 @@ class _SosCountdownScreenState extends State<SosCountdownScreen>
                   children: [
                     const Icon(Icons.shield, color: AppColors.colorAquaMint, size: 28),
                     const SizedBox(width: 8),
-                    Text('Sentinel Mesh', style: AppTextStyles.labelLarge.copyWith(color: AppColors.colorAquaMint)),
+                    Text('TravelRakshak', style: AppTextStyles.labelLarge.copyWith(color: AppColors.colorAquaMint)),
                     const Spacer(),
                     const CircleAvatar(
                       radius: 18,

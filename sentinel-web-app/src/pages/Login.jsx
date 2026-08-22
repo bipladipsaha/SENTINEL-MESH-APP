@@ -44,7 +44,7 @@ export default function Login() {
               shield_with_heart
             </span>
             <h1 className="text-3xl font-bold text-primary tracking-tight">
-              Sentinel Mesh
+              TravelRakshak
             </h1>
           </div>
           <p className="text-on-surface-variant max-w-[320px]">
@@ -158,7 +158,7 @@ export default function Login() {
         {/* Footer */}
         <div className="text-center pt-2">
           <p className="text-on-surface-variant">
-            New to Sentinel Mesh?{' '}
+            New to TravelRakshak?{' '}
             <Link to="/register" className="text-primary font-semibold ml-1 hover:underline">
               Create an account
             </Link>

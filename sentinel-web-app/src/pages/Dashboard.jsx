@@ -99,7 +99,7 @@ export default function Dashboard() {
           <div className="w-10 h-10 rounded-full overflow-hidden bg-primary/10 flex items-center justify-center text-primary font-bold">
             {firstName[0]}
           </div>
-          <span className="text-xl font-bold text-primary">Sentinel Mesh</span>
+          <span className="text-xl font-bold text-primary">TravelRakshak</span>
         </div>
         <button
           onClick={() => navigate('/notifications')}

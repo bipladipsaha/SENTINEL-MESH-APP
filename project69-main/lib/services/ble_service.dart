@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 
-/// BLE service for discovering and connecting to Sentinel Mesh ESP32 devices.
+/// BLE service for discovering and connecting to TravelRakshak ESP32 devices.
 ///
 /// ESP32 devices advertise with a name like "SM-XXXXX" and expose a
 /// BLE characteristic containing their device ID string.
@@ -44,7 +44,7 @@ class BleService {
   //  Scanning
   // ------------------------------------------------------------------
 
-  /// Scan for nearby Sentinel Mesh devices (name starts with "SM-").
+  /// Scan for nearby TravelRakshak devices (name starts with "SM-").
   /// Returns discovered devices via the [onDeviceFound] callback.
   /// Scan runs for [timeout] duration.
   Future<List<ScanResult>> scanForDevices({

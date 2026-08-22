@@ -132,7 +132,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: _buildSettingsRow(
                   icon: Icons.info_outline,
                   iconColor: AppColors.colorTextSecondary,
-                  title: 'About Sentinel Mesh',
+                  title: 'About TravelRakshak',
                   subtitle: 'Version 2.4.0 (Stable)',
                   onTap: () {},
                 ),

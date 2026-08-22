@@ -32,7 +32,7 @@ export default function PairDevice() {
       setStatus('connected');
     } catch (err) {
       if (err.name === 'NotFoundError') {
-        setErrorMsg('No Sentinel Mesh device found nearby. Make sure your device is on.');
+        setErrorMsg('No TravelRakshak device found nearby. Make sure your device is on.');
       } else {
         setErrorMsg(`Connection failed: ${err.message}`);
       }
@@ -68,7 +68,7 @@ export default function PairDevice() {
           </div>
           <h1 className="text-2xl font-bold text-on-surface">Device Paired!</h1>
           <p className="text-on-surface-variant">
-            <strong>{deviceName}</strong> has been successfully connected to your Sentinel Mesh account.
+            <strong>{deviceName}</strong> has been successfully connected to your TravelRakshak account.
           </p>
           <div className="bg-secondary-container/30 rounded-2xl p-4 w-full">
             <p className="text-sm text-on-surface-variant">
@@ -94,7 +94,7 @@ export default function PairDevice() {
           <button onClick={() => navigate(-1)} className="text-on-surface-variant">
             <span className="material-symbols-outlined">arrow_back</span>
           </button>
-          <span className="text-xl font-bold text-primary">Sentinel Mesh</span>
+          <span className="text-xl font-bold text-primary">TravelRakshak</span>
         </div>
       </header>
 

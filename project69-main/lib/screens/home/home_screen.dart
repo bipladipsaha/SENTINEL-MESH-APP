@@ -268,7 +268,7 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(height: 16),
           const Text('No devices claimed yet', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
           const SizedBox(height: 4),
-          const Text('Tap "Add Device" to link your Sentinel Mesh', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
+          const Text('Tap "Add Device" to link your TravelRakshak', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
         ],
       ),
     );

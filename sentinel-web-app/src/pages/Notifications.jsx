@@ -95,7 +95,7 @@ export default function Notifications() {
           <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
             {currentUser?.displayName?.[0] || 'U'}
           </div>
-          <span className="text-xl font-bold text-primary">Sentinel Mesh</span>
+          <span className="text-xl font-bold text-primary">TravelRakshak</span>
         </div>
         <span className="material-symbols-outlined text-primary text-[28px]">notifications</span>
       </header>

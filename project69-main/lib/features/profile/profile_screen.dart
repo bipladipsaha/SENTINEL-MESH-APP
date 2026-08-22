@@ -129,7 +129,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     const SizedBox(height: 32),
                     Center(
-                      child: Text('Protected by Sentinel Mesh Encryption v4.2.0', style: AppTextStyles.bodySmall.copyWith(fontSize: 10)),
+                      child: Text('Protected by TravelRakshak Encryption v4.2.0', style: AppTextStyles.bodySmall.copyWith(fontSize: 10)),
                     ),
                     const SizedBox(height: 16),
                     Row(

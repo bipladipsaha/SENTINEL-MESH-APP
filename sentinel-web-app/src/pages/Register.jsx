@@ -52,7 +52,7 @@ export default function Register() {
               shield_with_heart
             </span>
             <span className="text-2xl font-bold text-primary tracking-tight">
-              Sentinel Mesh
+              TravelRakshak
             </span>
           </div>
           <h1 className="text-2xl font-bold text-on-surface mt-2">Create Account</h1>
@@ -174,7 +174,7 @@ export default function Register() {
             <span className="material-symbols-outlined text-primary text-xl mt-0.5">info</span>
             <p className="text-sm text-on-surface-variant leading-relaxed">
               {role === 'device_user'
-                ? 'As a Device User, your next step after registration will be to pair your Sentinel Mesh wearable for active monitoring.'
+                ? 'As a Device User, your next step after registration will be to pair your TravelRakshak wearable for active monitoring.'
                 : 'As a Community Responder, you will receive SOS alerts from nearby users and can help coordinate emergency responses.'}
             </p>
           </div>

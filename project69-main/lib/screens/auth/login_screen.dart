@@ -80,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         const Icon(Icons.shield, size: 40, color: AppColors.colorAquaMint),
                         const SizedBox(width: 12),
-                        Text('Sentinel Mesh', style: AppTextStyles.displayMedium),
+                        Text('TravelRakshak', style: AppTextStyles.displayMedium),
                       ],
                     ),
                     const SizedBox(height: 12),
@@ -187,7 +187,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       child: RichText(
                         text: const TextSpan(
-                          text: "New to Sentinel Mesh? ",
+                          text: "New to TravelRakshak? ",
                           style: TextStyle(color: AppColors.colorTextSecondary),
                           children: [
                             TextSpan(

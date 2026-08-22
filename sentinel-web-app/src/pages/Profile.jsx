@@ -49,7 +49,7 @@ export default function Profile() {
           <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
             {initials}
           </div>
-          <span className="text-xl font-bold text-primary">Sentinel Mesh</span>
+          <span className="text-xl font-bold text-primary">TravelRakshak</span>
         </div>
         <button className="w-10 h-10 flex items-center justify-center text-primary">
           <span className="material-symbols-outlined text-[28px]">notifications</span>
@@ -194,7 +194,7 @@ export default function Profile() {
         {/* Footer */}
         <div className="text-center py-4 border-t border-surface-container">
           <p className="text-xs text-outline">
-            Protected by Sentinel Mesh Encryption v4.2.0
+            Protected by TravelRakshak Encryption v4.2.0
           </p>
           <div className="flex justify-center gap-4 mt-2">
             <a href="#" className="text-xs text-primary hover:underline">Privacy Policy</a>

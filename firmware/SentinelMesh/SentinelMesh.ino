@@ -120,7 +120,7 @@ void setup() {
 
     Serial.println("[MAIN] All tasks launched");
     Serial.println("[MAIN] ────────────────────────────────");
-    Serial.println("[MAIN] Sentinel Mesh is operational.");
+    Serial.println("[MAIN] TravelRakshak is operational.");
     Serial.printf("[MAIN] Device ID for App: %s\n", g_state.deviceIdStr);
     Serial.println("[MAIN] Press SOS button to trigger emergency.");
     Serial.println("[MAIN] ────────────────────────────────");

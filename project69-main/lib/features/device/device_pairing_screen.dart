@@ -29,7 +29,7 @@ class _DevicePairingScreenState extends State<DevicePairingScreen> {
     super.dispose();
   }
 
-  /// Start BLE scan for nearby Sentinel Mesh devices
+  /// Start BLE scan for nearby TravelRakshak devices
   Future<void> _startScan() async {
     setState(() {
       _isScanning = true;
@@ -46,7 +46,7 @@ class _DevicePairingScreenState extends State<DevicePairingScreen> {
           _discoveredDevices = results;
           _isScanning = false;
           if (results.isEmpty) {
-            _errorMessage = 'No Sentinel Mesh devices found nearby.\n'
+            _errorMessage = 'No TravelRakshak devices found nearby.\n'
                 'Make sure your device is powered on and the blue LED is blinking.';
           }
         });
@@ -114,7 +114,7 @@ class _DevicePairingScreenState extends State<DevicePairingScreen> {
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 20),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text('Sentinel Mesh'),
+        title: const Text('TravelRakshak'),
         actions: const [
           Padding(
             padding: EdgeInsets.only(right: 16),
@@ -154,7 +154,7 @@ class _DevicePairingScreenState extends State<DevicePairingScreen> {
               ),
               const SizedBox(height: 8),
               Text(
-                'To begin your protection journey, pair your Sentinel Mesh wearable with the mesh network.',
+                'To begin your protection journey, pair your TravelRakshak wearable with the mesh network.',
                 style: AppTextStyles.bodyMedium,
                 textAlign: TextAlign.center,
               ),
@@ -197,7 +197,7 @@ class _DevicePairingScreenState extends State<DevicePairingScreen> {
                 icon: Icons.bluetooth_searching,
                 iconColor: AppColors.colorAquaMint,
                 title: 'Scan for Devices',
-                subtitle: 'Find nearby Sentinel Mesh devices via BLE',
+                subtitle: 'Find nearby TravelRakshak devices via BLE',
                 onTap: _isScanning ? null : _startScan,
                 trailing: _isScanning
                     ? const SizedBox(

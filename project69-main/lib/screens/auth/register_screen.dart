@@ -99,7 +99,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Join the Sentinel Mesh network.',
+                      'Join the TravelRakshak network.',
                       style: AppTextStyles.bodyMedium,
                     ),
                     const SizedBox(height: 32),

@@ -223,7 +223,7 @@ export default function SOSActive() {
       <header className="flex items-center justify-between px-5 py-4">
         <div className="flex items-center gap-2">
           <span className="material-symbols-outlined text-primary text-2xl">shield</span>
-          <span className="text-xl font-bold text-primary">Sentinel Mesh</span>
+          <span className="text-xl font-bold text-primary">TravelRakshak</span>
         </div>
       </header>
 

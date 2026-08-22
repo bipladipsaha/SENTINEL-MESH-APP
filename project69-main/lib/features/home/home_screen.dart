@@ -160,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('Good Morning, User', style: AppTextStyles.labelLarge),
-                Text('Sentinel Mesh', style: AppTextStyles.bodySmall),
+                Text('TravelRakshak', style: AppTextStyles.bodySmall),
               ],
             ),
           ],

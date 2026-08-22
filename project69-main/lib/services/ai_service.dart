@@ -217,7 +217,7 @@ All AI analysis services were temporarily unreachable.
 
 RECOMMENDED ACTION: Forward this report and attached video evidence to local authorities immediately for manual review.
 
-— Sentinel Mesh Autonomous Safety System
+— TravelRakshak Autonomous Safety System
 """;
   }
 
@@ -231,7 +231,7 @@ RECOMMENDED ACTION: Forward this report and attached video evidence to local aut
   static Future<Map<String, dynamic>> reasonOverEnvironment(Map<String, dynamic> context) async {
     final String prompt = "Context: $context. Analyze threat. Return JSON: {\"threat_score\": 0..1, \"recommended_action\": \"string\", \"reasoning\": \"string\"}";
     try {
-      final response = await _generate(prompt, "You are the Autonomous Brain of Sentinel Mesh.");
+      final response = await _generate(prompt, "You are the Autonomous Brain of TravelRakshak.");
       return {"score": 0.1, "action": "monitor", "reasoning": response};
     } catch (_) {
       return {"score": 0.0, "action": "none", "reasoning": "Offline baseline"};
