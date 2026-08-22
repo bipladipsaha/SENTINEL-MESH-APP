@@ -85,17 +85,6 @@ export default function Register() {
           >
             🛡️ Admin
           </button>
-          <button
-            type="button"
-            onClick={() => setRole('responder')}
-            className={`flex-1 py-3 rounded-xl text-sm font-semibold transition-all ${
-              role === 'responder'
-                ? 'bg-white text-on-surface shadow-md'
-                : 'text-on-surface-variant hover:text-on-surface'
-            }`}
-          >
-            🚑 Responder
-          </button>
         </div>
 
         {/* Error */}
@@ -173,9 +162,9 @@ export default function Register() {
           <div className="bg-primary-fixed/30 rounded-2xl p-4 flex items-start gap-3">
             <span className="material-symbols-outlined text-primary text-xl mt-0.5">info</span>
             <p className="text-sm text-on-surface-variant leading-relaxed">
-              {role === 'device_user'
-                ? 'As a Device User, your next step after registration will be to pair your TravelRakshak wearable for active monitoring.'
-                : 'As a Community Responder, you will receive SOS alerts from nearby users and can help coordinate emergency responses.'}
+              {role === 'tourist'
+                ? "For tourists using TravelRakshak's safety services."
+                : "For authorized authorities managing tourist safety and emergency response."}
             </p>
           </div>
 
