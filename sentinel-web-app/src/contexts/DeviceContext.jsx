@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import { db } from '../firebase';
 import { ref, update, set } from 'firebase/database';
+import { toast } from 'react-hot-toast';
 
 const DeviceContext = createContext();
 
@@ -46,6 +47,7 @@ export function DeviceProvider({ children }) {
       const alertMessage = decoder.decode(value);
       
       console.log('[BLE Proxy] Received alert from ESP32:', alertMessage);
+      toast.success(`BLE Signal Received: ${alertMessage}`, { duration: 4000 });
 
       const parts = alertMessage.split('|');
       const typeStr = parts[0];
