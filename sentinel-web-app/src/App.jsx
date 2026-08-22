@@ -24,6 +24,17 @@ import CommandCenter from './pages/CommandCenter';
 import ManageGeoFences from './pages/ManageGeoFences';
 import LiveMap from './pages/LiveMap';
 
+// Admin Components
+import AdminLayout from './components/admin/AdminLayout';
+import AdminOverview from './pages/admin/AdminOverview';
+import AdminAlerts from './pages/admin/AdminAlerts';
+import AdminMap from './pages/admin/AdminMap';
+import AdminTourists from './pages/admin/AdminTourists';
+import AdminIncidents from './pages/admin/AdminIncidents';
+import AdminAnalytics from './pages/admin/AdminAnalytics';
+import AdminServices from './pages/admin/AdminServices';
+import AdminSettings from './pages/admin/AdminSettings';
+
 // Protected Route wrapper
 function ProtectedRoute({ children }) {
   const { currentUser, loading } = useAuth();
@@ -205,18 +216,20 @@ function AppRoutes() {
         path="/admin"
         element={
           <AdminRoute>
-            <CommandCenter />
+            <AdminLayout />
           </AdminRoute>
         }
-      />
-      <Route
-        path="/admin/geofences"
-        element={
-          <AdminRoute>
-            <ManageGeoFences />
-          </AdminRoute>
-        }
-      />
+      >
+        <Route index element={<AdminOverview />} />
+        <Route path="alerts" element={<AdminAlerts />} />
+        <Route path="map" element={<AdminMap />} />
+        <Route path="tourists" element={<AdminTourists />} />
+        <Route path="geofences" element={<ManageGeoFences />} />
+        <Route path="incidents" element={<AdminIncidents />} />
+        <Route path="analytics" element={<AdminAnalytics />} />
+        <Route path="services" element={<AdminServices />} />
+        <Route path="settings" element={<AdminSettings />} />
+      </Route>
 
       {/* Catch-all */}
       <Route path="*" element={<Navigate to="/" replace />} />

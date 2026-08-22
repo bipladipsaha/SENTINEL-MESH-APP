@@ -156,13 +156,10 @@ export default function ManageGeoFences() {
   const center = [22.5800, 88.4650];
 
   return (
-    <div className="h-dvh flex flex-col bg-surface overflow-hidden">
+    <div className="h-full flex flex-col bg-surface overflow-hidden">
       {/* Header */}
-      <header className="flex items-center justify-between px-4 py-3 bg-white/90 backdrop-blur-md border-b border-surface-container z-50">
+      <header className="flex items-center justify-between px-4 py-3 bg-white/90 backdrop-blur-md border-b border-surface-container z-[400]">
         <div className="flex items-center gap-3">
-          <button onClick={() => navigate('/admin')} className="text-on-surface-variant">
-            <span className="material-symbols-outlined">arrow_back</span>
-          </button>
           <span className="text-lg font-bold text-primary">Manage Geo-Fences</span>
         </div>
         <div className="flex gap-2">
