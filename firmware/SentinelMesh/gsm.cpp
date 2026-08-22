@@ -259,31 +259,22 @@ bool gsmHangUp() {
 // ============================================================
 
 bool gsmConnectGPRS() {
-    Serial.println("[GSM] Connecting GPRS...");
+    Serial.println("[GSM] Connecting LTE Data...");
 
     // Tear down any previous session
     sendATOK("AT+HTTPTERM",   2000);
-    sendATOK("AT+SAPBR=0,1",  2000);
 
-    // Configure bearer profile 1
-    if (!sendATOK("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"")) return false;
-
+    // Set APN for LTE
     snprintf(cmdBuf, sizeof(cmdBuf),
-             "AT+SAPBR=3,1,\"APN\",\"%s\"", GSM_APN);
+             "AT+CGDCONT=1,\"IP\",\"%s\"", GSM_APN);
     if (!sendATOK(cmdBuf)) return false;
 
-    // Open bearer (can take a few seconds)
-    if (!sendAT("AT+SAPBR=1,1", "OK", AT_LONG_TIMEOUT)) {
-        Serial.println("[GSM] Bearer open failed");
-        return false;
-    }
-
-    // Initialise HTTP service
-    if (!sendATOK("AT+HTTPINIT")) return false;
-    if (!sendATOK("AT+HTTPPARA=\"CID\",1")) return false;
+    // Activate PDP Context
+    // We don't fail if this returns error, as it might already be active
+    sendATOK("AT+CGACT=1,1", AT_LONG_TIMEOUT);
 
     gprsConnected = true;
-    Serial.println("[GSM] GPRS connected ✓");
+    Serial.println("[GSM] LTE Data connected ✓");
     return true;
 }
 
@@ -341,10 +332,17 @@ int gsmHttpsPut(const char* url, const char* body) {
     // Tear down any prior session
     sendATOK("AT+HTTPTERM",  2000);
 
-    // Init HTTP + enable SSL
+    // Set APN for LTE
+    snprintf(cmdBuf, sizeof(cmdBuf), "AT+CGDCONT=1,\"IP\",\"%s\"", GSM_APN);
+    sendATOK(cmdBuf, 2000);
+
+    // Ensure LTE data context is active before initializing HTTP
+    sendATOK("AT+CGACT=1,1", 5000);
+
+    // Init HTTP
     if (!sendATOK("AT+HTTPINIT", AT_TIMEOUT)) return -1;
-    if (!sendATOK("AT+HTTPPARA=\"CID\",1"))    return -2;
-    if (!sendATOK("AT+HTTPSSL=1"))             return -3;
+    // A7670C automatically handles SSL when URL starts with https://
+    // No need for AT+HTTPSSL=1 or CID param.
 
     // Set URL
     snprintf(cmdBuf, sizeof(cmdBuf),
@@ -384,9 +382,9 @@ int gsmHttpsPut(const char* url, const char* body) {
 }
 
 bool gsmDisconnectGPRS() {
-    Serial.println("[GSM] Disconnecting GPRS");
+    Serial.println("[GSM] Disconnecting LTE Data");
     sendATOK("AT+HTTPTERM",   2000);
-    sendATOK("AT+SAPBR=0,1",  2000);
+    sendATOK("AT+CGACT=0,1",  2000);
     gprsConnected = false;
     return true;
 }
@@ -402,10 +400,16 @@ int gsmHttpsPost(const char* url, const char* body) {
     // Tear down any prior session
     sendATOK("AT+HTTPTERM",  2000);
 
-    // Init HTTP + enable SSL
+    // Set APN for LTE
+    snprintf(cmdBuf, sizeof(cmdBuf), "AT+CGDCONT=1,\"IP\",\"%s\"", GSM_APN);
+    sendATOK(cmdBuf, 2000);
+
+    // Ensure LTE data context is active before initializing HTTP
+    sendATOK("AT+CGACT=1,1", 5000);
+
+    // Init HTTP
     if (!sendATOK("AT+HTTPINIT", AT_TIMEOUT)) return -1;
-    if (!sendATOK("AT+HTTPPARA=\"CID\",1"))    return -2;
-    if (!sendATOK("AT+HTTPSSL=1"))             return -3;
+    // A7670C handles SSL automatically for https URLs
 
     // Set URL
     snprintf(cmdBuf, sizeof(cmdBuf),
