@@ -36,33 +36,43 @@ export function DeviceProvider({ children }) {
   // Automatically attempt to reconnect if disconnected? Web Bluetooth requires user gesture to connect.
   // So we can't auto-reconnect on load without user interaction.
 
-  // Handle incoming BLE notifications
-  async function handleAlertNotification(event) {
-    const value = event.target.value;
-    const decoder = new TextDecoder('utf-8');
-    const alertMessage = decoder.decode(value);
-    
-    console.log('[BLE Proxy] Received alert from ESP32:', alertMessage);
+  // Use a ref to hold the latest handler to avoid stale closures in the event listener
+  const latestHandlerRef = useRef();
 
-    const parts = alertMessage.split('|');
-    const typeStr = parts[0];
-
-    if (typeStr.startsWith('SOS')) {
-      const espLat = parts.length > 1 ? parseFloat(parts[1]) : 0;
-      const espLon = parts.length > 2 ? parseFloat(parts[2]) : 0;
-
-      // Proxy the SOS to Firebase
-      await proxySOSToFirebase(true, typeStr, espLat, espLon);
+  useEffect(() => {
+    latestHandlerRef.current = async (event) => {
+      const value = event.target.value;
+      const decoder = new TextDecoder('utf-8');
+      const alertMessage = decoder.decode(value);
       
-      // Navigate user to the active SOS screen so they know it triggered
-      navigate('/sos-active');
-      
-      if (navigator.vibrate) {
-        navigator.vibrate([500, 200, 500]);
+      console.log('[BLE Proxy] Received alert from ESP32:', alertMessage);
+
+      const parts = alertMessage.split('|');
+      const typeStr = parts[0];
+
+      if (typeStr.startsWith('SOS')) {
+        const espLat = parts.length > 1 ? parseFloat(parts[1]) : 0;
+        const espLon = parts.length > 2 ? parseFloat(parts[2]) : 0;
+
+        // Proxy the SOS to Firebase
+        await proxySOSToFirebase(true, typeStr, espLat, espLon);
+        
+        // Navigate user to the active SOS screen so they know it triggered
+        navigate('/sos-active');
+        
+        if (navigator.vibrate) {
+          navigator.vibrate([500, 200, 500]);
+        }
+      } else if (typeStr === 'RESOLVED') {
+        await proxySOSToFirebase(false, typeStr, 0, 0);
+        navigate('/');
       }
-    } else if (typeStr === 'RESOLVED') {
-      await proxySOSToFirebase(false, typeStr, 0, 0);
-      navigate('/');
+    };
+  }, [navigate, currentUser, userProfile, deviceBattery]);
+
+  async function handleAlertNotification(event) {
+    if (latestHandlerRef.current) {
+      await latestHandlerRef.current(event);
     }
   }
 
