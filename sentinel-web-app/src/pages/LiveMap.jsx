@@ -215,7 +215,7 @@ export default function LiveMap() {
             return (
               <Polygon
                 key={gf.id}
-                positions={gf.coordinates}
+                positions={gf.coordinates.map(([lat, lon]) => [Number(lat), Number(lon)])}
                 pathOptions={{
                   color: colors.stroke,
                   fillColor: colors.fill,

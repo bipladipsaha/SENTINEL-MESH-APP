@@ -175,7 +175,7 @@ export function useGeoEngine(userLocation, options = {}) {
     groupId = null,
   } = options;
 
-  const [geoFences, setGeoFences] = useState([]);
+  const [geoFences, setGeoFences] = useState([...DEMO_GEOFENCES]);
   const [sosZones, setSosZones] = useState([]);
   const [hotspots, setHotspots] = useState([]);
   const [tourists, setTourists] = useState([]);
@@ -206,6 +206,10 @@ export function useGeoEngine(userLocation, options = {}) {
       } else {
         setGeoFences([...DEMO_GEOFENCES]);
       }
+    }, (error) => {
+      console.warn("Firebase read error on geo_fences:", error);
+      // Fallback to demo fences if read fails (e.g. permission denied for Tourist)
+      setGeoFences([...DEMO_GEOFENCES]);
     });
     return () => unsub();
   }, []);
