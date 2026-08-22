@@ -15,7 +15,6 @@ import { MapContainer, TileLayer, Marker, Popup, Polygon, Circle, Polyline, useM
 import L from 'leaflet';
 import { useGeoEngine } from '../hooks/useGeoEngine';
 import BottomNav from '../components/BottomNav';
-import DemoController from '../components/DemoController';
 import { fetchRoute } from '../services/routingService';
 import { ZONE_COLORS, getRiskLevel } from '../data/demoData';
 
@@ -331,33 +330,6 @@ export default function LiveMap() {
           </div>
         )}
       </div>
-
-      <DemoController
-        onLocationUpdate={(loc) => {
-          localStorage.setItem('demo_sim_active', 'true');
-          localStorage.setItem('last_known_loc', JSON.stringify(loc));
-          setUserLoc(loc);
-        }}
-        onStatusChange={(status) => {
-          if (status.sos) {
-            // Push fake SOS to Firebase for demo
-            import('firebase/database').then(({ ref, set }) => {
-              import('../firebase').then(({ db }) => {
-                const fakeId = `demo-${Date.now()}`;
-                set(ref(db, `geo_fences/gf-sos-${fakeId}`), {
-                  name: `Demo Emergency`,
-                  type: 'critical',
-                  coordinates: [[userLoc.lat, userLoc.lon]],
-                  status: 'active',
-                  timestamp: Date.now(),
-                });
-                setTimeout(() => set(ref(db, `geo_fences/gf-sos-${fakeId}`), null), 15000);
-              });
-            });
-          }
-        }}
-        userLocation={userLoc}
-      />
 
       <BottomNav active="map" />
     </div>

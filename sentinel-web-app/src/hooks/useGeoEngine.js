@@ -14,7 +14,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import * as turf from '@turf/turf';
 import { db } from '../firebase';
 import { ref, onValue, set, push, get } from 'firebase/database';
-import { getRiskLevel } from '../data/demoData';
+import { getRiskLevel, DEMO_GEOFENCES } from '../data/demoData';
 
 // Make turf available globally for the routing service
 if (typeof window !== 'undefined') {
@@ -201,10 +201,10 @@ export function useGeoEngine(userLocation, options = {}) {
     const unsub = onValue(gfRef, (snap) => {
       const data = snap.val();
       if (data) {
-        const fences = Object.entries(data).map(([id, v]) => ({ id, ...v }));
-        setGeoFences(fences);
+        const fbFences = Object.entries(data).map(([id, v]) => ({ id, ...v }));
+        setGeoFences([...DEMO_GEOFENCES, ...fbFences]);
       } else {
-        setGeoFences([]);
+        setGeoFences([...DEMO_GEOFENCES]);
       }
     });
     return () => unsub();

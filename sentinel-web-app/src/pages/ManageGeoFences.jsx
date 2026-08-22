@@ -11,7 +11,7 @@ import { db } from '../firebase';
 import { ref, onValue, set, push, remove, update } from 'firebase/database';
 import { MapContainer, TileLayer, Polygon, Marker, useMapEvents, Popup } from 'react-leaflet';
 import L from 'leaflet';
-import { ZONE_COLORS } from '../data/demoData';
+import { ZONE_COLORS, DEMO_GEOFENCES } from '../data/demoData';
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -33,7 +33,7 @@ function DrawingLayer({ points, setPoints, drawing }) {
 
 export default function ManageGeoFences() {
   const navigate = useNavigate();
-  const [fences, setFences] = useState([]);
+  const [fences, setFences] = useState([...DEMO_GEOFENCES]);
   const [drawing, setDrawing] = useState(false);
   const [drawPoints, setDrawPoints] = useState([]);
   const [showForm, setShowForm] = useState(false);
@@ -54,9 +54,9 @@ export default function ManageGeoFences() {
       const data = snap.val();
       if (data) {
         const fbFences = Object.entries(data).map(([id, v]) => ({ id, ...v }));
-        setFences(fbFences);
+        setFences([...DEMO_GEOFENCES, ...fbFences]);
       } else {
-        setFences([]);
+        setFences([...DEMO_GEOFENCES]);
       }
     });
     return () => unsub();
