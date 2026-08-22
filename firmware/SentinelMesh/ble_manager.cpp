@@ -35,7 +35,7 @@ class MyServerCallbacks: public BLEServerCallbacks {
         digitalWrite(PIN_LED_BLUE, LOW);
         Serial.println("[BLE] Device disconnected");
         // Restart advertising
-        BLEDevice::startAdvertising();
+        pServer->startAdvertising();
         Serial.println("[BLE] Restarting advertising");
     }
 };
@@ -62,6 +62,7 @@ void initBLE() {
     Serial.printf("[BLE] Initializing as %s\n", deviceName.c_str());
 
     BLEDevice::init(deviceName.c_str());
+    BLEDevice::setMTU(512);
     pServer = BLEDevice::createServer();
     pServer->setCallbacks(new MyServerCallbacks());
 
@@ -102,7 +103,7 @@ void initBLE() {
     pAdvertising->addServiceUUID(BLEUUID((uint16_t)0x180F));
     pAdvertising->setScanResponse(true);
     pAdvertising->setMinPreferred(0x06);  // helps with iPhone connections issue
-    pAdvertising->setMinPreferred(0x12);
+    pAdvertising->setMaxPreferred(0x12);
     BLEDevice::startAdvertising();
 
     Serial.println("[BLE] Advertising started. Waiting for connections...");
@@ -111,6 +112,7 @@ void initBLE() {
 void taskBLE(void* param) {
     (void)param;
     bool ledState = false;
+    int connectedTicks = 0;
 
     for (;;) {
         // If not connected, blink the blue LED
@@ -118,21 +120,25 @@ void taskBLE(void* param) {
             ledState = !ledState;
             digitalWrite(PIN_LED_BLUE, ledState ? HIGH : LOW);
             vTaskDelay(pdMS_TO_TICKS(500));
+            connectedTicks = 0;
         } else {
             // Keep solid blue when connected
             digitalWrite(PIN_LED_BLUE, HIGH);
             
-            // Periodically update the battery characteristic
-            lockState();
-            uint8_t currentBat = g_state.battery.percent;
-            unlockState();
-            
-            if (pBatteryCharacteristic != NULL) {
-                pBatteryCharacteristic->setValue(&currentBat, 1);
-                pBatteryCharacteristic->notify();
+            // Periodically update the battery characteristic every 10 seconds
+            if (connectedTicks % 20 == 0) {
+                lockState();
+                uint8_t currentBat = g_state.battery.percent;
+                unlockState();
+                
+                if (pBatteryCharacteristic != NULL) {
+                    pBatteryCharacteristic->setValue(&currentBat, 1);
+                    pBatteryCharacteristic->notify();
+                }
             }
             
-            vTaskDelay(pdMS_TO_TICKS(2000));
+            connectedTicks++;
+            vTaskDelay(pdMS_TO_TICKS(500));
         }
     }
 }

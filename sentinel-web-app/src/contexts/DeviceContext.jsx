@@ -52,7 +52,7 @@ export function DeviceProvider({ children }) {
       const parts = alertMessage.split('|');
       const typeStr = parts[0];
 
-      if (typeStr.startsWith('SOS')) {
+      if (typeStr === 'SOS' || typeStr === 'FALL' || typeStr.startsWith('SOS')) {
         const espLat = parts.length > 1 ? parseFloat(parts[1]) : 0;
         const espLon = parts.length > 2 ? parseFloat(parts[2]) : 0;
 
@@ -133,7 +133,7 @@ export function DeviceProvider({ children }) {
       deviceId,
       lat,
       lon,
-      type: typeStr === 'SOS_FALL' ? 'FALL' : 'MANUAL_SOS',
+      type: (typeStr === 'FALL' || typeStr === 'SOS_FALL') ? 'FALL' : 'MANUAL_SOS',
       battery: deviceBattery,
       active: true,
       timestamp: Date.now(),

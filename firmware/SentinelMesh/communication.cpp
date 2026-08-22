@@ -117,9 +117,9 @@ static void sendInitialAlerts() {
     
     char bleMsg[64];
     if (etype == EMERGENCY_FALL) {
-        snprintf(bleMsg, sizeof(bleMsg), "SOS_FALL|%.6f|%.6f", lat, lon);
+        snprintf(bleMsg, sizeof(bleMsg), "FALL|%.4f|%.4f", lat, lon);
     } else {
-        snprintf(bleMsg, sizeof(bleMsg), "SOS_MANUAL|%.6f|%.6f", lat, lon);
+        snprintf(bleMsg, sizeof(bleMsg), "SOS|%.4f|%.4f", lat, lon);
     }
     notifyBLEAlert(bleMsg);
     vTaskDelay(pdMS_TO_TICKS(1000));
