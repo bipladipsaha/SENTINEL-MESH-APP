@@ -68,6 +68,7 @@ export default function SOSActive() {
       
       if (isActive === true) {
         hasBeenActive = true;
+        setSent(true); // Skip countdown if already active in Firebase (ESP32 triggered it, or stale state)
       }
 
       // Only redirect on false if it was previously active or if we've already sent it

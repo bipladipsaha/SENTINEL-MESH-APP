@@ -377,6 +377,24 @@ export function DeviceProvider({ children }) {
       // Start polling fallback for alert characteristic reliability
       startAlertPolling();
 
+      // Clear any stale state in Firebase if ESP32 is currently IDLE
+      try {
+        if (alertCharRef.current) {
+          const initialVal = await alertCharRef.current.readValue();
+          const initialMsg = new TextDecoder('utf-8').decode(initialVal).trim();
+          if (initialMsg === 'IDLE' || initialMsg === 'RESOLVED') {
+            const userId = currentUserRef.current?.uid;
+            if (userId) {
+              const fbDeviceId = userProfileRef.current?.deviceId || deviceIdStr || `web-${userId.slice(0, 8)}`;
+              await update(ref(db, `sos_alerts/${fbDeviceId}`), { active: false });
+              console.log('[BLE Proxy] Cleared stale active state in Firebase on connect');
+            }
+          }
+        }
+      } catch (err) {
+        console.warn('[BLE Proxy] Failed to read initial characteristic state:', err);
+      }
+
       return deviceIdStr;
     } catch (err) {
       console.error('[BLE] Connection failed:', err);

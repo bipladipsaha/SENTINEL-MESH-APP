@@ -91,15 +91,25 @@ void taskEmergency(void* param) {
     Serial.println("[EMG] ══════════════════════════");
 
     for (;;) {
-        // ---- Software Debounce Polling ----
-        if (digitalRead(PIN_SOS_BUTTON) == LOW) {
+        // ---- Software Debounce Polling (Edge Detection) ----
+        static bool s_lastButtonState = digitalRead(PIN_SOS_BUTTON);
+        bool currentReading = digitalRead(PIN_SOS_BUTTON);
+
+        // Only trigger on the transition from HIGH to LOW (pressing the button)
+        if (currentReading == LOW && s_lastButtonState == HIGH) {
             s_buttonPressCount++;
-            if (s_buttonPressCount == BUTTON_DEBOUNCE_TICKS) {
+            if (s_buttonPressCount >= BUTTON_DEBOUNCE_TICKS) {
                 g_state.sosButtonPressed = true;
+                s_lastButtonState = LOW; // Register the press
                 Serial.println("[EMG] Button press confirmed (software debounce)");
             }
-        } else {
+        } else if (currentReading == HIGH) {
             s_buttonPressCount = 0;
+            s_lastButtonState = HIGH;
+        } else {
+            // Button is being held LOW continuously, do nothing more.
+            // This prevents continuous triggers and prevents triggering on boot
+            // if the button is wired normally-closed.
         }
 
         EmergencyState state = getEmergencyState();
