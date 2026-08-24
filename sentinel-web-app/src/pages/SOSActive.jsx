@@ -9,12 +9,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useDevice } from '../contexts/DeviceContext';
 import { db } from '../firebase';
 import { ref, set, onValue } from 'firebase/database';
 import { logIncidentToBlockchain } from '../services/blockchain';
 
 export default function SOSActive() {
   const { currentUser, userProfile } = useAuth();
+  const { resolveEmergencyBLE } = useDevice();
   const navigate = useNavigate();
   const [countdown, setCountdown] = useState(15);
   const [sent, setSent] = useState(false);
@@ -192,6 +194,9 @@ export default function SOSActive() {
   async function cancelSOS() {
     clearInterval(intervalRef.current);
     
+    // Tell the ESP32 to stop transmitting if it's connected
+    if (resolveEmergencyBLE) resolveEmergencyBLE();
+    
     const deviceId = userProfile?.deviceId || `web-${currentUser.uid.slice(0, 8)}`;
     try {
       await set(ref(db, `sos_alerts/${deviceId}/active`), false);
@@ -204,6 +209,9 @@ export default function SOSActive() {
   }
 
   async function resolveEmergency() {
+    // Tell the ESP32 to stop transmitting if it's connected
+    if (resolveEmergencyBLE) resolveEmergencyBLE();
+
     const deviceId = userProfile?.deviceId || `web-${currentUser.uid.slice(0, 8)}`;
     try {
       await set(ref(db, `sos_alerts/${deviceId}/active`), false);

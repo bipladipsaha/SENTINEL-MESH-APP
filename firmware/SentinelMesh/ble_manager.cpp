@@ -52,6 +52,24 @@ void notifyBLEAlert(const char* payload) {
     }
 }
 
+class AlertCharCallbacks: public BLECharacteristicCallbacks {
+    void onWrite(BLECharacteristic *pCharacteristic) {
+        std::string value = pCharacteristic->getValue();
+        if (value.length() > 0) {
+            String valStr = String(value.c_str());
+            valStr.trim();
+            if (valStr == "RESOLVE") {
+                Serial.println("[BLE] Received remote RESOLVE from Web App");
+                lockState();
+                if (g_state.emergencyState != STATE_READY) {
+                    g_state.emergencyState = STATE_RESOLVED;
+                }
+                unlockState();
+            }
+        }
+    }
+};
+
 void initBLE() {
     pinMode(PIN_LED_BLUE, OUTPUT);
     digitalWrite(PIN_LED_BLUE, LOW);
@@ -79,8 +97,10 @@ void initBLE() {
     pAlertCharacteristic = pService->createCharacteristic(
                                          ALERT_CHAR_UUID,
                                          BLECharacteristic::PROPERTY_NOTIFY |
-                                         BLECharacteristic::PROPERTY_READ
+                                         BLECharacteristic::PROPERTY_READ |
+                                         BLECharacteristic::PROPERTY_WRITE
                                        );
+    pAlertCharacteristic->setCallbacks(new AlertCharCallbacks());
 
     // Add descriptor for notify
     pAlertCharacteristic->addDescriptor(new BLE2902());

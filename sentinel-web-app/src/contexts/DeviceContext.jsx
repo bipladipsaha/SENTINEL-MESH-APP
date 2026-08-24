@@ -296,6 +296,18 @@ export function DeviceProvider({ children }) {
     }
   }
 
+  const resolveEmergencyBLE = useCallback(async () => {
+    if (alertCharRef.current && connectedRef.current) {
+      try {
+        const encoder = new TextEncoder();
+        await alertCharRef.current.writeValue(encoder.encode('RESOLVE'));
+        console.log('[BLE Proxy] Sent remote RESOLVE to ESP32');
+      } catch (err) {
+        console.warn('[BLE Proxy] Failed to send RESOLVE via BLE:', err);
+      }
+    }
+  }, []);
+
   function onDisconnected() {
     console.log('[BLE] Disconnected from ESP32');
     connectedRef.current = false;
@@ -420,7 +432,8 @@ export function DeviceProvider({ children }) {
     scanAndConnect,
     disconnect,
     deviceConnected,
-    deviceBattery
+    deviceBattery,
+    resolveEmergencyBLE
   };
 
   return (
