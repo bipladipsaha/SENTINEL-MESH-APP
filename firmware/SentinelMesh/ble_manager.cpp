@@ -41,12 +41,14 @@ class MyServerCallbacks: public BLEServerCallbacks {
 };
 
 void notifyBLEAlert(const char* payload) {
-    if (deviceConnected && pAlertCharacteristic != NULL) {
+    if (pAlertCharacteristic != NULL) {
         pAlertCharacteristic->setValue(payload);
-        pAlertCharacteristic->notify();
-        Serial.printf("[BLE] Notified Web App: %s\n", payload);
-    } else {
-        Serial.println("[BLE] Cannot notify: not connected to Web App");
+        if (deviceConnected) {
+            pAlertCharacteristic->notify();
+            Serial.printf("[BLE] Notified Web App: %s\n", payload);
+        } else {
+            Serial.printf("[BLE] Value updated to '%s' (no devices connected to notify)\n", payload);
+        }
     }
 }
 
@@ -82,6 +84,8 @@ void initBLE() {
 
     // Add descriptor for notify
     pAlertCharacteristic->addDescriptor(new BLE2902());
+    pAlertCharacteristic->setValue("IDLE"); // Initialize to safe value
+
     pCharacteristic->setValue(deviceName.c_str());
     pService->start();
 

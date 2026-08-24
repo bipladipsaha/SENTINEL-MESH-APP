@@ -279,6 +279,8 @@ static void resetCommunication() {
     
     // Notify Web App to resolve the alert
     notifyBLEAlert("RESOLVED");
+    vTaskDelay(pdMS_TO_TICKS(500));
+    notifyBLEAlert("IDLE");
 
     // Tear down GPRS
     if (gprsReady) {
