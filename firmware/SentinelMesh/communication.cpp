@@ -31,6 +31,10 @@ static bool          callMade          = false;
 static unsigned long lastLoRaBroadcast = 0;
 static unsigned long lastGPRSUpload    = 0;
 static unsigned long lastRecoveryCheck = 0;
+static unsigned long lastBLENotify     = 0;
+
+// BLE re-notification interval (ms) — sends alert every 3s during active transmission
+#define BLE_RENOTIFY_INTERVAL 3000
 
 // ---- Static message buffers ----
 static char smsMsgBuf[SMS_BUFFER_SIZE];
@@ -122,7 +126,12 @@ static void sendInitialAlerts() {
         snprintf(bleMsg, sizeof(bleMsg), "SOS|%.4f|%.4f", lat, lon);
     }
     notifyBLEAlert(bleMsg);
-    vTaskDelay(pdMS_TO_TICKS(1000));
+    lastBLENotify = millis();
+    // After a short delay, reset to IDLE so the web app's polling fallback
+    // can distinguish fresh alerts from stale ones
+    vTaskDelay(pdMS_TO_TICKS(500));
+    notifyBLEAlert("IDLE");
+    vTaskDelay(pdMS_TO_TICKS(500));
 
     // ---- 1.5. Firebase RTDB → push notifications to nearby app users ----
     if (getEmergencyState() == STATE_RESOLVED) return;
@@ -198,6 +207,28 @@ static void continuousTracking() {
         lastLoRaBroadcast = now;
     }
 
+    // BLE re-notification every 3 s (catches missed notifications on the web app)
+    if (now - lastBLENotify >= BLE_RENOTIFY_INTERVAL) {
+        lockState();
+        EmergencyType etype = g_state.emergencyType;
+        float lat = g_state.gps.latitude;
+        float lon = g_state.gps.longitude;
+        unlockState();
+
+        char bleMsg[64];
+        if (etype == EMERGENCY_FALL) {
+            snprintf(bleMsg, sizeof(bleMsg), "FALL|%.4f|%.4f", lat, lon);
+        } else {
+            snprintf(bleMsg, sizeof(bleMsg), "SOS|%.4f|%.4f", lat, lon);
+        }
+        notifyBLEAlert(bleMsg);
+        lastBLENotify = now;
+
+        // After a brief pause, reset to IDLE so the polling fallback can detect the next one
+        vTaskDelay(pdMS_TO_TICKS(200));
+        notifyBLEAlert("IDLE");
+    }
+
     // GPRS upload every 4 s
     if (now - lastGPRSUpload >= GPRS_UPLOAD_INTERVAL) {
         if (gprsReady) {
@@ -261,6 +292,7 @@ static void resetCommunication() {
     lastLoRaBroadcast  = 0;
     lastGPRSUpload     = 0;
     lastRecoveryCheck  = 0;
+    lastBLENotify      = 0;
 
     Serial.println("[COMM] Reset complete");
 }
