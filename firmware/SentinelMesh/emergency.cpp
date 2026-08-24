@@ -18,23 +18,14 @@
 #include "emergency.h"
 
 // ============================================================
-//  SOS Button ISR
+//  SOS Button Polling (Software Debounce)
 // ============================================================
 
-// Volatile flag set by the ISR, consumed by the emergency task.
-// Using a dedicated flag separate from g_state.sosButtonPressed
-// for the ISR, then copying it over, keeps the ISR minimal.
-
-static volatile bool    s_buttonISRFlag  = false;
-static volatile unsigned long s_lastISRTime = 0;
-
-void IRAM_ATTR sosButtonISR() {
-    unsigned long now = millis();
-    if (now - s_lastISRTime > BUTTON_DEBOUNCE_MS) {
-        s_buttonISRFlag = true;
-        s_lastISRTime   = now;
-    }
-}
+// We poll the button in the 50ms task loop instead of using an ISR.
+// This is much more robust against EMI noise on breadboards/long wires
+// which commonly causes false FALLING edge interrupts.
+static int s_buttonPressCount = 0;
+const int BUTTON_DEBOUNCE_TICKS = 3; // Must be held LOW for 3 consecutive ticks (150ms)
 
 // ============================================================
 //  LED helpers (non-blocking blink)
@@ -75,11 +66,8 @@ void initEmergency() {
     digitalWrite(PIN_LED_GREEN, LOW);
     digitalWrite(PIN_LED_RED,   LOW);
 
-    // Attach interrupt — FALLING edge (button pulls pin LOW)
-    attachInterrupt(digitalPinToInterrupt(PIN_SOS_BUTTON),
-                    sosButtonISR, FALLING);
-
-    Serial.println("[EMG] Emergency module initialized (SOS on GPIO27)");
+    // Note: Interrupt removed; we now poll the button in taskEmergency.
+    Serial.println("[EMG] Emergency module initialized (SOS on GPIO27 - Polling)");
 }
 
 // ============================================================
@@ -103,11 +91,15 @@ void taskEmergency(void* param) {
     Serial.println("[EMG] ══════════════════════════");
 
     for (;;) {
-
-        // ---- Transfer ISR flag to shared state ----
-        if (s_buttonISRFlag) {
-            s_buttonISRFlag = false;
-            g_state.sosButtonPressed = true;
+        // ---- Software Debounce Polling ----
+        if (digitalRead(PIN_SOS_BUTTON) == LOW) {
+            s_buttonPressCount++;
+            if (s_buttonPressCount == BUTTON_DEBOUNCE_TICKS) {
+                g_state.sosButtonPressed = true;
+                Serial.println("[EMG] Button press confirmed (software debounce)");
+            }
+        } else {
+            s_buttonPressCount = 0;
         }
 
         EmergencyState state = getEmergencyState();
