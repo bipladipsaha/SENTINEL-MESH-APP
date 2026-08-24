@@ -54,11 +54,10 @@ void notifyBLEAlert(const char* payload) {
 
 class AlertCharCallbacks: public BLECharacteristicCallbacks {
     void onWrite(BLECharacteristic *pCharacteristic) {
-        std::string value = pCharacteristic->getValue();
+        String value = pCharacteristic->getValue();
         if (value.length() > 0) {
-            String valStr = String(value.c_str());
-            valStr.trim();
-            if (valStr == "RESOLVE") {
+            value.trim();
+            if (value == "RESOLVE") {
                 Serial.println("[BLE] Received remote RESOLVE from Web App");
                 lockState();
                 if (g_state.emergencyState != STATE_READY) {

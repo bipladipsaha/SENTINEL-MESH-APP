@@ -25,7 +25,7 @@
 // This is much more robust against EMI noise on breadboards/long wires
 // which commonly causes false FALLING edge interrupts.
 static int s_buttonPressCount = 0;
-const int BUTTON_DEBOUNCE_TICKS = 3; // Must be held LOW for 3 consecutive ticks (150ms)
+const int BUTTON_DEBOUNCE_TICKS = 10; // Must be held LOW for 10 consecutive ticks (500ms) to filter GSM RF noise
 
 // ============================================================
 //  LED helpers (non-blocking blink)

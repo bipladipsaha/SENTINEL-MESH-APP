@@ -30,25 +30,7 @@ export default function Dashboard() {
     else setGreeting('Good Evening');
   }, []);
 
-  // Listen for active SOS alerts
-  useEffect(() => {
-    if (!userProfile?.deviceId) return;
-    const sosRef = ref(db, `sos_alerts/${userProfile.deviceId}`);
-    const unsub = onValue(sosRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data?.active) {
-        // Only auto-navigate if the alert is RECENT (within 60 seconds).
-        // This prevents stale alerts from previous sessions from
-        // hijacking the Dashboard and auto-redirecting to SOS page.
-        const alertAge = Date.now() - (data.timestamp || 0);
-        if (alertAge < 60000) {
-          setSosActive(true);
-          navigate('/sos-active');
-        }
-      }
-    });
-    return () => unsub();
-  }, [userProfile?.deviceId, navigate]);
+  // (Removed aggressive Firebase listener that was causing automatic redirects to /sos-active)
 
   // Update user location periodically
   useEffect(() => {
