@@ -208,8 +208,11 @@ function GlobalNotificationListener() {
       const alertId = snapshot.key;
       
       if (alert && alert.active) {
-        // Only show toast if the alert was created AFTER the page loaded
-        if (alert.timestamp && alert.timestamp > mountTime.current - 5000) {
+        // onChildAdded fires for ALL existing children on first subscribe,
+        // so we MUST filter strictly: only show alerts created AFTER this
+        // component mounted. This prevents stale/old alerts from showing
+        // toast notifications every time the user opens the app.
+        if (alert.timestamp && alert.timestamp > mountTime.current) {
           
           // 1. In-App Toast Notification (Premium UI)
           toast.custom(
